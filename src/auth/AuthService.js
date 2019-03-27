@@ -13,10 +13,10 @@ export default class AuthService {
         }).then(res => {
             this.setToken(res.token) // Setting the token in localStorage
             return Promise.resolve(res);
-        })
+        }).catch(error => { throw error })
     }
 
-    loggedIn = ()  => {
+    loggedIn = () => {
         // Checks if there is a saved token and it's still valid
         const token = this.getToken() // GEtting token from localstorage
         return !!token && !this.isTokenExpired(token) // handwaiving here
@@ -83,9 +83,19 @@ export default class AuthService {
         if (response.status >= 200 && response.status < 300) { // Success status lies between 200 to 300
             return response
         } else {
-            var error = new Error(response.statusText)
-            error.response = response
-            throw error
+            return response.json().then((json) => {
+                var error = new Error(json.message || response.statusText)
+                error.response = response
+                throw error
+            });
         }
+    }
+
+    refrech = () => {
+        const token = this.getToken()
+        if (!token)
+            return
+
+
     }
 }

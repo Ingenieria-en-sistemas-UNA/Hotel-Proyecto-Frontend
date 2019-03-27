@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AuthService from '../../auth/AuthService'
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
+import Message from '../../Message'
+import { Avatar, Button, CssBaseline, FormControl, FormControlLabel, Checkbox  } from '@material-ui/core';
+import { Input, InputLabel, Paper, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = theme => ({
@@ -50,7 +43,10 @@ class Login extends Component {
     constructor() {
         super()
         this.Auth = new AuthService();
+        this.Auth.refrech()
     }
+
+    state = {}
 
     componentWillMount(){
         if(this.Auth.loggedIn()){
@@ -58,23 +54,30 @@ class Login extends Component {
         }
     }
 
-    handleFormSubmit = e => {
+    handleFormSubmit = async(e) => {
         e.preventDefault();
-        this.Auth.login(this.state.username, this.state.password)
-            .then(res => {
-                this.props.history.replace('/');
+        try {
+            const response = await this.Auth.login(this.state.username, this.state.password)
+            console.log(response)
+            this.props.history.push('/');
+        } catch ({message}) {
+            this.setState({ 
+                error: true,
+                message
             })
-            .catch(err => {
-                alert(err);
-            })
+        }
     }
 
     handleChange = e => {
         const { target: { name, value } } = e
-        this.setState({ [name]: value })
+        this.setState({ 
+            [name]: value,
+            error: false 
+        })
     }
     render() {
-        const { classes } = this.props;
+        const { classes } = this.props
+        const { error, message  } = this.state
 
         return (
             <main className={classes.main}>
@@ -88,7 +91,7 @@ class Login extends Component {
                     </Typography>
                     <form className={classes.form} onSubmit={this.handleFormSubmit}>
                         <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="username">Username</InputLabel>
+                            <InputLabel htmlFor="username" error={error && true}>Username</InputLabel>
                             <Input
                                 id="username"
                                 name="username"
@@ -98,7 +101,7 @@ class Login extends Component {
                             />
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="password">Password</InputLabel>
+                            <InputLabel htmlFor="password" error={error && true}>Password</InputLabel>
                             <Input
                                 name="password"
                                 type="password"
@@ -120,6 +123,9 @@ class Login extends Component {
                         >
                             Sign in
                         </Button>
+                        {
+                            error && <Message message={message} type={"error"}/>
+                        }
                     </form>
                 </Paper>
             </main>
