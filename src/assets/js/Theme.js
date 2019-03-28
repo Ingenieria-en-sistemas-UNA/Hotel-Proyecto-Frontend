@@ -4,19 +4,8 @@ import { deepOrange, orange } from '@material-ui/core/colors';
 
 const theme = createMuiTheme({
     typography: {
-        fontFamily: [
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
-    },
+        useNextVariants: true,
+      },
     palette: {
         primary: deepOrange,
         secondary: orange,
