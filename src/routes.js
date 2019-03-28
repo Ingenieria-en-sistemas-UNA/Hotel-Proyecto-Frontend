@@ -1,33 +1,18 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import AuthService from './auth/AuthService'
 import { Layout } from './containers/layout'
 import { Login } from './containers/Login'
 import Loggin from './Components/Loggin'
 
 
 class AppRoutes extends Component {
-    constructor() {
-        super()
-        this.Auth = new AuthService();
-    }
-    state = {}
-
-    componentDidMount() {
-        this.setState({isLogged: this.Auth.loggedIn()})
-    }
-
-    getIsLogged = isLogged => {
-        this.setState({isLogged})
-    }
     render(){
-        const { history } = this.props
-        const { isLogged } = this.state
+        const { history, sesionState, changeSesionState } = this.props
         return(
-            <Layout history={history} isLogged={isLogged} logged={this.getIsLogged}>
+            <Layout history={history} sesionState={sesionState} changeSesionState={changeSesionState}>
                 <Switch>
                     <Route exact path="/" component={Loggin}/>
-                    <Route exact path="/login" render={() => <Login logged={this.getIsLogged} history={history}/>}/>
+                    <Route exact path="/login" render={() => <Login changeSesionState={changeSesionState} history={history}/>}/>
                     <Redirect to="/" />
                 </Switch>
             </Layout>

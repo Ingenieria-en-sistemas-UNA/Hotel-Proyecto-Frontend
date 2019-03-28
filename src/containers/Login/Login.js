@@ -57,8 +57,9 @@ class Login extends Component {
         e.preventDefault();
         try {
             const response = await this.Auth.login(this.state.username, this.state.password)
-            const { logged } = this.props
-            logged(true)
+            const { changeSesionState } = this.props
+            console.log(response)
+            changeSesionState(true)
             this.props.history.push('/');
         } catch ({message}) {
             this.setState({ 

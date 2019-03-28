@@ -4,11 +4,14 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
 import './assets/css/index.css';
 import App from './App';
+import Theme from './assets/js/Theme'
 import * as serviceWorker from './serviceWorker';
 const history =  createBrowserHistory()
 const app = (
     <Router history={history}>
-        <App history={history}/>
+        <Theme>
+            <App history={history}/>
+        </Theme>
     </Router>
 )
 

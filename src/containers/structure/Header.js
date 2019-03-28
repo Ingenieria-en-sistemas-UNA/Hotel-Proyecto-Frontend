@@ -19,9 +19,9 @@ const styles = {
 
 export default class Header extends Component {
 
-    constructor() {
+    constructor(){
         super()
-        this.Auth = new AuthService();
+        this.Auth = new AuthService()
     }
 
     onClickLogin = () => () => {
@@ -29,28 +29,32 @@ export default class Header extends Component {
         history.push('/login')
     }
     onClickLogout = () => () => {
-        const { history, logged } = this.props
-        logged(false)
+        const { history, changeSesionState } = this.props
+        changeSesionState(false)
         this.Auth.logout();
         history.push('/login')
     }
     render(){
-        const { toggleDrawer, isLogged } = this.props
+        const { toggleDrawer, sesionState } = this.props
         return(
             <div style={styles.root}>
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton style={styles.menuButton} color="inherit" aria-label="Menu" onClick={toggleDrawer("left", this.Auth.loggedIn())}>
-                            <MenuIcon />
-                        </IconButton>
+                        {
+                            sesionState && (
+                                <IconButton style={styles.menuButton} color="inherit" aria-label="Menu" onClick={toggleDrawer("left", sesionState)}>
+                                    <MenuIcon />
+                                </IconButton>
+                            )
+                        }
                         <Typography variant="h6" color="inherit" style={styles.grow}>
                         <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>Hotel</Link>
                         </Typography>
                         {
-                            !isLogged && <Button color="inherit" onClick={this.onClickLogin()}>Login</Button>
+                            !sesionState && <Button color="inherit" onClick={this.onClickLogin()}>Login</Button>
                         }
                         {
-                             isLogged && <Button color="inherit" onClick={this.onClickLogout()}>logout</Button>
+                             sesionState && <Button color="inherit" onClick={this.onClickLogout()}>logout</Button>
                         }
                     </Toolbar>
                 </AppBar>
