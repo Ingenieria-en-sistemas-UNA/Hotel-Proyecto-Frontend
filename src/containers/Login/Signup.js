@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AuthService from '../../auth/AuthService'
 import Message from '../../Components/Message'
-import { Avatar, Button, CssBaseline, FormControl, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Avatar, Button, CssBaseline, FormControl } from '@material-ui/core';
 import { Input, InputLabel, Paper, Typography, Link } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -39,7 +39,7 @@ const styles = theme => ({
     },
 });
 
-class Login extends Component {
+class Signup extends Component {
     constructor() {
         super()
         this.Auth = new AuthService();
@@ -47,47 +47,43 @@ class Login extends Component {
 
     state = {}
 
-    componentWillMount() {
-        if (this.Auth.loggedIn()) {
+    componentWillMount(){
+        if(this.Auth.loggedIn()){
             this.props.history.push('/');
         }
     }
 
-    handleFormSubmit = async (e) => {
+    handleFormSubmit = async(e) => {
         e.preventDefault();
         try {
-
-            const response = await this.Auth.login(this.state.username, this.state.password)
+            const response = await this.Auth.Signup(this.state)
+            const { changeSesionState } = this.props
             console.log(response)
-            const { changeSesionState, history } = this.props
             changeSesionState(true)
-            history.push('/');
-
-        } catch ({ message }) {
-
-            this.setState({
+            this.props.history.push('/');
+        } catch ({message}) {
+            this.setState({ 
                 error: true,
                 message
             })
-
         }
     }
 
-    signup = () => {
+    login = () => {
         const { history } = this.props
-        history.push('/signup')
+        history.push('/login')
     }
 
     handleChange = e => {
         const { target: { name, value } } = e
-        this.setState({
+        this.setState({ 
             [name]: value,
-            error: false
+            error: false 
         })
     }
     render() {
         const { classes } = this.props
-        const { error, message } = this.state
+        const { error, message  } = this.state
 
         return (
             <main className={classes.main}>
@@ -97,7 +93,7 @@ class Login extends Component {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Sign up
                     </Typography>
                     <form className={classes.form} onSubmit={this.handleFormSubmit}>
                         <FormControl margin="normal" required fullWidth>
@@ -120,10 +116,15 @@ class Login extends Component {
                                 onChange={this.handleChange}
                             />
                         </FormControl>
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="email" error={error && true}>Email</InputLabel>
+                            <Input
+                                name="email"
+                                type="email"
+                                id="email"
+                                onChange={this.handleChange}
+                            />
+                        </FormControl>
                         <Button
                             type="submit"
                             fullWidth
@@ -131,19 +132,19 @@ class Login extends Component {
                             color="primary"
                             className={classes.submit}
                         >
-                            Sign in
+                            Sign up
                         </Button>
                         <FormControl margin="normal" fullWidth>
-                            <Link
+                            <Link 
                                 component="button"
                                 variant="body2"
-                                onClick={this.signup}
+                                onClick={this.login}
                             >
-                                ¿Aún no tienes cuenta? Registrate
+                                ¿Ya tienes cuenta? Iniciá Sesión
                             </Link>
                         </FormControl>
                         {
-                            error && <Message message={message} type={"error"} />
+                            error && <Message message={message} type={"error"}/>
                         }
                     </form>
                 </Paper>
@@ -151,8 +152,8 @@ class Login extends Component {
         )
     }
 }
-Login.propTypes = {
+Signup.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Login);
+export default withStyles(styles)(Signup);

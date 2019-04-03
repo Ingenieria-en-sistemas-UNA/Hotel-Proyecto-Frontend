@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
@@ -7,6 +7,7 @@ import AuthService from '../../auth/AuthService'
 const styles = {
     root: {
         flexGrow: 1,
+        paddingBottom: 64
     },
     grow: {
         flexGrow: 1,
@@ -28,6 +29,10 @@ export default class Header extends Component {
         const { history } = this.props
         history.push('/login')
     }
+    onClickSignup = () => () => {
+        const { history } = this.props
+        history.push('/signup')
+    }
     onClickLogout = () => () => {
         const { history, changeSesionState } = this.props
         changeSesionState(false)
@@ -38,7 +43,7 @@ export default class Header extends Component {
         const { toggleDrawer, sesionState } = this.props
         return(
             <div style={styles.root}>
-                <AppBar position="static">
+                <AppBar position="fixed">
                     <Toolbar>
                         {
                             sesionState && (
@@ -51,7 +56,12 @@ export default class Header extends Component {
                         <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>Hotel</Link>
                         </Typography>
                         {
-                            !sesionState && <Button color="inherit" onClick={this.onClickLogin()}>Login</Button>
+                            !sesionState && (
+                                <Fragment>
+                                    <Button color="inherit" onClick={this.onClickSignup()}>Signup</Button>
+                                    <Button color="inherit" onClick={this.onClickLogin()}>Login</Button>
+                                </Fragment>
+                            )
                         }
                         {
                              sesionState && <Button color="inherit" onClick={this.onClickLogout()}>logout</Button>

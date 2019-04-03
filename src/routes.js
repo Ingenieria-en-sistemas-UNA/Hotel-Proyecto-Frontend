@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { Layout } from './containers/layout'
-import { Login } from './containers/Login'
+import { Login, Signup } from './containers/Login'
 import Loggin from './Components/Loggin'
 
 
@@ -23,6 +23,7 @@ class AppRoutes extends Component {
                 <Switch>
                     <PrivateRoute exact path="/" component={Loggin} sesionState={sesionState} />
                     <Route exact path="/login" render={() => <Login changeSesionState={changeSesionState} history={history} />} />
+                    <Route exact path="/signup" render={() => <Signup changeSesionState={changeSesionState} history={history} />} />
                     <Redirect to="/" />
                 </Switch>
             </Layout>

@@ -5,13 +5,30 @@ export default class AuthService {
         this.domain = domain || 'http://localhost:8443/user'
     }
 
-    login = (username, password) => {
-        return this.fetch(`${this.domain}/signin?username=${username}&password=${password}`, {
-            method: 'POST',
-        }).then(res => {
-            this.setToken(res.token)
+    login = async (username, password) => {
+        try {
+            const res = await this.fetch(`${this.domain}/signin?username=${username}&password=${password}`, {
+                method: 'POST',
+            });
+            this.setToken(res.token);
             return Promise.resolve(res);
-        }).catch(error => { throw error })
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    Signup = async ({username, password, email, roles = [ "ROLE_CLIENT" ]}) => {
+        try {
+            const res = await this.fetch(`${this.domain}/signup`, {
+                method: 'POST',
+                body: JSON.stringify({ username, password, email, roles })
+            });
+            this.setToken(res.token);
+            return Promise.resolve(res);
+        }
+        catch (error) {
+            throw error;
+        }
     }
 
     loggedIn = () => {
