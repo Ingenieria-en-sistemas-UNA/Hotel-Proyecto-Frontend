@@ -5,14 +5,24 @@ import { Login } from './containers/Login'
 import Loggin from './Components/Loggin'
 
 
+const PrivateRoute = ({ component: Component, sesionState,  ...rest }) => (
+    <Route {...rest} render={(props) => (
+        sesionState === true
+            ? <Component {...props} />
+            : <Redirect to='/login' />
+    )} />
+)
+
+
 class AppRoutes extends Component {
-    render(){
+    
+    render() {
         const { history, sesionState, changeSesionState } = this.props
-        return(
+        return (
             <Layout history={history} sesionState={sesionState} changeSesionState={changeSesionState}>
                 <Switch>
-                    <Route exact path="/" component={Loggin}/>
-                    <Route exact path="/login" render={() => <Login changeSesionState={changeSesionState} history={history}/>}/>
+                    <PrivateRoute exact path="/" component={Loggin} sesionState={sesionState} />
+                    <Route exact path="/login" render={() => <Login changeSesionState={changeSesionState} history={history} />} />
                     <Redirect to="/" />
                 </Switch>
             </Layout>
