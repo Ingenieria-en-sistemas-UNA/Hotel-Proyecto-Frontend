@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import AuthService from '../../auth/AuthService'
 import Message from '../../Components/Message'
 import { Avatar, Button, CssBaseline, FormControl, FormControlLabel, Checkbox } from '@material-ui/core';
-import { Input, InputLabel, Paper, Typography, Link } from '@material-ui/core';
+import { Input, InputLabel, Paper, Typography, Link, Grid } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -13,8 +13,9 @@ const styles = theme => ({
         display: 'block', // Fix IE 11 issue.
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
+        paddingTop: '26px',
         [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: 400,
+            width: '400px',
             marginLeft: 'auto',
             marginRight: 'auto',
         },
@@ -90,7 +91,7 @@ class Login extends Component {
         const { error, message } = this.state
 
         return (
-            <main className={classes.main}>
+            <Grid item className={classes.main} spacing={100}>
                 <CssBaseline />
                 <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}>
@@ -147,7 +148,7 @@ class Login extends Component {
                         }
                     </form>
                 </Paper>
-            </main>
+            </Grid>
         )
     }
 }

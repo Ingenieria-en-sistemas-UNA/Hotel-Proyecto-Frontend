@@ -7,7 +7,7 @@ import AuthService from '../../auth/AuthService'
 const styles = {
     root: {
         flexGrow: 1,
-        paddingBottom: 64
+        paddingBottom: 90
     },
     grow: {
         flexGrow: 1,

@@ -18,14 +18,15 @@ export default class Container extends Component {
     render() {
         const { children } = this.props
         return (
-            <Grid container justify="center">
+            <Grid container justify="center" spacing={40}>
                 <Grid
                     container
                     className={styles.demo}
                     alignItems="center"
                     justify="center"
+                    xs={12}
                 >
-                    <Grid item>{ children }</Grid>
+                    <Grid item xs={10}>{ children }</Grid>
                 </Grid>
             </Grid>
         )
