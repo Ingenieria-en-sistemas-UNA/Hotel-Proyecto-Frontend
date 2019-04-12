@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AuthService from '../../auth/AuthService'
 import Message from '../../Components/Message'
-import { Avatar, Button, CssBaseline, FormControl, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Avatar, Button, FormControl, FormControlLabel, Checkbox } from '@material-ui/core';
 import { Input, InputLabel, Paper, Typography, Link, Grid } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
-
+import { withContext } from '../../store/Context'
 const styles = theme => ({
     main: {
         width: 'auto',
         display: 'block', // Fix IE 11 issue.
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
-        paddingTop: '26px',
         [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
             width: '400px',
             marginLeft: 'auto',
@@ -21,7 +20,7 @@ const styles = theme => ({
         },
     },
     paper: {
-        marginTop: theme.spacing.unit * 8,
+        marginTop: theme.spacing.unit * 8 ,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -89,10 +88,8 @@ class Login extends Component {
     render() {
         const { classes } = this.props
         const { error, message } = this.state
-
         return (
-            <Grid item className={classes.main} spacing={100}>
-                <CssBaseline />
+            <Grid item className={classes.main}>
                 <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />
@@ -156,4 +153,4 @@ Login.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Login);
+export default withContext(withStyles(styles)(Login))

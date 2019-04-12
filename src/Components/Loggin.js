@@ -5,6 +5,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardHeader from '@material-ui/core/CardHeader';
 import { withStyles } from '@material-ui/core/styles';
 import img from '../assets/img/home.jpg'
+import { HotelContext } from '../store/Context'
 const styles = theme => ({
     card: {
         maxWidth: '100%',
@@ -17,7 +18,7 @@ const styles = theme => ({
 });
 
 class Loggin extends Component {
-
+    static contextType = HotelContext
     render() {
         const { classes } = this.props;
         return (

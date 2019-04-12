@@ -10,7 +10,7 @@ import MailIcon from "@material-ui/icons/Mail";
 
 const styles = {
   list: {
-    width: 350
+    width: 200
   },
   fullList: {
     width: "auto"

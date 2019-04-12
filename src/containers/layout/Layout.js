@@ -15,18 +15,15 @@ class Layout extends Component {
   }
 
   render() {
-    const { children, history, sesionState, changeSesionState } = this.props
+    const { children } = this.props
     const { left } = this.state
     return (
       <Fragment>
         <Header
-          history={history}
           toggleDrawer={this.toggleDrawer}
-          sesionState={sesionState}
-          changeSesionState={changeSesionState}
         />
         <TemporaryDrawer open={left} toggleDrawer={this.toggleDrawer} />
-        <Container history={history} >{children}</Container>
+        <Container>{children}</Container>
       </Fragment>
     )
   }

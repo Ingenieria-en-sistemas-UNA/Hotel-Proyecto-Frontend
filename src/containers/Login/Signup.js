@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AuthService from '../../auth/AuthService'
 import Message from '../../Components/Message'
-import { Avatar, Button, CssBaseline, FormControl } from '@material-ui/core';
+import { Avatar, Button, FormControl } from '@material-ui/core';
 import { Input, InputLabel, Paper, Typography, Link } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { withContext } from '../../store/Context'
 
 const styles = theme => ({
     main: {
@@ -87,7 +88,6 @@ class Signup extends Component {
 
         return (
             <main className={classes.main}>
-                <CssBaseline />
                 <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />
@@ -156,4 +156,4 @@ Signup.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Signup);
+export default withContext(withStyles(styles)(Signup))

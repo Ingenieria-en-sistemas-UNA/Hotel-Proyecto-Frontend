@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import { AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import AuthService from '../../auth/AuthService'
+import { withContext } from '../../store/Context' 
 
 const styles = {
     root: {
         flexGrow: 1,
-        paddingBottom: 90
+        paddingBottom: 64
     },
     grow: {
         flexGrow: 1,
@@ -18,7 +19,7 @@ const styles = {
     },
 }
 
-export default class Header extends Component {
+class Header extends Component {
 
     constructor(){
         super()
@@ -39,6 +40,7 @@ export default class Header extends Component {
         this.Auth.logout();
         history.push('/login')
     }
+
     render(){
         const { toggleDrawer, sesionState } = this.props
         return(
@@ -72,3 +74,4 @@ export default class Header extends Component {
         )
     }
 }
+export default withContext(Header)
