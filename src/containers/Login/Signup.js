@@ -1,72 +1,60 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import AuthService from '../../auth/AuthService'
 import Message from '../../Components/Message'
 import { Avatar, Button, FormControl } from '@material-ui/core';
-import { Input, InputLabel, Paper, Typography, Link } from '@material-ui/core';
+import { Paper, Typography, Link, Grid, TextField } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withContext } from '../../store/Context'
-
-const styles = theme => ({
-    main: {
-        width: 'auto',
-        display: 'block', // Fix IE 11 issue.
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: 400,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
-    },
-    paper: {
-        marginTop: theme.spacing.unit * 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-    },
-    avatar: {
-        margin: theme.spacing.unit,
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing.unit,
-    },
-    submit: {
-        marginTop: theme.spacing.unit * 3,
-    },
-});
-
+import styles from './jss/signup'
+import validate from './validate/signup'
 class Signup extends Component {
-    constructor() {
-        super()
-        this.Auth = new AuthService();
+
+    state = {
+        roles: ["ROLE_CLIENT"],
+        errors: {}
     }
 
-    state = {}
-
-    componentWillMount(){
-        if(this.Auth.loggedIn()){
-            this.props.history.push('/');
+    componentWillMount() {
+        const { Auth, history } = this.props
+        if (Auth.loggedIn()) {
+            history.push('/');
         }
     }
 
-    handleFormSubmit = async(e) => {
-        e.preventDefault();
-        try {
-            const response = await this.Auth.Signup(this.state)
-            const { changeSesionState } = this.props
-            console.log(response)
-            changeSesionState(true)
-            this.props.history.push('/');
-        } catch ({message}) {
-            this.setState({ 
-                error: true,
-                message
-            })
+    handleFormSubmit = async (e) => {
+        e.preventDefault()
+        const { errors, ...sinErrors } = this.state
+        const { changeSesionState, Auth, history } = this.props
+        const result = validate(sinErrors)
+        if (!Object.keys(result).length) {
+            try {
+                const user = this.getUser(sinErrors)
+                await Auth.Signup(user)
+                changeSesionState(true)
+                history.push('/');
+            } catch ({ message }) {
+                this.setState({
+                    errors: { general: message },
+                })
+            }
+        } else {
+            this.setState({ errors: result })
+        }
+    }
+
+    getUser = ({roles, username, password, ...client}) => {
+        const { address, cellphone, email, ...person } = client
+        return {
+            roles,
+            username,
+            password,
+            client: {
+                address,
+                cellphone,
+                email,
+                person
+            }
         }
     }
 
@@ -77,14 +65,16 @@ class Signup extends Component {
 
     handleChange = e => {
         const { target: { name, value } } = e
-        this.setState({ 
+        this.setState(prevState => ({
+            ...prevState,
             [name]: value,
-            error: false 
-        })
+        }))
     }
     render() {
         const { classes } = this.props
-        const { error, message  } = this.state
+        const {
+            errors, name, lastName, id,
+            cellphone, email, address, username, password } = this.state
 
         return (
             <main className={classes.main}>
@@ -96,46 +86,127 @@ class Signup extends Component {
                         Sign up
                     </Typography>
                     <form className={classes.form} onSubmit={this.handleFormSubmit}>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="username" error={error && true}>Username</InputLabel>
-                            <Input
-                                id="username"
-                                name="username"
-                                autoComplete="username"
-                                autoFocus
-                                onChange={this.handleChange}
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="password" error={error && true}>Password</InputLabel>
-                            <Input
-                                name="password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                onChange={this.handleChange}
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="email" error={error && true}>Email</InputLabel>
-                            <Input
-                                name="email"
-                                type="email"
-                                id="email"
-                                onChange={this.handleChange}
-                            />
-                        </FormControl>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Sign up
-                        </Button>
+                        <Grid spacing={24} container alignItems="center">
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.name && true}
+                                    helperText={errors.name && errors.name}
+                                    value={name}
+                                    onChange={this.handleChange}
+                                    id="name"
+                                    name="name"
+                                    label="Nombre"
+                                    fullWidth
+                                    autoComplete="Nombre"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.lastName && true}
+                                    helperText={errors.lastName && errors.lastName}
+                                    value={lastName}
+                                    onChange={this.handleChange}
+                                    id="lastName"
+                                    name="lastName"
+                                    label="Apellidos"
+                                    fullWidth
+                                    autoComplete="Apellidos"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.id && true}
+                                    helperText={errors.id && errors.id}
+                                    value={id}
+                                    onChange={this.handleChange}
+                                    id="id"
+                                    name="id"
+                                    label="Cedula"
+                                    fullWidth
+                                    autoComplete="Cedula"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.cellphone && true}
+                                    helperText={errors.cellphone && errors.cellphone}
+                                    value={cellphone}
+                                    onChange={this.handleChange}
+                                    id="cellphone"
+                                    name="cellphone"
+                                    label="Telefono"
+                                    fullWidth
+                                    autoComplete="Telefono"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.email && true}
+                                    helperText={errors.email && errors.email}
+                                    value={email}
+                                    onChange={this.handleChange}
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    label="Correo"
+                                    fullWidth
+                                    autoComplete="Correo"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.address && true}
+                                    helperText={errors.address && errors.address}
+                                    value={address}
+                                    onChange={this.handleChange}
+                                    id="address"
+                                    name="address"
+                                    label="Dirección"
+                                    fullWidth
+                                    autoComplete="Dirección"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.username && true}
+                                    helperText={errors.username && errors.username}
+                                    value={username}
+                                    onChange={this.handleChange}
+                                    id="username"
+                                    name="username"
+                                    label="Nombre de usuario"
+                                    fullWidth
+                                    autoComplete="Nombre de usuario"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.password && true}
+                                    helperText={errors.password && errors.password}
+                                    value={password}
+                                    onChange={this.handleChange}
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    label="Contraseña"
+                                    fullWidth
+                                    autoComplete="Contraseña"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6} className={classes.gridButtomSubmit}>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submit}
+                                >
+                                    Sign up
+                                </Button>
+                            </Grid>
+                        </Grid>
                         <FormControl margin="normal" fullWidth>
-                            <Link 
+                            <Link
                                 component="button"
                                 variant="body2"
                                 onClick={this.login}
@@ -144,7 +215,7 @@ class Signup extends Component {
                             </Link>
                         </FormControl>
                         {
-                            error && <Message message={message} type={"error"}/>
+                            errors.general && <Message message={errors.general} type={"error"} />
                         }
                     </form>
                 </Paper>

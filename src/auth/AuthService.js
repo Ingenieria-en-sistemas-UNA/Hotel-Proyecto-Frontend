@@ -2,7 +2,7 @@ import decode from 'jwt-decode';
 import SesionExpiredExceprion from '../Error/SesionExpiredException'
 export default class AuthService {
     constructor(domain) {
-        this.domain = domain || 'http://localhost:8443/user'
+        this.domain = domain || 'http://192.168.43.102:8443/user'
     }
 
     login = async (username, password) => {
@@ -11,20 +11,20 @@ export default class AuthService {
                 method: 'POST',
             });
             this.setToken(res.token);
-            return Promise.resolve(res);
+            // return Promise.resolve(res);
         }
         catch (error) {
             throw error;
         }
     }
-    Signup = async ({username, password, email, roles = [ "ROLE_CLIENT" ]}) => {
+    Signup = async (user) => {
         try {
             const res = await this.fetch(`${this.domain}/signup`, {
                 method: 'POST',
-                body: JSON.stringify({ username, password, email, roles })
+                body: JSON.stringify(user)
             });
             this.setToken(res.token);
-            return Promise.resolve(res);
+            // return Promise.resolve(res);
         }
         catch (error) {
             throw error;

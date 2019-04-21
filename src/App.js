@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import AppRoute from './route/routes'
 import AuthService from './auth/AuthService'
 import { Provider } from './store/Context'
+
 class App extends Component {
 
-  state = { 
+  state = {
     sesionState: false,
     Auth: new AuthService(),
     history: this.props.history,
-    drawerState: false
+    drawerState: false,
   }
 
   componentDidMount() {
@@ -32,13 +33,14 @@ class App extends Component {
     ...this.state,
     changeSesionState: this.changeSesionState,
     handleDrawerOpen: this.handleDrawerOpen,
-    handleDrawerClose: this.handleDrawerClose
+    handleDrawerClose: this.handleDrawerClose,
+    handleChangeSignup: this.handleChangeSignup,
   })
 
   render() {
     return (
       <Provider value={this.getContext()}>
-        <AppRoute/>
+        <AppRoute />
       </Provider>
     )
   }

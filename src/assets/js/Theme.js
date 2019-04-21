@@ -10,7 +10,7 @@ const theme = createMuiTheme({
         primary: indigo,
         secondary: orange,
     },
-    drawerWidth: 240
+    drawerWidth: 300
 })
 
 export default ({ children }) => {
