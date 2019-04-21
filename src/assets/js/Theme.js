@@ -1,6 +1,6 @@
 import React from 'react'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { deepOrange, orange, indigo } from '@material-ui/core/colors';
+import { orange, indigo } from '@material-ui/core/colors';
 
 const theme = createMuiTheme({
     typography: {
@@ -9,7 +9,8 @@ const theme = createMuiTheme({
     palette: {
         primary: indigo,
         secondary: orange,
-    }
+    },
+    drawerWidth: 240
 })
 
 export default ({ children }) => {

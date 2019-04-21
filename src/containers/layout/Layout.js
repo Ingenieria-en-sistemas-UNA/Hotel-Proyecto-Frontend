@@ -1,36 +1,39 @@
 
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react'
+import Header from './structure/Header'
+import Drawer from './structure/Drawer'
 import PropTypes from 'prop-types'
-import Header from '../structure/Header'
-import Container from '../structure/Container'
-import TemporaryDrawer from '../../Components/TemporaryDrawer'
+import Container from './structure/Container'
+import {
+  withStyles,
+  CssBaseline
+} from '@material-ui/core';
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+  },
+});
+
+
 class Layout extends Component {
 
-  state = { left: false }
-
-  toggleDrawer = (side, open) => () => {
-    this.setState({
-      [side]: open
-    })
-  }
-
   render() {
-    const { children } = this.props
-    const { left } = this.state
+    const { classes, children } = this.props
     return (
-      <Fragment>
-        <Header
-          toggleDrawer={this.toggleDrawer}
-        />
-        <TemporaryDrawer open={left} toggleDrawer={this.toggleDrawer} />
+      <div className={classes.root}>
+        <CssBaseline />
+        <Header />
+        <Drawer />
         <Container>{children}</Container>
-      </Fragment>
+      </div>
     )
   }
 }
 
-Layout.protoType = {
-  children: PropTypes.any
-}
+Layout.propTypes = {
+  classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
+};
 
-export default Layout;
+export default withStyles(styles, { withTheme: true })(Layout);
