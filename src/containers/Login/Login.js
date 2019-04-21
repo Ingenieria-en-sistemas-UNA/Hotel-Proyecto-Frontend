@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AuthService from '../../auth/AuthService'
 import Message from '../../Components/Message'
-import { Avatar, Button, FormControl, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Avatar, Button, FormControl } from '@material-ui/core';
 import { Input, InputLabel, Paper, Typography, Link, Grid } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -45,7 +45,9 @@ class Login extends Component {
         this.Auth = new AuthService();
     }
 
-    state = {}
+    state = {
+        errors: {}
+    }
 
     componentWillMount() {
         if (this.Auth.loggedIn()) {
@@ -57,18 +59,27 @@ class Login extends Component {
         e.preventDefault();
         try {
 
-            const response = await this.Auth.login(this.state.username, this.state.password)
-            console.log(response)
+            await this.Auth.login(this.state.username, this.state.password)
             const { changeSesionState, history } = this.props
             changeSesionState(true)
             history.push('/');
 
         } catch ({ message }) {
-
             this.setState({
-                error: true,
-                message
+                errors: { 
+                    general: message,
+                    credentials: true
+                }
             })
+
+            setTimeout(() => {
+                this.setState(({errors}) =>({ 
+                    errors: {
+                        ...errors,
+                        general: false
+                    }
+                }))
+            }, 3000)
 
         }
     }
@@ -87,7 +98,7 @@ class Login extends Component {
     }
     render() {
         const { classes } = this.props
-        const { error, message } = this.state
+        const { errors } = this.state
         return (
             <Grid item className={classes.main}>
                 <Paper className={classes.paper}>
@@ -99,7 +110,7 @@ class Login extends Component {
                     </Typography>
                     <form className={classes.form} onSubmit={this.handleFormSubmit}>
                         <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="username" error={error && true}>Username</InputLabel>
+                            <InputLabel htmlFor="username" error={errors.credentials && true}>Username</InputLabel>
                             <Input
                                 id="username"
                                 name="username"
@@ -109,7 +120,7 @@ class Login extends Component {
                             />
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="password" error={error && true}>Password</InputLabel>
+                            <InputLabel htmlFor="password" error={errors.credentials && true}>Password</InputLabel>
                             <Input
                                 name="password"
                                 type="password"
@@ -118,10 +129,6 @@ class Login extends Component {
                                 onChange={this.handleChange}
                             />
                         </FormControl>
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
                         <Button
                             type="submit"
                             fullWidth
@@ -141,7 +148,7 @@ class Login extends Component {
                             </Link>
                         </FormControl>
                         {
-                            error && <Message message={message} type={"error"} />
+                            errors.general && <Message message={errors.general} type={"error"} />
                         }
                     </form>
                 </Paper>

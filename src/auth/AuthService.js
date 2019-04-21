@@ -1,5 +1,4 @@
 import decode from 'jwt-decode';
-import SesionExpiredExceprion from '../Error/SesionExpiredException'
 export default class AuthService {
     constructor(domain) {
         this.domain = domain || 'http://192.168.43.102:8443/user'
@@ -14,7 +13,11 @@ export default class AuthService {
             // return Promise.resolve(res);
         }
         catch (error) {
-            throw error;
+
+            if(error.message === "Failed to fetch" || error.message === "NetworkError when attempting to fetch resource." ) {
+                throw new Error("Servidor apagado")
+            } 
+            throw error
         }
     }
     Signup = async (user) => {
@@ -65,9 +68,12 @@ export default class AuthService {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
-
         if (this.loggedIn()) {
-            headers['Authorization'] = 'Bearer ' + this.getToken()
+            let token = this.getToken()
+            if(this.isTokenExpired(token)){
+                token = this.refrech()
+            }
+            headers['Authorization'] = 'Bearer ' + token
         }
 
         return fetch(url, {
@@ -90,24 +96,12 @@ export default class AuthService {
         }
     }
 
-    refrech = token => {
-        if (this.isTokenExpired(token)) {
-            return token
-        }
+    refrech = () => {
         const profile = this.getProfile()
-        this.fetch(`${this.domain}/user/refresh/${profile.username}`)
+        this.fetch(`${this.domain}/user/refresh/${profile.sub}`)
             .then(({tokenResponse}) => {
                 this.setToken(tokenResponse) 
                 return Promise.resolve(tokenResponse);
             }).catch(error => { throw error })
-    }
-
-    getTokenToRequest = () => {
-        const token = this.getToken()
-        if(!token){
-            throw new SesionExpiredExceprion("No se encontro un token valido")
-        }
-        const verifyToken = this.refrech(token)
-        return verifyToken
     }
 }
