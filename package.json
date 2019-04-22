@@ -12,9 +12,7 @@
     "react-dom": "^16.8.5",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.8",
-    "reactn": "^1.0.0",
-    "styled-components": "^4.2.0"
+    "react-scripts": "2.1.8"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -30,6 +28,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {}
+  ]
 }

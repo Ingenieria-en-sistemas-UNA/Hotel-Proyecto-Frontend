@@ -15,14 +15,19 @@ export default class AuthService {
             this.setToken(res.token);
             // return Promise.resolve(res);
         }
-        catch (error) {
+        catch ({ message }) {
 
-            if (error.message === "Failed to fetch" || error.message === "NetworkError when attempting to fetch resource.") {
-                throw new Error("Servidor apagado")
-            }
-            throw error
+            const serverError = this.getServerError(message) 
+            
+            throw new Error(serverError);
         }
     }
+
+    getServerError = message => {
+        console.log(message)
+        return message === "Failed to fetch" || message === "NetworkError when attempting to fetch resource." ? "Servidor apagado" : message
+    }
+
     Signup = async (user) => {
         try {
             const res = await this.fetch(`${this.domain}/signup`, {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { Layout } from '../containers/layout'
 import PrivateRoute from './PrivateRoute'
-import { Login, Signup } from '../containers/Login'
+import { Login, Signup } from '../Components/Login'
 import Room from '../Components/options/room/Room'
 import Loggin from '../Components/Loggin'
 import { withContext } from '../store/Context'

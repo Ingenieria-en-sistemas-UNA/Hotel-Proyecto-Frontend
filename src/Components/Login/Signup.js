@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Message from '../../Components/Message'
+import Message from '../Message'
 import { Avatar, Button, FormControl } from '@material-ui/core';
 import { Paper, Typography, Link, Grid, TextField } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';

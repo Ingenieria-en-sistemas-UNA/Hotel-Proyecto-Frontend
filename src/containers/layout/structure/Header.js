@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { AppBar, Toolbar, Typography, Button, IconButton, withStyles } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu';
+import classNames from 'classnames'
+import MenuIcon from '@material-ui/icons/Menu'
 import { withContext } from '../../../store/Context'
-import classNames from 'classnames';
+import MenuAccount from './components/MenuAccount'
 import styles from './jss/Header'
 
 class Header extends Component {
@@ -26,54 +27,56 @@ class Header extends Component {
     }
 
     render() {
-        const { classes, drawerState, sesionState, handleDrawerOpen, Auth:{ isAdmin } } = this.props
+        const { classes, drawerState, sesionState, handleDrawerOpen, Auth: { isAdmin } } = this.props
         return (
-            <AppBar position="fixed"
-                className={classNames(classes.appBar, {
-                    [classes.appBarShift]: drawerState,
-                })}
-            >
-                <Toolbar disableGutters={!drawerState} className={classes.toolbar}>
-                    {sesionState && isAdmin() && (
-                        <IconButton
-                            color="inherit"
-                            aria-label="Open drawer"
-                            onClick={handleDrawerOpen}
-                            className={classNames(classes.menuButton, drawerState && classes.hide)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    )
-                    }
-                    <div className={classes.title}>
-                        <Typography variant="h5" color="inherit" noWrap className={classes.options}>
-                            <Link to="/" className={classes.links}>
-                                Hotel
+            <Fragment>
+                <AppBar position="fixed"
+                    className={classNames(classes.appBar, {
+                        [classes.appBarShift]: drawerState,
+                    })}
+                >
+                    <Toolbar disableGutters={!drawerState} className={classes.toolbar} style={{minHeight: '45px'}}>
+                        {sesionState && isAdmin() && (
+                            <IconButton
+                                color="inherit"
+                                aria-label="Open drawer"
+                                onClick={handleDrawerOpen}
+                                className={classNames(classes.menuButton, drawerState && classes.hide)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                        )
+                        }
+                        <div className={classes.title}>
+                            <Typography variant="h5" color="inherit" noWrap className={classes.options}>
+                                <Link to="/" className={classes.links}>
+                                    Hotel
                             </Link>
-                        </Typography>
-                        {sesionState && (
-                            <Typography variant="h6" color="inherit" noWrap className={classes.options}>
-                                <Link to="/rooms" className={classes.links}>
-                                    Habitaciones
-                                </Link>
                             </Typography>
-                        )}
-                    </div>
-                    <div className={classes.buttonsPadding}>
-                        {
-                            !sesionState && (
-                                <Fragment>
-                                    <Button color="inherit" onClick={this.onClickSignup()}>Signup</Button>
-                                    <Button color="inherit" onClick={this.onClickLogin()}>Login</Button>
-                                </Fragment>
-                            )
-                        }
-                        {
-                            sesionState && <Button color="inherit" onClick={this.onClickLogout()}>logout</Button>
-                        }
-                    </div>
-                </Toolbar>
-            </AppBar>
+                            {sesionState && (
+                                <Typography variant="h6" color="inherit" noWrap className={classes.options}>
+                                    <Link to="/rooms" className={classes.links}>
+                                        Habitaciones
+                                </Link>
+                                </Typography>
+                            )}
+                        </div>
+                        <div className={classes.buttonsPadding}>
+                            {
+                                !sesionState && (
+                                    <Fragment>
+                                        <Button color="inherit" onClick={this.onClickSignup()}>Signup</Button>
+                                        <Button color="inherit" onClick={this.onClickLogin()}>Login</Button>
+                                    </Fragment>
+                                )
+                            }
+                            {
+                                sesionState && <MenuAccount />
+                            }
+                        </div>
+                    </Toolbar>
+                </AppBar>
+            </Fragment>
         )
     }
 }

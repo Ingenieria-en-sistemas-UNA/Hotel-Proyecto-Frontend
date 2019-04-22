@@ -1,4 +1,3 @@
-import { isNumber } from "util";
 
 export default values => {
     const errors = {}
@@ -11,19 +10,19 @@ export default values => {
     if (!values.id) {
         errors.id = '- Este campo es obligatorio'
     } else {
-        if (values.id.length < 9 && !isNumber(values.id)) {
-            errors.id = '- La cedula debe contener 9 digitos numericos'
-        }else if(isNumber(values.id)){
+        if(!Number(values.id)){
             errors.id = '- La cedula no debe contener letras'
+        }else if (values.id.length < 9) {
+            errors.id = '- La cedula debe contener 9 digitos numericos'
         }
     }
     if (!values.cellphone) {
         errors.cellphone = '- Este campo es obligatorio'
     } else {
-        if (values.cellphone.lenght < 8 && !isNumber(values.cellphone)) {
+        if (!Number(values.cellphone)) {
+            errors.cellphone = '- El numero de telefono no debe contener letras'
+        }else if (values.cellphone.lenght < 8) {
             errors.cellphone = '- El numero de telefono debe contener 8 digitos numericos'
-        }else if (isNumber(values.cellphone)) {
-            errors.cellphone = '- El numero de telefono debe contener letras'
         }
     }
     if (!values.email) {

@@ -1,37 +1,52 @@
 import React, { Component, Fragment } from 'react'
 import Card from './Card'
 import { withContext } from'../../../store/Context'
+import Message from '../../Message'
+
 import config from '../../../assets/js/config'
 class Room extends Component {
     state = {
-        rooms: []
+        errors: {}
     }
     async componentDidMount() {
-        const { Auth: { fetch: fetchAPI } } = this.props
+        const { Auth: { fetch: fetchAPI, getServerError } } = this.props
         try{
             const rooms = await fetchAPI(`${config.URL}/room`, {
                 method: 'GET'
             })
-            console.log(rooms)
-            this.setState({
+            this.setState(prevState => ({
+                ...prevState,
                 rooms
+            }))
+
+        }catch ({ message }) {
+            const serverError = getServerError(message) 
+            this.setState({
+                errors: { 
+                    general: serverError,
+                }
             })
 
-        }catch (error) {
-            throw error
+            setTimeout(() => {
+                this.setState({ 
+                    errors: {
+                        general: false
+                    }
+                })
+            }, 3000)
         }
     }
 
 
     render(){
-        const { rooms } = this.state 
+        const { rooms, errors } = this.state 
         return (
             <Fragment>
                 {
-                    rooms.length && rooms.map(room => {
-                        console.log(room)
-                        return <Card key={room.id} {...room}/>
-                    })
+                    rooms && rooms.map(room => <Card key={room.id} {...room}/>)
+                }
+                {
+                    errors.general && <Message message={errors.general} type={"error"} />
                 }
             </Fragment>
             )
