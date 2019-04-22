@@ -28,5 +28,17 @@ export default theme => ({
     },
     title: {
         flex: 1
+    },
+    links: {
+        textDecoration: 'none', 
+        color: '#fff', 
+        paddingLeft: '20px'
+    },
+    options: {
+        display: 'inline-block',
+        paddingLeft: '20px'
+    },
+    itemContainer: {
+        textAlign: 'center'
     }
 })

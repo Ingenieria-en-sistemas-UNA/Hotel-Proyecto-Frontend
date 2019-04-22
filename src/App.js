@@ -6,6 +6,7 @@ import { Provider } from './store/Context'
 class App extends Component {
 
   state = {
+    headerOptionSelected: 0,
     sesionState: false,
     Auth: new AuthService(),
     history: this.props.history,
@@ -26,6 +27,11 @@ class App extends Component {
     }
   }
 
+  handleChangeHeaderOption = (event, value) => {
+    this.setState({ headerOptionSelected: value });
+  }
+
+
   changeSesionState = sesionState => {
     this.setState({ sesionState })
   }
@@ -44,6 +50,7 @@ class App extends Component {
     handleDrawerOpen: this.handleDrawerOpen,
     handleDrawerClose: this.handleDrawerClose,
     handleChangeSignup: this.handleChangeSignup,
+    handleChangeHeaderOption: this.handleChangeHeaderOption
   })
 
   render() {

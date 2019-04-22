@@ -1,7 +1,10 @@
 import decode from 'jwt-decode';
+import config from '../assets/js/config'
+
 export default class AuthService {
     constructor(domain) {
-        this.domain = domain || 'http://192.168.43.102:8443/user'
+        this.domain = domain || `${config.URL}/user`
+        console.log(config.URL)
     }
 
     login = async (username, password) => {

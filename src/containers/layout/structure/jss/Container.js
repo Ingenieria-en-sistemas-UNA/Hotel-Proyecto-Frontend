@@ -26,5 +26,11 @@ export default theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
-  }
+  },
+  cardContainer: {
+    maxWidth: '100%',
+    padding: '10px 30px 30px 30px',
+    textAlign: 'center',
+    height: '100vh'
+  },
 })

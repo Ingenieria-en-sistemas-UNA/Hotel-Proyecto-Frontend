@@ -6,6 +6,7 @@ import './assets/css/index.css';
 import App from './App';
 import Theme from './assets/js/Theme'
 import * as serviceWorker from './serviceWorker';
+import './assets/js/config'
 const history =  createBrowserHistory()
 const app = (
     <Router history={history}>

@@ -1,57 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import AuthService from '../../auth/AuthService'
 import Message from '../../Components/Message'
 import { Avatar, Button, FormControl } from '@material-ui/core';
 import { Input, InputLabel, Paper, Typography, Link, Grid } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withContext } from '../../store/Context'
-const styles = theme => ({
-    main: {
-        width: 'auto',
-        display: 'block', // Fix IE 11 issue.
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: '400px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
-    },
-    paper: {
-        marginTop: theme.spacing.unit * 8 ,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-    },
-    avatar: {
-        margin: theme.spacing.unit,
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing.unit,
-    },
-    submit: {
-        marginTop: theme.spacing.unit * 3,
-    },
-});
+import styles from './jss/login'
 
 class Login extends Component {
-    constructor() {
-        super()
-        this.Auth = new AuthService();
-    }
 
     state = {
         errors: {}
     }
 
     componentWillMount() {
-        if (this.Auth.loggedIn()) {
-            this.props.history.push('/');
+        const { Auth: { loggedIn }, history } = this.props 
+        if (loggedIn()) {
+            history.push('/');
         }
     }
 
@@ -59,8 +25,8 @@ class Login extends Component {
         e.preventDefault();
         try {
 
-            await this.Auth.login(this.state.username, this.state.password)
-            const { changeSesionState, history } = this.props
+            const { changeSesionState, history, Auth: { login } } = this.props
+            await login(this.state.username, this.state.password)
             changeSesionState(true)
             history.push('/');
 

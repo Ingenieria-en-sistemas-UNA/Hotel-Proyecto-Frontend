@@ -18,18 +18,20 @@ class Container extends Component {
                 })}
             >
                 <div className={classes.drawerHeader} />
-                <Grid container justify="center">
+                <Grid spacing={24} container justify="center">
                     <Grid
                         container
                         className={classes.container}
                         alignItems="center"
                         justify="center"
                     >
-                        <Grid item xs={12}>{children}</Grid>
+                        <Grid item sm={12} style={{textAlign: 'center'}}>
+                                {children}
+                        </Grid>
                     </Grid>
                 </Grid>
             </main>
         )
     }
 }
-export default withContext(withStyles(styles, {withTheme:true})(Container))
+export default withContext(withStyles(styles, { withTheme: true })(Container))

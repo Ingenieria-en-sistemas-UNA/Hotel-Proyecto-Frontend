@@ -45,11 +45,20 @@ class Header extends Component {
                         </IconButton>
                     )
                     }
-                    <Typography variant="h6" color="inherit" noWrap className={classes.title}>
-                        <Link to="/" style={{ textDecoration: 'none', color: '#fff', paddingLeft: '20px' }}>
-                            Hotel
-                        </Link>
-                    </Typography>
+                    <div className={classes.title}>
+                        <Typography variant="h5" color="inherit" noWrap className={classes.options}>
+                            <Link to="/" className={classes.links}>
+                                Hotel
+                            </Link>
+                        </Typography>
+                        {sesionState && (
+                            <Typography variant="h6" color="inherit" noWrap className={classes.options}>
+                                <Link to="/rooms" className={classes.links}>
+                                    Habitaciones
+                                </Link>
+                            </Typography>
+                        )}
+                    </div>
                     <div className={classes.buttonsPadding}>
                         {
                             !sesionState && (

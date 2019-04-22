@@ -3,9 +3,9 @@ import { Route, Redirect } from 'react-router-dom';
 import { withContext } from '../store/Context'
 
 export default withContext(
-    ({ component: Component, sesionState, ...rest }) => (
+    ({ component: Component, Auth: { loggedIn }, ...rest }) => (
         <Route {...rest} render={(props) => (
-            sesionState === true
+            loggedIn() === true
                 ? <Component {...props} />
                 : <Redirect to='/login' />
         )} />
