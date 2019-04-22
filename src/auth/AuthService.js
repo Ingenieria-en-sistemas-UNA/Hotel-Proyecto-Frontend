@@ -14,9 +14,9 @@ export default class AuthService {
         }
         catch (error) {
 
-            if(error.message === "Failed to fetch" || error.message === "NetworkError when attempting to fetch resource." ) {
+            if (error.message === "Failed to fetch" || error.message === "NetworkError when attempting to fetch resource.") {
                 throw new Error("Servidor apagado")
-            } 
+            }
             throw error
         }
     }
@@ -36,7 +36,7 @@ export default class AuthService {
 
     loggedIn = () => {
         const token = this.getToken()
-        return !!token && !this.isTokenExpired(token) 
+        return !!token && !this.isTokenExpired(token)
     }
 
     isTokenExpired = token => {
@@ -61,6 +61,28 @@ export default class AuthService {
 
     getProfile = () => decode(this.getToken())
 
+    getUserRoles = () => {
+        const { auth } = this.getProfile()
+        return auth
+    }
+
+    isAdmin = () => {
+        if (this.loggedIn()) {
+            const auth = this.getUserRoles()
+            let authorities = []
+            auth.forEach(({ authority }) => {
+                authorities = [ ...authorities, authority]
+            });
+            for (const authority of authorities) {
+                if(authority === "ROLE_ADMIN"){
+                    return true
+                }
+            }
+            console.log(authorities)
+            return false
+        }
+    }
+
 
     fetch = (url, options) => {
 
@@ -70,7 +92,7 @@ export default class AuthService {
         }
         if (this.loggedIn()) {
             let token = this.getToken()
-            if(this.isTokenExpired(token)){
+            if (this.isTokenExpired(token)) {
                 token = this.refrech()
             }
             headers['Authorization'] = 'Bearer ' + token
@@ -85,7 +107,7 @@ export default class AuthService {
     }
 
     _checkStatus = response => {
-        if (response.status >= 200 && response.status < 300) { 
+        if (response.status >= 200 && response.status < 300) {
             return response
         } else {
             return response.json().then((json) => {
@@ -99,8 +121,8 @@ export default class AuthService {
     refrech = () => {
         const profile = this.getProfile()
         this.fetch(`${this.domain}/user/refresh/${profile.sub}`)
-            .then(({tokenResponse}) => {
-                this.setToken(tokenResponse) 
+            .then(({ tokenResponse }) => {
+                this.setToken(tokenResponse)
                 return Promise.resolve(tokenResponse);
             }).catch(error => { throw error })
     }

@@ -26,7 +26,7 @@ class Header extends Component {
     }
 
     render() {
-        const { classes, drawerState, sesionState, handleDrawerOpen } = this.props
+        const { classes, drawerState, sesionState, handleDrawerOpen, Auth:{ isAdmin } } = this.props
         return (
             <AppBar position="fixed"
                 className={classNames(classes.appBar, {
@@ -34,7 +34,7 @@ class Header extends Component {
                 })}
             >
                 <Toolbar disableGutters={!drawerState} className={classes.toolbar}>
-                    {sesionState && (
+                    {sesionState && isAdmin() && (
                         <IconButton
                             color="inherit"
                             aria-label="Open drawer"

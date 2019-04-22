@@ -13,8 +13,17 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { Auth: { loggedIn } } = this.state
+    const { Auth: { loggedIn, getProfile } } = this.state
     this.changeSesionState(loggedIn())
+    if(loggedIn()){
+      const { user_data } = getProfile()
+      this.setState(prevState => ({
+        ...prevState,
+        user_data: {
+          ...user_data
+        }
+      }))
+    }
   }
 
   changeSesionState = sesionState => {
@@ -38,6 +47,7 @@ class App extends Component {
   })
 
   render() {
+    console.log(this.getContext())
     return (
       <Provider value={this.getContext()}>
         <AppRoute />
