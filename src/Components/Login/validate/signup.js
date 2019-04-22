@@ -21,7 +21,7 @@ export default values => {
     } else {
         if (!Number(values.cellphone)) {
             errors.cellphone = '- El numero de telefono no debe contener letras'
-        }else if (values.cellphone.lenght < 8) {
+        }else if (values.cellphone.lenght < 8 || values.cellphone.lenght > 8) {
             errors.cellphone = '- El numero de telefono debe contener 8 digitos numericos'
         }
     }
