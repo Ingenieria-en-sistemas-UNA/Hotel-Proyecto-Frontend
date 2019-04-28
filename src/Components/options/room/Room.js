@@ -8,33 +8,38 @@ class Room extends Component {
     state = {
         errors: {}
     }
-    async componentDidMount() {
+
+
+    filterRooms = async(filter = 'all') => {
         const { Auth: { fetch: fetchAPI, getServerError } } = this.props
-        try{
-            const rooms = await fetchAPI(`${config.URL}/room`, {
+        try {
+            const rooms = await fetchAPI(`${config.URL}/room?filter=${filter}`, {
                 method: 'GET'
             })
-            this.setState(prevState => ({
-                ...prevState,
-                rooms
-            }))
-
-        }catch ({ message }) {
-            const serverError = getServerError(message) 
             this.setState({
-                errors: { 
+                rooms
+            })
+
+        } catch ({ message }) {
+            const serverError = getServerError(message)
+            this.setState({
+                errors: {
                     general: serverError,
                 }
             })
 
             setTimeout(() => {
-                this.setState({ 
+                this.setState({
                     errors: {
                         general: false
                     }
                 })
             }, 3000)
         }
+    }
+
+    async componentDidMount() {
+        this.filterRooms()
     }
 
 
