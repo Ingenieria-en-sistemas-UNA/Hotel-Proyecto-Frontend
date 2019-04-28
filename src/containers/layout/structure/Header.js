@@ -23,7 +23,7 @@ class Header extends Component {
         changeSesionState(false)
         console.log(Auth)
         Auth.logout()
-        history.push('/login')
+        history.push('/')
     }
 
     render() {
@@ -35,7 +35,7 @@ class Header extends Component {
                         [classes.appBarShift]: drawerState,
                     })}
                 >
-                    <Toolbar disableGutters={!drawerState} className={classes.toolbar} style={{minHeight: '45px'}}>
+                    <Toolbar disableGutters={!drawerState} className={classes.toolbar} style={{ minHeight: '45px' }}>
                         {sesionState && isAdmin() && (
                             <IconButton
                                 color="inherit"
@@ -50,14 +50,14 @@ class Header extends Component {
                         <div className={classes.title}>
                             <Typography variant="h5" color="inherit" noWrap className={classes.options}>
                                 <Link to="/" className={classes.links}>
-                                    Hotel
-                            </Link>
+                                    ATLANTIS
+                                </Link>
                             </Typography>
                             {sesionState && (
                                 <Typography variant="h6" color="inherit" noWrap className={classes.options}>
                                     <Link to="/rooms" className={classes.links}>
                                         Habitaciones
-                                </Link>
+                                    </Link>
                                 </Typography>
                             )}
                         </div>

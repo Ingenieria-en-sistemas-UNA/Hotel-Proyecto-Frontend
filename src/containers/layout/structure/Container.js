@@ -17,7 +17,7 @@ class Container extends Component {
                     [classes.contentShift]: drawerState,
                 })}
             >
-                <div className={classes.drawerHeader} />
+                <div className={classes.drawerHeader} style={{ minHeight: '50px'}}/>
                 <Grid spacing={24} container justify="center">
                     <Grid
                         container

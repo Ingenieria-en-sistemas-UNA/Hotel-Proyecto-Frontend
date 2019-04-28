@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { Layout } from '../containers/layout'
 import PrivateRoute from './PrivateRoute'
+import AdminRoute from './AdminRoute'
 import { Login, Signup } from '../Components/Login'
 import Room from '../Components/options/room/Room'
-import Loggin from '../Components/Loggin'
+import RoomMaintenance from '../Components/Maintenance/room/Room'
+import Home from '../Components/home/Home'
 import { withContext } from '../store/Context'
 
 
@@ -15,10 +17,11 @@ class AppRoutes extends Component {
         return (
             <Layout>
                 <Switch>
-                    <PrivateRoute exact path="/" component={Loggin}/>
+                    <Route exact path="/" component={Home}/>
                     <PrivateRoute exact path="/rooms" component={Room}/>
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />
+                    <AdminRoute exact path="/rooms-maintenance" component={RoomMaintenance} />
                     <Redirect to="/" />
                 </Switch>
             </Layout>

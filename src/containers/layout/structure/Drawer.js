@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import {
-    withStyles,
-    Drawer,
-    Divider,
-    List,
-    ListItem,
-    IconButton
+    withStyles, Drawer, Divider,
+    List, ListItem, IconButton,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import styles from './jss/Drawer'
@@ -38,7 +35,7 @@ class DrawerLayout extends Component {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button>
+                    <ListItem button component={Link} to="/rooms-maintenance">
                         Mantenimiento Habitaciones
                     </ListItem>
                 </List>
