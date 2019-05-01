@@ -25,13 +25,13 @@ class Signup extends Component {
     handleFormSubmit = async (e) => {
         e.preventDefault()
         const { errors, ...sinErrors } = this.state
-        const { changeSesionState, Auth, history } = this.props
+        const { changeSessionState, Auth, history } = this.props
         const result = validate(sinErrors)
         if (!Object.keys(result).length) {
             try {
                 const user = this.getUser(sinErrors)
                 await Auth.Signup(user)
-                changeSesionState(true)
+                changeSessionState(true)
                 history.push('/');
             } catch ({ message }) {
                 this.setState({

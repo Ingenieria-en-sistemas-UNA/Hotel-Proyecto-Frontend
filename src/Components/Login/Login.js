@@ -25,9 +25,9 @@ class Login extends Component {
         e.preventDefault();
         try {
 
-            const { changeSesionState, history, Auth: { login } } = this.props
+            const { changeSessionState, history, Auth: { login } } = this.props
             await login(this.state.username, this.state.password)
-            changeSesionState(true)
+            changeSessionState(true)
             history.push('/');
 
         } catch ({ message }) {

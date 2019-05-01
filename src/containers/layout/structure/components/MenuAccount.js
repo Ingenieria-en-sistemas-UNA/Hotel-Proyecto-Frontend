@@ -36,9 +36,9 @@ class MenuAccount extends Component {
     }
 
     onClickLogout = () => {
-        const { history, changeSesionState, handleDrawerClose, Auth } = this.props
+        const { history, changeSessionState, handleDrawerClose, Auth } = this.props
         handleDrawerClose()
-        changeSesionState(false)
+        changeSessionState(false)
         console.log(Auth)
         Auth.logout()
         history.push('/login')

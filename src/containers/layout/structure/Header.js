@@ -18,16 +18,16 @@ class Header extends Component {
         history.push('/signup')
     }
     onClickLogout = () => () => {
-        const { history, changeSesionState, handleDrawerClose, Auth } = this.props
+        const { history, changeSessionState, handleDrawerClose, Auth } = this.props
         handleDrawerClose()
-        changeSesionState(false)
+        changeSessionState(false)
         console.log(Auth)
         Auth.logout()
         history.push('/')
     }
 
     render() {
-        const { classes, drawerState, sesionState, handleDrawerOpen, Auth: { isAdmin } } = this.props
+        const { classes, drawerState, sessionState, handleDrawerOpen, Auth: { isAdmin } } = this.props
         return (
             <Fragment>
                 <AppBar position="fixed"
@@ -36,7 +36,7 @@ class Header extends Component {
                     })}
                 >
                     <Toolbar disableGutters={!drawerState} className={classes.toolbar} style={{ minHeight: '45px' }}>
-                        {sesionState && isAdmin() && (
+                        {sessionState && isAdmin() && (
                             <IconButton
                                 color="inherit"
                                 aria-label="Open drawer"
@@ -53,7 +53,7 @@ class Header extends Component {
                                     ATLANTIS
                                 </Link>
                             </Typography>
-                            {sesionState && (
+                            {sessionState && (
                                 <Typography variant="h6" color="inherit" noWrap className={classes.options}>
                                     <Link to="/rooms" className={classes.links}>
                                         Habitaciones
@@ -63,7 +63,7 @@ class Header extends Component {
                         </div>
                         <div className={classes.buttonsPadding}>
                             {
-                                !sesionState && (
+                                !sessionState && (
                                     <Fragment>
                                         <Button color="inherit" onClick={this.onClickSignup()}>Signup</Button>
                                         <Button color="inherit" onClick={this.onClickLogin()}>Login</Button>
@@ -71,7 +71,7 @@ class Header extends Component {
                                 )
                             }
                             {
-                                sesionState && <MenuAccount />
+                                sessionState && <MenuAccount />
                             }
                         </div>
                     </Toolbar>
