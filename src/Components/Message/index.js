@@ -101,7 +101,7 @@ class Message extends React.Component {
   };
 
   render() {
-    const { message, type } = this.props
+    const { message, type } = this.props;
     return (
       <div>
         <Snackbar

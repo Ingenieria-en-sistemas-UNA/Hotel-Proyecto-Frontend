@@ -10,6 +10,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import imagen from '../../../assets/img/habitacion.jpg'
+import config from '../../../config/config'
 
 const styles = {
     card: {
@@ -26,8 +27,8 @@ const styles = {
 };
 
 function ImgMediaCard(props) {
-    console.log(props)
-    const { classes, type, state, price, guests } = props;
+    console.log(props);
+    const { classes, type, state, price, guests, img } = props;
     return (
         <Grid item xs={12} sm={6} className={classes.cardContainer}>
             <Card className={classes.card}>
@@ -37,7 +38,7 @@ function ImgMediaCard(props) {
                         alt="Contemplative Reptile"
                         className={classes.media}
                         height="140"
-                        image={imagen}
+                        image={ img ? `${config.URL}/downloadFile/${img}` : imagen }
                         title="Contemplative Reptile"
                     />
                     <CardContent>

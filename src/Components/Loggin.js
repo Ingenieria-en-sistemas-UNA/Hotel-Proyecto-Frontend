@@ -18,7 +18,7 @@ const styles = theme => ({
 });
 
 class Loggin extends Component {
-    static contextType = HotelContext
+    static contextType = HotelContext;
     render() {
         const { classes } = this.props;
         return (

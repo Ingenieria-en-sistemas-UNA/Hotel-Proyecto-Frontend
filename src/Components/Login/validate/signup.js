@@ -1,6 +1,6 @@
 
 export default values => {
-    const errors = {}
+    const errors = {};
     if (!values.name) {
         errors.name = '- Este campo es obligatorio'
     }

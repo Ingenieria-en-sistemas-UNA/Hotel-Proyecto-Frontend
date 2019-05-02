@@ -36,24 +36,24 @@ const toolbarStyles = theme => ({
     title: {
         flex: '0 0 auto',
     },
-})
+});
 
 class EnhancedTableToolbar extends Component {
     state = {
         filter: false
-    }
+    };
 
     toggleFilter = () => {
         this.setState(({filter}) => ({
             filter: !filter
-        }))
-        const { handlerChangeFilter } = this.props
+        }));
+        const { handlerChangeFilter } = this.props;
         handlerChangeFilter({ target: { value: '' } })
-    }
+    };
 
     render(){
         const { numSelected, classes, title, handlerChangeFilter, handleClickOpen } = this.props,
-              { filter } = this.state
+              { filter } = this.state;
     
         return (
             <Toolbar
@@ -104,6 +104,6 @@ class EnhancedTableToolbar extends Component {
 EnhancedTableToolbar.propTypes = {
     classes: PropTypes.object.isRequired,
     numSelected: PropTypes.number.isRequired,
-}
+};
 
 export default withStyles(toolbarStyles)(EnhancedTableToolbar)

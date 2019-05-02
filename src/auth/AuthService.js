@@ -1,9 +1,9 @@
 import decode from 'jwt-decode';
-import config from '../assets/js/config'
+import config from '../config/config'
 
 export default class AuthService {
     constructor(domain) {
-        this.domain = domain || `${config.URL}/user`
+        this.domain = domain || `${config.URL}/user`;
         console.log(config.URL)
     }
 
@@ -17,16 +17,16 @@ export default class AuthService {
         }
         catch ({ message }) {
 
-            const serverError = this.getServerError(message) 
+            const serverError = this.getServerError(message);
             
             throw new Error(serverError);
         }
-    }
+    };
 
     getServerError = message => {
-        console.log(message)
+        console.log(message);
         return message === "Failed to fetch" || message === "NetworkError when attempting to fetch resource." ? "Servidor apagado" : message
-    }
+    };
 
     Signup = async (user) => {
         try {
@@ -40,12 +40,12 @@ export default class AuthService {
         catch (error) {
             throw error;
         }
-    }
+    };
 
     loggedIn = () => {
-        const token = this.getToken()
+        const token = this.getToken();
         return !!token && !this.isTokenExpired(token)
-    }
+    };
 
     isTokenExpired = token => {
         try {
@@ -59,25 +59,25 @@ export default class AuthService {
         catch (err) {
             return false;
         }
-    }
+    };
 
-    setToken = idToken => localStorage.setItem('id_token', idToken)
+    setToken = idToken => localStorage.setItem('id_token', idToken);
 
-    getToken = () => localStorage.getItem('id_token')
+    getToken = () => localStorage.getItem('id_token');
 
-    logout = () => localStorage.removeItem('id_token')
+    logout = () => localStorage.removeItem('id_token');
 
-    getProfile = () => decode(this.getToken())
+    getProfile = () => decode(this.getToken());
 
     getUserRoles = () => {
-        const { auth } = this.getProfile()
+        const { auth } = this.getProfile();
         return auth
-    }
+    };
 
     isAdmin = () => {
         if (this.loggedIn()) {
-            const auth = this.getUserRoles()
-            let authorities = []
+            const auth = this.getUserRoles();
+            let authorities = [];
             auth.forEach(({ authority }) => {
                 authorities = [ ...authorities, authority]
             });
@@ -86,20 +86,19 @@ export default class AuthService {
                     return true
                 }
             }
-            console.log(authorities)
+            console.log(authorities);
             return false
         }
-    }
+    };
 
 
     fetch = (url, options) => {
-
         const headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
         if (this.loggedIn()) {
-            let token = this.getToken()
+            let token = this.getToken();
             if (this.isTokenExpired(token)) {
                 token = this.refrech()
             }
@@ -112,25 +111,25 @@ export default class AuthService {
         })
             .then(this._checkStatus)
             .then(response => response.json())
-    }
+    };
 
     _checkStatus = response => {
         if (response.status >= 200 && response.status < 300) {
             return response
         } else {
             return response.json().then((json) => {
-                var error = new Error(json.message || response.statusText)
-                error.response = response
+                var error = new Error(json.message || response.statusText);
+                error.response = response;
                 throw error
             });
         }
-    }
+    };
 
     refrech = () => {
-        const profile = this.getProfile()
+        const profile = this.getProfile();
         this.fetch(`${this.domain}/user/refresh/${profile.sub}`)
             .then(({ tokenResponse }) => {
-                this.setToken(tokenResponse)
+                this.setToken(tokenResponse);
                 return Promise.resolve(tokenResponse);
             }).catch(error => { throw error })
     }

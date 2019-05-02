@@ -11,13 +11,13 @@ class App extends Component {
         Auth: new AuthService(),
         history: this.props.history,
         drawerState: false,
-    }
+    };
 
     componentDidMount() {
-        const {Auth: {loggedIn, getProfile}} = this.state
-        this.changeSessionState(loggedIn())
+        const {Auth: {loggedIn, getProfile}} = this.state;
+        this.changeSessionState(loggedIn());
         if (loggedIn()) {
-            const {user_data} = getProfile()
+            const {user_data} = getProfile();
             this.setState(prevState => ({
                 ...prevState,
                 user_data: {
@@ -29,20 +29,20 @@ class App extends Component {
 
     handleChangeHeaderOption = (event, value) => {
         this.setState({headerOptionSelected: value});
-    }
+    };
 
 
     changeSessionState = sessionState => {
         this.setState({ sessionState })
-    }
+    };
 
     handleDrawerOpen = () => {
         this.setState({drawerState: true})
-    }
+    };
 
     handleDrawerClose = () => {
         this.setState({drawerState: false})
-    }
+    };
 
     getContext = () => ({
         ...this.state,
@@ -51,10 +51,10 @@ class App extends Component {
         handleDrawerClose: this.handleDrawerClose,
         handleChangeSignup: this.handleChangeSignup,
         handleChangeHeaderOption: this.handleChangeHeaderOption
-    })
+    });
 
     render() {
-        console.log(this.getContext())
+        console.log(this.getContext());
         return (
             <Provider value={this.getContext()}>
                 <AppRoute/>

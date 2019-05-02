@@ -1,4 +1,4 @@
-const URL = 'localhost:8443'
+const URL = 'localhost:8443';
 
 export const getAll = async (controller) => {
     try {
@@ -10,4 +10,4 @@ export const getAll = async (controller) => {
     } catch (error) {
         console.log(error);
     }
-}
+};

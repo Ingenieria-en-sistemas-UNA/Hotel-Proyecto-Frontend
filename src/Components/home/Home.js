@@ -45,12 +45,12 @@ const styles = theme => ({
     cardMedia: {
         paddingTop: '56.25%', // 16:9
     }
-})
+});
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8]
+const cards = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const Home = props => {
-    const { classes, Auth: { loggedIn } } = props
+    const { classes, Auth: { loggedIn } } = props;
     return (
         <Fragment>
             <div className={classes.heroUnit}>
@@ -104,10 +104,10 @@ const Home = props => {
             </div>
         </Fragment>
     )
-}
+};
 
 Home.propTypes = {
     classes: PropTypes.object.isRequired,
-}
+};
 
 export default withContext(withStyles(styles)(Home))

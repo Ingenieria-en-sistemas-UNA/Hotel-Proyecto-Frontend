@@ -11,7 +11,7 @@ const theme = createMuiTheme({
         secondary: orange,
     },
     drawerWidth: 300
-})
+});
 
 export default ({ children }) => {
     return (

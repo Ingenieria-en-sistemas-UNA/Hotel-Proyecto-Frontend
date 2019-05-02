@@ -10,24 +10,24 @@ import styles from './jss/Header'
 class Header extends Component {
 
     onClickLogin = () => () => {
-        const { history } = this.props
+        const { history } = this.props;
         history.push('/login')
-    }
+    };
     onClickSignup = () => () => {
-        const { history } = this.props
+        const { history } = this.props;
         history.push('/signup')
-    }
+    };
     onClickLogout = () => () => {
-        const { history, changeSessionState, handleDrawerClose, Auth } = this.props
-        handleDrawerClose()
-        changeSessionState(false)
-        console.log(Auth)
-        Auth.logout()
+        const { history, changeSessionState, handleDrawerClose, Auth } = this.props;
+        handleDrawerClose();
+        changeSessionState(false);
+        console.log(Auth);
+        Auth.logout();
         history.push('/')
-    }
+    };
 
     render() {
-        const { classes, drawerState, sessionState, handleDrawerOpen, Auth: { isAdmin } } = this.props
+        const { classes, drawerState, sessionState, handleDrawerOpen, Auth: { isAdmin } } = this.props;
         return (
             <Fragment>
                 <AppBar position="fixed"

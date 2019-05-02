@@ -12,10 +12,10 @@ class Login extends Component {
 
     state = {
         errors: {}
-    }
+    };
 
     componentWillMount() {
-        const { Auth: { loggedIn }, history } = this.props 
+        const { Auth: { loggedIn }, history } = this.props;
         if (loggedIn()) {
             history.push('/');
         }
@@ -25,9 +25,9 @@ class Login extends Component {
         e.preventDefault();
         try {
 
-            const { changeSessionState, history, Auth: { login } } = this.props
-            await login(this.state.username, this.state.password)
-            changeSessionState(true)
+            const { changeSessionState, history, Auth: { login } } = this.props;
+            await login(this.state.username, this.state.password);
+            changeSessionState(true);
             history.push('/');
 
         } catch ({ message }) {
@@ -36,7 +36,7 @@ class Login extends Component {
                     general: message,
                     credentials: true
                 }
-            })
+            });
 
             setTimeout(() => {
                 this.setState(({errors}) =>({ 
@@ -48,23 +48,23 @@ class Login extends Component {
             }, 3000)
 
         }
-    }
+    };
 
     signup = () => {
-        const { history } = this.props
+        const { history } = this.props;
         history.push('/signup')
-    }
+    };
 
     handleChange = e => {
-        const { target: { name, value } } = e
+        const { target: { name, value } } = e;
         this.setState({
             [name]: value,
             error: false
         })
-    }
+    };
     render() {
-        const { classes } = this.props
-        const { errors } = this.state
+        const { classes } = this.props;
+        const { errors } = this.state;
         return (
             <Grid item className={classes.main}>
                 <Paper className={classes.paper}>

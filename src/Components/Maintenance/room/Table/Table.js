@@ -24,12 +24,12 @@ function desc(a, b, orderBy) {
 }
 
 function stableSort(array, cmp) {
-    const stabilizedThis = array.map((el, index) => [el, index])
+    const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
-        const order = cmp(a[0], b[0])
-        if (order !== 0) return order
+        const order = cmp(a[0], b[0]);
+        if (order !== 0) return order;
         return a[1] - b[1]
-    })
+    });
     return stabilizedThis.map(el => el[0])
 }
 
@@ -50,7 +50,7 @@ const styles = theme => ({
     tableWrapper: {
         overflowX: 'auto',
     },
-})
+});
 
 class EnhancedTable extends Component {
 
@@ -61,31 +61,31 @@ class EnhancedTable extends Component {
         data: [],
         page: 0,
         rowsPerPage: 5,
-    }
+    };
 
     handleRequestSort = (event, property) => {
-        const orderBy = property
-        let order = 'desc'
+        const orderBy = property;
+        let order = 'desc';
 
         if (this.state.orderBy === property && this.state.order === 'desc') {
             order = 'asc'
         }
 
         this.setState({order, orderBy})
-    }
+    };
 
     handleSelectAllClick = event => {
         if (event.target.checked) {
-            this.setState(state => ({selected: state.data.map(n => n.id)}))
+            this.setState(state => ({selected: state.data.map(n => n.id)}));
             return
         }
         this.setState({selected: []})
-    }
+    };
 
     handleClick = (event, id) => {
-        const {selected} = this.state
-        const selectedIndex = selected.indexOf(id)
-        let newSelected = []
+        const {selected} = this.state;
+        const selectedIndex = selected.indexOf(id);
+        let newSelected = [];
 
         if (selectedIndex === -1) {
             newSelected = newSelected.concat(selected, id)
@@ -101,20 +101,20 @@ class EnhancedTable extends Component {
         }
 
         this.setState({selected: newSelected})
-    }
+    };
 
     handleChangePage = (event, page) => {
         this.setState({page})
-    }
+    };
 
     handleChangeRowsPerPage = event => {
         this.setState({rowsPerPage: event.target.value})
-    }
+    };
 
-    isSelected = id => this.state.selected.indexOf(id) !== -1
+    isSelected = id => this.state.selected.indexOf(id) !== -1;
 
     componentDidMount() {
-        const {data} = this.props
+        const {data} = this.props;
         this.setState({data})
     }
 
@@ -123,9 +123,9 @@ class EnhancedTable extends Component {
     }
 
     render() {
-        const {classes, rows, title, handlerChangeFilter, handleClickOpen} = this.props
-        const {data, order, orderBy, selected, rowsPerPage, page} = this.state
-        const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
+        const {classes, rows, title, handlerChangeFilter, handleClickOpen} = this.props;
+        const {data, order, orderBy, selected, rowsPerPage, page} = this.state;
+        const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
         return (
             <Grid container>
                 <Paper className={classes.root}>
@@ -148,7 +148,7 @@ class EnhancedTable extends Component {
                                 {stableSort(data, getSorting(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map(n => {
-                                        const isSelected = this.isSelected(n.id)
+                                        const isSelected = this.isSelected(n.id);
                                         return (
                                             <TableRow
                                                 hover
@@ -212,6 +212,6 @@ class EnhancedTable extends Component {
 
 EnhancedTable.propTypes = {
     classes: PropTypes.object.isRequired,
-}
+};
 
 export default withStyles(styles)(EnhancedTable)

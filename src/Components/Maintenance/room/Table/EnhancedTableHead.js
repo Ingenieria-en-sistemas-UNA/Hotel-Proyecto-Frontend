@@ -9,10 +9,10 @@ class EnhancedTableHead extends Component {
         if(property !== 'actions'){
             this.props.onRequestSort(event, property)
         }
-    }
+    };
 
     render() {
-        const { onSelectAllClick, order, orderBy, numSelected, rowCount, rows } = this.props
+        const { onSelectAllClick, order, orderBy, numSelected, rowCount, rows } = this.props;
 
         return (
             <TableHead>
@@ -63,6 +63,6 @@ EnhancedTableHead.propTypes = {
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
     rows: PropTypes.array.isRequired
-}
+};
 
 export default EnhancedTableHead

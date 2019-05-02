@@ -3,30 +3,30 @@ import Card from './Card'
 import { withContext } from'../../../store/Context'
 import Message from '../../Message'
 
-import config from '../../../assets/js/config'
+import config from '../../../config/config'
 class Room extends Component {
     state = {
         errors: {}
-    }
+    };
 
 
     filterRooms = async(filter = 'all') => {
-        const { Auth: { fetch: fetchAPI, getServerError } } = this.props
+        const { Auth: { fetch: fetchAPI, getServerError } } = this.props;
         try {
             const rooms = await fetchAPI(`${config.URL}/room?filter=${filter}`, {
                 method: 'GET'
-            })
+            });
             this.setState({
                 rooms
             })
 
         } catch ({ message }) {
-            const serverError = getServerError(message)
+            const serverError = getServerError(message);
             this.setState({
                 errors: {
                     general: serverError,
                 }
-            })
+            });
 
             setTimeout(() => {
                 this.setState({
@@ -36,7 +36,7 @@ class Room extends Component {
                 })
             }, 3000)
         }
-    }
+    };
 
     async componentDidMount() {
         this.filterRooms()
@@ -44,7 +44,7 @@ class Room extends Component {
 
 
     render(){
-        const { rooms, errors } = this.state 
+        const { rooms, errors } = this.state;
         return (
             <Fragment>
                 {

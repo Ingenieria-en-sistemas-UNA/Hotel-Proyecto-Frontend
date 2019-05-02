@@ -17,41 +17,41 @@ const styles = theme => ({
             display: 'none',
         },
     },
-})
+});
 
 
 class MenuAccount extends Component {
     state = {
         anchorEl: null
-    }
+    };
 
     handleMenuClose = () => {
         this.setState({ anchorEl: null });
-    }
+    };
 
     handleRouteClick = () => root => {
-        const { history } = this.props
-        this.handleMenuClose()
+        const { history } = this.props;
+        this.handleMenuClose();
         history.push('/' + root)
-    }
+    };
 
     onClickLogout = () => {
-        const { history, changeSessionState, handleDrawerClose, Auth } = this.props
-        handleDrawerClose()
-        changeSessionState(false)
-        console.log(Auth)
-        Auth.logout()
+        const { history, changeSessionState, handleDrawerClose, Auth } = this.props;
+        handleDrawerClose();
+        changeSessionState(false);
+        console.log(Auth);
+        Auth.logout();
         history.push('/login')
-    }
+    };
 
     handleProfileMenuOpen = event => {
         this.setState({ anchorEl: event.currentTarget })
-    }
+    };
 
     render() {
-        const { anchorEl } = this.state
-        const { classes } = this.props
-        const isMenuOpen = Boolean(anchorEl)
+        const { anchorEl } = this.state;
+        const { classes } = this.props;
+        const isMenuOpen = Boolean(anchorEl);
 
         const popMenu = (
             <Menu
@@ -64,7 +64,7 @@ class MenuAccount extends Component {
                 <MenuItem onClick={this.handleRouteClick('/profile')}>Profile</MenuItem>
                 <MenuItem onClick={this.onClickLogout}>Logout</MenuItem>
             </Menu>
-        )
+        );
 
         return (
             <Fragment>

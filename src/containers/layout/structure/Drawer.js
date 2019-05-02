@@ -11,7 +11,7 @@ import { withContext } from '../../../store/Context'
 
 class DrawerLayout extends Component {
     render() {
-        const { drawerState, classes, theme, handleDrawerClose } = this.props
+        const { drawerState, classes, theme, handleDrawerClose } = this.props;
         return (
             <Drawer
                 className={classes.drawer}

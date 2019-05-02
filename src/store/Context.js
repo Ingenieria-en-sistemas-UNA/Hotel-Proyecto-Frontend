@@ -1,8 +1,8 @@
 import React, { createContext } from 'react'
 
-export const HotelContext = createContext()
+export const HotelContext = createContext();
 
-export const { Provider, Consumer } = HotelContext
+export const { Provider, Consumer } = HotelContext;
 
 export const withContext = Component => props => (
   <Consumer>
@@ -10,4 +10,4 @@ export const withContext = Component => props => (
       <Component {...value} {...props} />
     }
   </Consumer>
-)
+);

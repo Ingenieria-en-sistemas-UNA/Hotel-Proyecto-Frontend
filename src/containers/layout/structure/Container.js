@@ -10,7 +10,7 @@ import { withContext } from '../../../store/Context'
 class Container extends Component {
 
     render() {
-        const { children, classes, drawerState } = this.props
+        const { children, classes, drawerState } = this.props;
         return (
             <main
                 className={classNames(classes.content, {
