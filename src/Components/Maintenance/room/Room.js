@@ -33,29 +33,70 @@ class Room extends Component {
         return true
     }
 
-    handlerSubmit = async({file, id = false, ...rest}) => {
+    handlerDeleteItems = async (ItemsSelected) => {
+        const { Auth: { fetch: fetchAPI } } = this.props
+        try {
+            await fetchAPI(`${config.URL}/room`, {
+                method: 'DELETE',
+                body: JSON.stringify(ItemsSelected)
+            })
+            this.filterRooms()
+        } catch ({ message }) {
+            this.setState({
+                errors: {
+                    general: message,
+                }
+            })
+
+            setTimeout(() => {
+                this.setState({
+                    errors: {
+                        general: false
+                    }
+                })
+            }, 3000)
+        }
+    }
+
+    handlerSubmit = async ({ file, id = false, img, ...rest }) => {
         const { Auth: { getToken, _checkStatus } } = this.props, { rooms: roomsState } = this.state
         const formData = new FormData()
-        formData.append('file', file)
+        let theFile = file
+        if (img) {
+            theFile = new File([theFile], img, { type: file.type });
+        }
+        formData.append('file', theFile)
         formData.append('room', new Blob(
             [JSON.stringify(rest)], {
                 type: "application/json"
             }
         ))
         try {
-            const room = await fetch(`${config.URL}/room`, {
-                method: 'POST',
-                headers: {
-                    Authorization: 'Bearer ' + getToken()
-                },
-                body: formData
-            }).then(_checkStatus).then(response => response.json())
+            const headers = {
+                Authorization: 'Bearer ' + getToken()
+            }
+            let room = {}
+            if (id) {
+                room = await fetch(`${config.URL}/room/${id}`, {
+                    method: 'PUT',
+                    headers,
+                    body: formData
+                }).then(_checkStatus).then(response => response.json())
+            } else {
+                room = await fetch(`${config.URL}/room`, {
+                    method: 'POST',
+                    headers,
+                    body: formData
+                }).then(_checkStatus).then(response => response.json())
+            }
 
 
-            const rooms = [...roomsState, room];
+            const rooms = id ? roomsState.map(x => x.id === id ? room : x) : [...roomsState, room];
+            const success = id ? "La habitación se actualizó correctamente" : "La habitación se guardó correctamente"
             this.setState(({ form, ...rest }) => ({
                 ...rest,
-                rooms
+                rooms,
+                success
             }))
             this.handleClose()
         } catch ({ message }) {
@@ -73,9 +114,6 @@ class Room extends Component {
                 })
             }, 3000)
         }
-
-
-
     }
 
 
@@ -94,10 +132,18 @@ class Room extends Component {
             const rooms = await fetchAPI(`${config.URL}/room?filter=${filter}`, {
                 method: 'GET'
             })
+            let nothing = rooms.lenght > 0 ? false : true
             this.setState({
-                rooms
+                rooms,
+                nothing
             })
-
+            if(this.state.nothing){
+                setTimeout(() => {
+                    this.setState({
+                        nothing: false
+                    })
+                }, 3000)
+            }
         } catch ({ message }) {
             const serverError = getServerError(message)
             this.setState({
@@ -139,22 +185,30 @@ class Room extends Component {
         }))
     }
     render() {
-        const { rooms, errors, openForm, form, itemUpdate } = this.state
-        return (<Fragment> {
-            rooms && (<Table
-                rows={rows}
-                data={rooms}
-                title={'Gestion de habitaciones'}
-                handlerChangeFilter={this.handlerChangeFilter}
-                handleClickOpen={this.handleClickOpen}
-                handlerUpdateItem={this.handlerUpdateItem}
-            />
-            )
-        } {
-                errors.general && <Message message={errors.general}
-                    type={"error"}
+        const { rooms, errors, openForm, form, itemUpdate, success, nothing } = this.state
+        return (<Fragment>
+            {
+                rooms && (<Table
+                    rows={rows}
+                    data={rooms}
+                    title={'Gestion de habitaciones'}
+                    handlerChangeFilter={this.handlerChangeFilter}
+                    handleClickOpen={this.handleClickOpen}
+                    handlerUpdateItem={this.handlerUpdateItem}
+                    handlerDeleteItems={this.handlerDeleteItems}
                 />
-            } <FormRoom
+                )
+            }
+            {
+                errors.general && <Message message={errors.general} type={"error"} />
+            }
+            {
+                success && <Message message={success} type={"success"} />
+            }
+            {
+                nothing && <Message message="No hay habitaciones registradas" type="info" />
+            }
+            <FormRoom
                 open={openForm}
                 handleClose={this.handleClose}
                 object={form}

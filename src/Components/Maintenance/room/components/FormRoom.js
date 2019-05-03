@@ -91,7 +91,7 @@ class FormRoom extends Component {
                 .then(_checkStatus)
                 .then(response => response.blob())
 
-            return this.setState({ ...rest, file })
+            return this.setState({ ...rest, file, img })
 
         }
         this.setState({ ...object })
@@ -131,12 +131,13 @@ class FormRoom extends Component {
     handlerSubmitForm = e => {
         e.preventDefault()
         const { handlerSubmit } = this.props
+        console.log(this.state)
         handlerSubmit(this.state)
     }
 
     render() {
         const { classes, open } = this.props
-        const { type, description, guests, price, file } = this.state
+        const { type, description, guests, price, file, id = false } = this.state
         return (
             <Dialog
                 fullWidth
@@ -235,7 +236,7 @@ class FormRoom extends Component {
                                         <Fab component='label' variant="extended" aria-label="Photo"
                                             className={classes.fab}>
                                             <input accept="image/*"
-                                                required
+                                                required={!id && true}
                                                 className={classes.input}
                                                 id="icon-button-file"
                                                 type="file"

@@ -7,7 +7,7 @@ import FilterListIcon from '@material-ui/icons/FilterList'
 import { lighten } from '@material-ui/core/styles/colorManipulator'
 import AddIcon from '@material-ui/icons/Add'
 import InputSearch from './InputSearch'
-
+import DeleteDialog from '../../../dialogs/DeleteDialog'
 const toolbarStyles = theme => ({
     root: {
         paddingRight: theme.spacing.unit,
@@ -40,62 +40,84 @@ const toolbarStyles = theme => ({
 
 class EnhancedTableToolbar extends Component {
     state = {
-        filter: false
+        filter: false,
+        open: false
     };
 
     toggleFilter = () => {
-        this.setState(({filter}) => ({
+        this.setState(({ filter }) => ({
             filter: !filter
         }));
         const { handlerChangeFilter } = this.props;
         handlerChangeFilter({ target: { value: '' } })
+    }
+    handlerDeleteItems = () => {
+        this.setState({ open: true });
     };
 
-    render(){
+    handleClose = () => {
+        this.setState({ open: false });
+    }
+
+    handlerDeteleItemsAccepted = () => {
+        this.props.handlerDeleteItems()
+        this.handleClose()
+    }
+
+    render() {
         const { numSelected, classes, title, handlerChangeFilter, handleClickOpen } = this.props,
-              { filter } = this.state;
-    
+            { filter, open } = this.state;
+
         return (
-            <Toolbar
-                className={classNames(classes.root, {
-                    [classes.highlight]: numSelected > 0,
-                })}
-            >
-                <div className={classes.title}>
-                    {numSelected > 0 ? (
-                        <Typography color="inherit" variant="subtitle1">
-                            {numSelected} selected
-                        </Typography>
-                    ) : (
-                            <Typography variant="h6" id="tableTitle">
-                                {title}
+            <Fragment>
+                <Toolbar
+                    className={classNames(classes.root, {
+                        [classes.highlight]: numSelected > 0,
+                    })}
+                >
+                    <div className={classes.title}>
+                        {numSelected > 0 ? (
+                            <Typography color="inherit" variant="subtitle1">
+                                {numSelected} selected
                             </Typography>
-                        )}
-                </div>
-                { filter && <InputSearch handlerChangeFilter={handlerChangeFilter}/>}
-                <div className={classes.actions}>
-                    {numSelected > 0 ? (
-                        <Tooltip title="Delete">
-                            <IconButton aria-label="Delete">
-                                <DeleteIcon />
-                            </IconButton>
-                        </Tooltip>
-                    ) : (
-                            <Fragment>
-                                <Tooltip title="Filter list">
-                                    <IconButton aria-label="Filter list" onClick={this.toggleFilter}>
-                                        <FilterListIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Add">
-                                    <IconButton aria-label="Add" onClick={handleClickOpen}>
-                                        <AddIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </Fragment>
-                        )}
-                </div>
-            </Toolbar>
+                        ) : (
+                                <Typography variant="h6" id="tableTitle">
+                                    {title}
+                                </Typography>
+                            )}
+                    </div>
+                    {filter && <InputSearch handlerChangeFilter={handlerChangeFilter} />}
+                    <div className={classes.actions}>
+                        {numSelected > 0 ? (
+                            <Tooltip title="Delete">
+                                <IconButton aria-label="Delete" onClick={this.handlerDeleteItems}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+                        ) : (
+                                <Fragment>
+                                    <Tooltip title="Filter list">
+                                        <IconButton aria-label="Filter list" onClick={this.toggleFilter}>
+                                            <FilterListIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Add">
+                                        <IconButton aria-label="Add" onClick={handleClickOpen}>
+                                            <AddIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Fragment>
+                            )}
+                    </div>
+                </Toolbar>
+                {
+                    <DeleteDialog
+                        open={open}
+                        handleCloseDialog={this.handleClose}
+                        handlerDeteleItemsAccepted={this.handlerDeteleItemsAccepted}
+                    />
+                }
+            </Fragment>
         )
     }
 

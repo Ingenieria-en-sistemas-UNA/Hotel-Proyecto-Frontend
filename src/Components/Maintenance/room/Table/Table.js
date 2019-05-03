@@ -122,6 +122,15 @@ class EnhancedTable extends Component {
         this.setState(prevState => ({data: nextProps.data}));
     }
 
+    handlerDeleteItems = () => {
+        const { selected } = this.state
+        const { handlerDeleteItems } = this.props
+        handlerDeleteItems(selected)
+        this.setState({
+            selected: []
+        })
+    }
+
     render() {
         const {classes, rows, title, handlerChangeFilter, handleClickOpen, handlerUpdateItem} = this.props;
         const {data, order, orderBy, selected, rowsPerPage, page} = this.state;
@@ -132,6 +141,7 @@ class EnhancedTable extends Component {
                     <EnhancedTableToolbar numSelected={selected.length} title={title}
                                           handlerChangeFilter={handlerChangeFilter}
                                           handleClickOpen={handleClickOpen}
+                                          handlerDeleteItems={this.handlerDeleteItems}
                     />
                     <div className={classes.tableWrapper}>
                         <Table className={classes.table} aria-labelledby="tableTitle">

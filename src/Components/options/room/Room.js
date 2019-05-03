@@ -17,10 +17,18 @@ class Room extends Component {
             const rooms = await fetchAPI(`${config.URL}/room?filter=${filter}`, {
                 method: 'GET'
             });
+            let nothing = rooms.lenght > 0 ? false : true
             this.setState({
-                rooms
+                rooms,
+                nothing
             })
-
+            if(this.state.nothing){
+                setTimeout(() => {
+                    this.setState({
+                        nothing: false
+                    })
+                }, 3000)
+            }
         } catch ({ message }) {
             const serverError = getServerError(message);
             this.setState({
@@ -45,7 +53,7 @@ class Room extends Component {
 
 
     render(){
-        const { rooms, errors } = this.state;
+        const { rooms, errors, nothing } = this.state;
         return (
             <Fragment>
                 <Grid container justify='space-around' direction='row' wrap='wrap'>
@@ -55,6 +63,9 @@ class Room extends Component {
                 </Grid>
                 {
                     errors.general && <Message message={errors.general} type={"error"} />
+                }
+                {
+                    nothing && <Message message="No hay habitaciones registradas" type="info" />
                 }
             </Fragment>
             )
