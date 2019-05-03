@@ -11,6 +11,8 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera'
 import NumberFormat from 'react-number-format'
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
+import config from '../../../../config/config'
+import { withContext } from '../../../../store/Context'
 
 const styles = theme => ({
     form: {
@@ -70,22 +72,77 @@ function NumberFormatCustom(props) {
 }
 
 class FormRoom extends Component {
+
+    state = {
+        state: false,
+        file: false
+    }
+
+    componentDidMount() {
+        const { object, itemUpdate } = this.props
+        this.changeState(object, itemUpdate)
+    }
+
+    changeState = async (object, itemUpdate) => {
+        if (itemUpdate) {
+            const { Auth: { _checkStatus } } = this.props
+            const { img, ...rest } = itemUpdate
+            const file = await fetch(`${config.URL}/downloadFile/${img}`)
+                .then(_checkStatus)
+                .then(response => response.blob())
+
+            return this.setState({ ...rest, file })
+
+        }
+        this.setState({ ...object })
+    }
+    componentWillReceiveProps({ object, itemUpdate }) {
+        this.changeState(object, itemUpdate)
+    }
+    handleChangeFile = e => {
+        const { files } = e.target
+        const [file] = files
+        this.setState(prevState => ({
+            ...prevState,
+            file
+        }))
+    }
+
+    handleChange = e => {
+        const { target: { name = 'price', value } } = e
+        this.setState(prevState => ({
+            ...prevState,
+            [name]: value,
+        }))
+    }
+
+    handleClosePop = () => {
+        const { handleClose } = this.props
+        handleClose()
+        this.setState({
+            type: '',
+            description: '',
+            guests: '',
+            price: '',
+            file: '',
+        })
+    }
+
+    handlerSubmitForm = e => {
+        e.preventDefault()
+        const { handlerSubmit } = this.props
+        handlerSubmit(this.state)
+    }
+
     render() {
-        const {
-            classes,
-            open,
-            handleClose,
-            object: { type, description, guests, price, file },
-            handleChangeObject,
-            handlerSubmit,
-            handleChangeFile
-        } = this.props
+        const { classes, open } = this.props
+        const { type, description, guests, price, file } = this.state
         return (
             <Dialog
                 fullWidth
                 maxWidth="sm"
                 open={open}
-                onClose={handleClose}
+                onClose={this.handleClosePop}
                 aria-labelledby="max-width-dialog-title"
                 scroll='body'
             >
@@ -98,7 +155,7 @@ class FormRoom extends Component {
                         </DialogTitle>
                         <Divider component='hr' variant='middle' />
                     </Grid>
-                    <form className={classes.form} onSubmit={handlerSubmit}>
+                    <form className={classes.form} onSubmit={this.handlerSubmitForm}>
                         <Grid item xs={12}>
                             <DialogContent>
                                 <Grid spacing={24} container alignItems="center">
@@ -112,7 +169,7 @@ class FormRoom extends Component {
                                             autoComplete="Tipo de habitación"
                                             variant="filled"
                                             value={type}
-                                            onChange={handleChangeObject}
+                                            onChange={this.handleChange}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
@@ -125,7 +182,7 @@ class FormRoom extends Component {
                                             autoComplete="Descripción"
                                             variant="filled"
                                             value={description}
-                                            onChange={handleChangeObject}
+                                            onChange={this.handleChange}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
@@ -142,7 +199,7 @@ class FormRoom extends Component {
                                             variant="filled"
                                             autoComplete="Capacidad máxima"
                                             value={guests}
-                                            onChange={handleChangeObject}
+                                            onChange={this.handleChange}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
@@ -158,12 +215,12 @@ class FormRoom extends Component {
                                             fullWidth
                                             autoComplete="Precio"
                                             value={price}
-                                            onChange={handleChangeObject}
+                                            onChange={this.handleChange}
                                         />
                                     </Grid>
                                     {
                                         file && (
-                                            <Grid item xs={12} sm={12} style={{display: 'flex'}}>
+                                            <Grid item xs={12} sm={12} style={{ display: 'flex' }}>
                                                 <Card className={classes.card}>
                                                     <CardMedia
                                                         className={classes.cardMedia}
@@ -178,10 +235,11 @@ class FormRoom extends Component {
                                         <Fab component='label' variant="extended" aria-label="Photo"
                                             className={classes.fab}>
                                             <input accept="image/*"
+                                                required
                                                 className={classes.input}
                                                 id="icon-button-file"
                                                 type="file"
-                                                onChange={handleChangeFile}
+                                                onChange={this.handleChangeFile}
                                             />
                                             <PhotoCamera />
                                             Photo
@@ -193,7 +251,7 @@ class FormRoom extends Component {
                         </Grid>
                         <Grid item xs={12}>
                             <DialogActions>
-                                <Button onClick={handleClose} color="primary">
+                                <Button onClick={this.handleClosePop} color="primary">
                                     Cancelar
                                 </Button>
                                 <Button type='submit' color="primary">
@@ -212,4 +270,4 @@ FormRoom.propTypes = {
     classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(FormRoom)
+export default withContext(withStyles(styles)(FormRoom))

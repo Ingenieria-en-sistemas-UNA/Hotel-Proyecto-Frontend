@@ -16,6 +16,7 @@ const rows = [
 class Room extends Component {
     state = {
         errors: {},
+        itemUpdate: false,
         openForm: false,
         form: {
             type: '',
@@ -32,33 +33,8 @@ class Room extends Component {
         return true
     }
 
-    handleChangeFile = e => {
-        const { files } = e.target
-        const [file] = files
-        console.log(file)
-        this.setState(({ form, ...rest }) => ({
-            ...rest,
-            form: {
-                ...form,
-                file
-            }
-        }))
-    }
-
-    handleChange = e => {
-        const { target: { name = 'price', value } } = e
-        this.setState(({ form, ...rest }) => ({
-            ...rest,
-            form: {
-                ...form,
-                [name]: value,
-            }
-        }))
-    }
-
-    handlerSubmit = async e => {
-        e.preventDefault()
-        const { Auth: { getToken, _checkStatus } } = this.props, { form: { file, ...rest }, rooms: roomsState } = this.state
+    handlerSubmit = async({file, id = false, ...rest}) => {
+        const { Auth: { getToken, _checkStatus } } = this.props, { rooms: roomsState } = this.state
         const formData = new FormData()
         formData.append('file', file)
         formData.append('room', new Blob(
@@ -74,20 +50,12 @@ class Room extends Component {
                 },
                 body: formData
             }).then(_checkStatus).then(response => response.json())
-            
+
 
             const rooms = [...roomsState, room];
             this.setState(({ form, ...rest }) => ({
                 ...rest,
-                rooms,
-                form: {
-                    type: '',
-                    description: '',
-                    guests: '',
-                    price: '',
-                    state: false,
-                    file: false
-                }
+                rooms
             }))
             this.handleClose()
         } catch ({ message }) {
@@ -155,13 +123,7 @@ class Room extends Component {
     handleClose = () => {
         this.setState({
             openForm: false,
-            form: {
-                type: '',
-                description: '',
-                guests: '',
-                price: '',
-                file: ''
-            }
+            itemUpdate: false
         })
     }
 
@@ -169,8 +131,15 @@ class Room extends Component {
         this.filterRooms()
     }
 
+    handlerUpdateItem = itemUpdate => () => {
+        this.setState(prevState => ({
+            ...prevState,
+            openForm: true,
+            itemUpdate
+        }))
+    }
     render() {
-        const { rooms, errors, openForm, form } = this.state
+        const { rooms, errors, openForm, form, itemUpdate } = this.state
         return (<Fragment> {
             rooms && (<Table
                 rows={rows}
@@ -178,6 +147,7 @@ class Room extends Component {
                 title={'Gestion de habitaciones'}
                 handlerChangeFilter={this.handlerChangeFilter}
                 handleClickOpen={this.handleClickOpen}
+                handlerUpdateItem={this.handlerUpdateItem}
             />
             )
         } {
@@ -188,9 +158,8 @@ class Room extends Component {
                 open={openForm}
                 handleClose={this.handleClose}
                 object={form}
-                handleChangeObject={this.handleChange}
+                itemUpdate={itemUpdate}
                 handlerSubmit={this.handlerSubmit}
-                handleChangeFile={this.handleChangeFile}
             />
         </Fragment>
         )

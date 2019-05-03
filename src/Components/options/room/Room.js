@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import Card from './Card'
 import { withContext } from'../../../store/Context'
 import Message from '../../Message'
+import { Grid } from '@material-ui/core'
 
 import config from '../../../config/config'
 class Room extends Component {
@@ -47,9 +48,11 @@ class Room extends Component {
         const { rooms, errors } = this.state;
         return (
             <Fragment>
-                {
-                    rooms && rooms.map(room => <Card key={room.id} {...room}/>)
-                }
+                <Grid container justify='space-around' direction='row' wrap='wrap'>
+                    {
+                        rooms && rooms.map((room, index) => <Card key={room.id} {...room} index={index} />)
+                    }
+                </Grid>
                 {
                     errors.general && <Message message={errors.general} type={"error"} />
                 }

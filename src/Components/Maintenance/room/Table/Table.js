@@ -123,7 +123,7 @@ class EnhancedTable extends Component {
     }
 
     render() {
-        const {classes, rows, title, handlerChangeFilter, handleClickOpen} = this.props;
+        const {classes, rows, title, handlerChangeFilter, handleClickOpen, handlerUpdateItem} = this.props;
         const {data, order, orderBy, selected, rowsPerPage, page} = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
         return (
@@ -147,32 +147,32 @@ class EnhancedTable extends Component {
                             <TableBody>
                                 {stableSort(data, getSorting(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map(n => {
-                                        const isSelected = this.isSelected(n.id);
+                                    .map(item => {
+                                        const isSelected = this.isSelected(item.id);
                                         return (
                                             <TableRow
                                                 hover
                                                 role="checkbox"
                                                 aria-checked={isSelected}
                                                 tabIndex={-1}
-                                                key={n.id}
+                                                key={item.id}
                                                 selected={isSelected}
                                             >
                                                 <TableCell padding="checkbox">
                                                     <Checkbox checked={isSelected}
-                                                              onClick={event => this.handleClick(event, n.id)}/>
+                                                              onClick={event => this.handleClick(event, item.id)}/>
                                                 </TableCell>
                                                 <TableCell component="th" scope="row" padding="none" align={'center'}>
-                                                    {n.type}
+                                                    {item.type}
                                                 </TableCell>
                                                 <TableCell
-                                                    align={'center'}>{n.state ? 'Ocupada' : 'Disponible'}</TableCell>
-                                                <TableCell align={'center'}>${n.price}</TableCell>
-                                                <TableCell align={'center'}>{n.guests}</TableCell>
+                                                    align={'center'}>{item.state ? 'Ocupada' : 'Disponible'}</TableCell>
+                                                <TableCell align={'center'}>${item.price}</TableCell>
+                                                <TableCell align={'center'}>{item.guests}</TableCell>
                                                 <TableCell align={'center'}>
                                                     <Tooltip title="Edit">
                                                         <IconButton aria-haspopup="true"
-                                                                    onClick={this.handleProfileMenuOpen}
+                                                                    onClick={handlerUpdateItem(item)}
                                                                     color="inherit">
                                                             <Edit/>
                                                         </IconButton>
