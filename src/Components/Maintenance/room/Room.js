@@ -99,6 +99,12 @@ class Room extends Component {
                 success
             }))
             this.handleClose()
+            setTimeout(() => {
+                this.setState({
+                    success: false
+                })
+            }, 3000)
+
         } catch ({ message }) {
             this.setState({
                 errors: {
@@ -132,12 +138,12 @@ class Room extends Component {
             const rooms = await fetchAPI(`${config.URL}/room?filter=${filter}`, {
                 method: 'GET'
             })
-            let nothing = rooms.lenght > 0 ? false : true
+            let nothing = rooms.length ? false : true
             this.setState({
                 rooms,
                 nothing
             })
-            if(this.state.nothing){
+            if (this.state.nothing) {
                 setTimeout(() => {
                     this.setState({
                         nothing: false

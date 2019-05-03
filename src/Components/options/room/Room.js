@@ -17,7 +17,7 @@ class Room extends Component {
             const rooms = await fetchAPI(`${config.URL}/room?filter=${filter}`, {
                 method: 'GET'
             });
-            let nothing = rooms.lenght > 0 ? false : true
+            let nothing = rooms.length ? false : true
             this.setState({
                 rooms,
                 nothing
@@ -35,7 +35,7 @@ class Room extends Component {
                 errors: {
                     general: serverError,
                 }
-            });
+            })
 
             setTimeout(() => {
                 this.setState({
@@ -45,7 +45,7 @@ class Room extends Component {
                 })
             }, 3000)
         }
-    };
+    }
 
     async componentDidMount() {
         this.filterRooms()
