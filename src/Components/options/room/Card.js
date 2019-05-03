@@ -42,7 +42,7 @@ class ImgMediaCard extends Component {
         const { classes, type, state, price, guests, index } = this.props,
             { image } = this.state
         return (
-            image ? (<Grow in style={{ transformOrigin: '0 0 0' }} {...({ timeout: 1000 * index } )}>
+            image ? (<Grow in style={{ transformOrigin: '0 0 0' }} {...(index ? { timeout: 1000 * index } : { timeout: 500 } )}>
                 <Card className={classes.card}>
                     <CardActionArea>
                         <CardMedia
