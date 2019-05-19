@@ -112,6 +112,19 @@ export default class AuthService {
             .then(response => response.json())
     };
 
+    fetchImg = async imgName => {
+        try {
+            const image = await fetch(`${config.URL}/downloadFile/${imgName}`)
+                .then(this._checkStatus)
+                .then(response => response.blob())
+                return Promise.resolve(image)
+        } catch ({message}) {
+            const serverError = this.getServerError(message);
+            
+            throw new Error(serverError);
+        }
+    }
+
     _checkStatus = response => {
         if (response.status >= 200 && response.status < 300) {
             return response

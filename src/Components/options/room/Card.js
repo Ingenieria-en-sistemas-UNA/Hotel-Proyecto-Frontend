@@ -9,18 +9,18 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import imagen from '../../../assets/img/habitacion.jpg'
-import config from '../../../config/config'
+import imagenDefault from '../../../assets/img/default.png'
 import { withContext } from '../../../store/Context'
 
 const styles = {
     card: {
         maxWidth: '25%',
-        margin: '20px'
+        margin: '10px',
     },
     media: {
         // ⚠️ object-fit is not supported by IE 11.
         objectFit: 'cover',
+        height: 200,
     }
 };
 
@@ -30,19 +30,20 @@ class ImgMediaCard extends Component {
 
 
     async componentDidMount() {
-        const { Auth: { _checkStatus }, img } = this.props
-        const image = await fetch(`${config.URL}/downloadFile/${img}`)
-            .then(_checkStatus)
-            .then(response => response.blob())
-
-        this.setState({ image })
+        const { Auth: { fetchImg }, img: imageName } = this.props
+        try {
+            const image = await fetchImg(imageName)
+            this.setState({ image })
+        } catch (error) {
+            this.setState({ image: false })
+        }
     }
 
     render() {
         const { classes, type, state, price, guests, description, index } = this.props,
             { image } = this.state
         return (
-            image ? (<Grow in style={{ transformOrigin: '0 0 0' }} {...(index ? { timeout: 1000 * index } : { timeout: 500 } )}>
+            <Grow in style={{ transformOrigin: '0 0 0' }} {...(index ? { timeout: 1000 * index } : { timeout: 500 })}>
                 <Card className={classes.card}>
                     <CardActionArea>
                         <CardMedia
@@ -50,7 +51,7 @@ class ImgMediaCard extends Component {
                             alt="Contemplative Reptile"
                             className={classes.media}
                             height="140"
-                            image={image ? URL.createObjectURL(image) : imagen}
+                            image={image ? URL.createObjectURL(image) : imagenDefault}
                             title="Contemplative Reptile"
                         />
                         <CardContent>
@@ -62,21 +63,17 @@ class ImgMediaCard extends Component {
                                 Ocupada: {state ? "SI" : "NO"} <br />
                                 precio: ${price} <br />
                                 Cantidad Maxima: {guests} personas <br />
-                                Descripción: { description}
+                                Descripción: {description}
                             </Typography>
                         </CardContent>
                     </CardActionArea>
                     <CardActions>
                         <Button size="small" color="primary">
-                            Share
-                        </Button>
-                        <Button size="small" color="primary">
-                            Learn More
+                            Reservar
                         </Button>
                     </CardActions>
                 </Card>
-            </Grow>)
-                : null
+            </Grow>
         )
     }
 }
