@@ -73,8 +73,8 @@ class Signup extends Component {
     render() {
         const { classes } = this.props;
         const {
-            errors, name, lastName, id,
-            cellphone, email, address, username, password } = this.state;
+            errors, name = '', lastName = '', id = '',
+            cellphone = '', email = '', address = '', username = '', password= '' } = this.state;
 
         return (
             <main className={classes.main}>

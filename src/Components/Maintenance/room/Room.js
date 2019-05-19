@@ -1,22 +1,28 @@
 import React, { Component, Fragment } from 'react'
-import Table from './Table/Table'
+import Table from '../../Table/Table'
 import { withContext } from '../../../store/Context'
 import Message from '../../Message'
 import config from '../../../config/config'
 import FormRoom from './components/FormRoom'
 
-const rows = [
-    { id: 'type', numeric: false, disablePadding: true, label: 'Tipo' },
-    { id: 'state', numeric: false, disablePadding: false, label: 'Estado de habitación' },
-    { id: 'price', numeric: true, disablePadding: false, label: 'Precio' },
-    { id: 'guests', numeric: true, disablePadding: false, label: 'Capacidad' },
-    { id: 'actions', numeric: false, disablePadding: false, label: 'Acciones' }
-]
-
+const configTable = {
+    rows: [
+        { id: 'type', numeric: false, disablePadding: true, label: 'Tipo' },
+        { id: 'state', numeric: false, disablePadding: false, label: 'Estado de habitación' },
+        { id: 'price', numeric: true, disablePadding: false, label: 'Precio' },
+        { id: 'guests', numeric: true, disablePadding: false, label: 'Capacidad' },
+        { id: 'actions', numeric: false, disablePadding: false, label: 'Acciones' }
+    ],
+    colum: {
+        type: false,
+        state: { isBoolean: true, ifTrue: 'Ocupado', ifFalse: 'Disponible', customText: '' },
+        price: false,
+        guests: false,
+    }
+}
 class Room extends Component {
     state = {
         errors: {},
-        itemUpdate: false,
         openForm: false,
         form: {
             type: '',
@@ -26,11 +32,6 @@ class Room extends Component {
             state: false,
             file: false
         }
-    }
-
-
-    componentWillUpdate() {
-        return true
     }
 
     handlerDeleteItems = async (ItemsSelected) => {
@@ -192,12 +193,12 @@ class Room extends Component {
     }
     render() {
         const { rooms, errors, openForm, form, itemUpdate, success, nothing } = this.state
+        const config = { ...configTable,  data: rooms }
         return (<Fragment>
             {
                 rooms && (<Table
-                    rows={rows}
-                    data={rooms}
-                    title={'Gestion de habitaciones'}
+                    config={config}
+                    title='Gestion de habitaciones'
                     handlerChangeFilter={this.handlerChangeFilter}
                     handleClickOpen={this.handleClickOpen}
                     handlerUpdateItem={this.handlerUpdateItem}
@@ -206,10 +207,10 @@ class Room extends Component {
                 )
             }
             {
-                errors.general && <Message message={errors.general} type={"error"} />
+                errors.general && <Message message={errors.general} type='error' />
             }
             {
-                success && <Message message={success} type={"success"} />
+                success && <Message message={success} type='success' />
             }
             {
                 nothing && <Message message="No hay habitaciones registradas" type="info" />

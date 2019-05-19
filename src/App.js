@@ -54,7 +54,6 @@ class App extends Component {
     });
 
     render() {
-        console.log(this.getContext());
         return (
             <Provider value={this.getContext()}>
                 <AppRoute/>

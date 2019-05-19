@@ -7,7 +7,7 @@ import FilterListIcon from '@material-ui/icons/FilterList'
 import { lighten } from '@material-ui/core/styles/colorManipulator'
 import AddIcon from '@material-ui/icons/Add'
 import InputSearch from './InputSearch'
-import DeleteDialog from '../../../dialogs/DeleteDialog'
+import DeleteDialog from '../dialogs/DeleteDialog'
 const toolbarStyles = theme => ({
     root: {
         paddingRight: theme.spacing.unit,

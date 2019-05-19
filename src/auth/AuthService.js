@@ -4,7 +4,6 @@ import config from '../config/config'
 export default class AuthService {
     constructor(domain) {
         this.domain = domain || `${config.URL}/user`;
-        console.log(config.URL)
     }
 
     login = async (username, password) => {
