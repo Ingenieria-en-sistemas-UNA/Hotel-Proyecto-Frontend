@@ -9,7 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import imagenDefault from '../../../assets/img/default.png'
+import imageDefault from '../../../assets/img/default.png'
 import { withContext } from '../../../store/Context'
 
 const styles = {
@@ -35,7 +35,8 @@ class ImgMediaCard extends Component {
             const image = await fetchImg(imageName)
             this.setState({ image })
         } catch (error) {
-            this.setState({ image: false })
+            const image = await fetch(imageDefault).then(response => response.blob())
+            this.setState({ image })
         }
     }
 
@@ -51,7 +52,7 @@ class ImgMediaCard extends Component {
                             alt="Contemplative Reptile"
                             className={classes.media}
                             height="140"
-                            image={image ? URL.createObjectURL(image) : imagenDefault}
+                            image={image && URL.createObjectURL(image)}
                             title="Contemplative Reptile"
                         />
                         <CardContent>

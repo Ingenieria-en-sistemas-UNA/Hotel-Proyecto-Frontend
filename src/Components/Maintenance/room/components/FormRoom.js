@@ -11,8 +11,8 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera'
 import NumberFormat from 'react-number-format'
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
-import config from '../../../../config/config'
 import { withContext } from '../../../../store/Context'
+import imageDefault from '../../../../assets/img/default.png'
 
 const styles = theme => ({
     form: {
@@ -85,13 +85,16 @@ class FormRoom extends Component {
 
     changeState = async (object, itemUpdate) => {
         if (itemUpdate) {
-            const { Auth: { _checkStatus } } = this.props
-            const { img, ...rest } = itemUpdate
-            const file = await fetch(`${config.URL}/downloadFile/${img}`)
-                .then(_checkStatus)
-                .then(response => response.blob())
-
-            return this.setState({ ...rest, file, img })
+            const { Auth: { fetchImg } } = this.props
+            const { img:imageName, ...rest } = itemUpdate
+            try {
+                const file = await fetchImg(imageName)
+                return this.setState({ ...rest, file, img: imageName })
+                
+            } catch (error) {
+                const file = await fetch(imageDefault).then(response => response.blob())
+                return this.setState({ ...rest, file, img: imageName })
+            }
 
         }
         this.setState({ ...object })
