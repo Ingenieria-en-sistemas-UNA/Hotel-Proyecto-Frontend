@@ -11,8 +11,13 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import imageDefault from '../../../assets/img/default.png'
 import { withContext } from '../../../store/Context'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import IconButton from '@material-ui/core/IconButton';
+import classnames from 'classnames';
+import Collapse from '@material-ui/core/Collapse';
+import red from '@material-ui/core/colors/red';
 
-const styles = {
+const styles = theme => ({
     card: {
         maxWidth: '25%',
         margin: '10px',
@@ -21,10 +26,36 @@ const styles = {
         // ⚠️ object-fit is not supported by IE 11.
         objectFit: 'cover',
         height: 200,
-    }
-};
+
+    },
+    actions: {
+        display: 'flex',
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+    avatar: {
+        backgroundColor: red[500],
+    },
+
+});
+
 
 class ImgMediaCard extends Component {
+
+
+    state = { expanded: false };
+
+    handleExpandClick = () => {
+        this.setState(state => ({ expanded: !state.expanded }));
+    };
 
     state = {}
 
@@ -39,6 +70,8 @@ class ImgMediaCard extends Component {
             this.setState({ image })
         }
     }
+
+
 
     render() {
         const { classes, type, state, price, guests, description, index } = this.props,
@@ -58,20 +91,39 @@ class ImgMediaCard extends Component {
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="h2">
                                 Habitación
-                            </Typography>
-                            <Typography component="p">
-                                Tipo: {type} <br />
-                                Ocupada: {state ? "SI" : "NO"} <br />
-                                precio: ${price} <br />
-                                Cantidad Maxima: {guests} personas <br />
-                                Descripción: {description}
+
+                                <Typography component='p'>
+                                    Tipo: {type} <br />
+                                    precio: ${price} <br />
+                                </Typography>
+                                <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+
+                                    <Typography component="p">
+                                        
+                                        Ocupada: {state ? "SI" : "NO"} <br />
+                                        Cantidad Maxima: {guests} personas <br />
+                                        Descripción: {description}
+                                    </Typography>
+
+                                </Collapse>
                             </Typography>
                         </CardContent>
                     </CardActionArea>
                     <CardActions>
+
                         <Button size="small" color="primary">
                             Reservar
                         </Button>
+
+                        <IconButton className={classnames(classes.expand, {
+                            [classes.expandOpen]: this.state.expanded,
+                        })}
+                            onClick={this.handleExpandClick}
+                            aria-expanded={this.state.expanded}
+                            aria-label="Show more">
+                            <ExpandMoreIcon />
+                        </IconButton>
+
                     </CardActions>
                 </Card>
             </Grow>
