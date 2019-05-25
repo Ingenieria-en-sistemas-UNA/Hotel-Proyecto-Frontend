@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import classnames from 'classnames';
 import Collapse from '@material-ui/core/Collapse';
 import red from '@material-ui/core/colors/red';
+import Divider from '@material-ui/core/Divider';
 
 const styles = theme => ({
     card: {
@@ -47,6 +48,7 @@ const styles = theme => ({
 
 });
 
+    
 
 class ImgMediaCard extends Component {
 
@@ -99,7 +101,6 @@ class ImgMediaCard extends Component {
                                 <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
 
                                     <Typography component="p">
-                                        
                                         Ocupada: {state ? "SI" : "NO"} <br />
                                         Cantidad Maxima: {guests} personas <br />
                                         Descripción: {description}
@@ -109,9 +110,10 @@ class ImgMediaCard extends Component {
                             </Typography>
                         </CardContent>
                     </CardActionArea>
+                    <Divider variant="middle" />
                     <CardActions>
 
-                        <Button size="small" color="primary">
+                        <Button variant="outlined" size="small" color="primary">
                             Reservar
                         </Button>
 
