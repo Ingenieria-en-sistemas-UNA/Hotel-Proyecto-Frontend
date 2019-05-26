@@ -10,7 +10,6 @@ class Room extends Component {
         errors: {}
     };
 
-
     filterRooms = async(filter = 'all') => {
         const { Auth: { fetch: fetchAPI, getServerError } } = this.props;
         try {
@@ -50,7 +49,6 @@ class Room extends Component {
     async componentDidMount() {
         this.filterRooms()
     }
-
 
     render(){
         const { rooms, errors, nothing } = this.state;

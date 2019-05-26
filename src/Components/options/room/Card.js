@@ -1,63 +1,31 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
 import Grow from '@material-ui/core/Grow'
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 import imageDefault from '../../../assets/img/default.png'
 import { withContext } from '../../../store/Context'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import IconButton from '@material-ui/core/IconButton';
-import classnames from 'classnames';
-import Collapse from '@material-ui/core/Collapse';
-import red from '@material-ui/core/colors/red';
-import Divider from '@material-ui/core/Divider';
-
-const styles = theme => ({
-    card: {
-        maxWidth: '25%',
-        margin: '10px',
-    },
-    media: {
-        // ⚠️ object-fit is not supported by IE 11.
-        objectFit: 'cover',
-        height: 200,
-
-    },
-    actions: {
-        display: 'flex',
-    },
-    expand: {
-        transform: 'rotate(0deg)',
-        marginLeft: 'auto',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-    expandOpen: {
-        transform: 'rotate(180deg)',
-    },
-    avatar: {
-        backgroundColor: red[500],
-    },
-
-});
-
-    
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import IconButton from '@material-ui/core/IconButton'
+import classnames from 'classnames'
+import Collapse from '@material-ui/core/Collapse'
+import Divider from '@material-ui/core/Divider'
+import styles from './jss/styles'    
 
 class ImgMediaCard extends Component {
 
 
-    state = { expanded: false };
+    state = { expanded: false }
 
     handleExpandClick = () => {
-        this.setState(state => ({ expanded: !state.expanded }));
-    };
+        this.setState(state => ({ expanded: !state.expanded }))
+    }
 
     state = {}
 
@@ -135,6 +103,6 @@ class ImgMediaCard extends Component {
 
 ImgMediaCard.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
 
 export default withContext(withStyles(styles)(ImgMediaCard))

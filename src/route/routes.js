@@ -10,7 +10,6 @@ import Home from '../Components/home/Home'
 import { withContext } from '../store/Context'
 import Client from '../Components/Maintenance/customers/Client'
 
-
 class AppRoutes extends Component {
     
     render() {
@@ -22,7 +21,6 @@ class AppRoutes extends Component {
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />
                     <AdminRoute exact path="/rooms-maintenance" component={RoomMaintenance} />
-                    
                     <Redirect to="/" />
                 </Switch>
             </Layout>

@@ -36,4 +36,4 @@ Layout.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(Layout);
+export default withStyles(styles, { withTheme: true })(Layout)

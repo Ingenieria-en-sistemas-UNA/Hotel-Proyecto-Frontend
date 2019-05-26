@@ -9,48 +9,12 @@ import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 import { withContext } from '../../store/Context'
 import { Link } from 'react-router-dom'
+import styles from './jss/styles'
 
-const styles = theme => ({
-    heroUnit: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    heroContent: {
-        maxWidth: 600,
-        margin: '0 auto',
-        padding: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit}px`,
-    },
-    heroButtons: {
-        marginTop: theme.spacing.unit * 5,
-        marginBottom: theme.spacing.unit * 4,
-    },
-    layout: {
-        width: 'auto',
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
-            width: 1100,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
-    },
-    cardGrid: {
-        padding: `${theme.spacing.unit * 5}px 0`,
-    },
-    card: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 5
-    },
-    cardMedia: {
-        paddingTop: '56.25%', // 16:9
-    }
-});
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8];
+const cards = [1, 2, 3, 4, 5, 6, 7, 8]
 
 const Home = props => {
-    const { classes, Auth: { loggedIn } } = props;
+    const { classes, Auth: { loggedIn } } = props
     return (
         <Fragment>
             <div className={classes.heroUnit}>
@@ -59,7 +23,7 @@ const Home = props => {
                         ATLANTIS
                     </Typography>
                     <Typography variant="h6" align="center" color="textSecondary" paragraph>
-                        Magna culpa fugiat elit in sit irure. Ullamco cillum officia anim cupidatat aute sint pariatur sit sunt ea nostrud officia. 
+                        Magna culpa fugiat elit in sit irure. Ullamco cillum officia anim cupidatat aute sint pariatur sit sunt ea nostrud officia.
                         Sit magna tempor nostrud est aliquip cillum aliquip incididunt aliquip dolor ut duis.
                     </Typography>
                     <div className={classes.heroButtons}>
@@ -73,7 +37,7 @@ const Home = props => {
                                     ) : (
                                             <Button variant="contained" color="primary" component={Link} to="/signup">
                                                 Registrate
-                                        </Button>
+                                            </Button>
                                         )
                                 }
                             </Grid>
@@ -104,10 +68,10 @@ const Home = props => {
             </div>
         </Fragment>
     )
-};
+}
 
 Home.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
 
 export default withContext(withStyles(styles)(Home))

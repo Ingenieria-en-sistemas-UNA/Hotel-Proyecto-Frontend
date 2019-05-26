@@ -1,94 +1,94 @@
-import decode from 'jwt-decode';
+import decode from 'jwt-decode'
 import config from '../config/config'
 
 export default class AuthService {
     constructor(domain) {
-        this.domain = domain || `${config.URL}/user`;
+        this.domain = domain || `${config.URL}/user`
     }
 
     login = async (username, password) => {
         try {
             const res = await this.fetch(`${this.domain}/signin?username=${username}&password=${password}`, {
                 method: 'POST',
-            });
-            this.setToken(res.token);
-            // return Promise.resolve(res);
+            })
+            this.setToken(res.token)
+            // return Promise.resolve(res)
         }
         catch ({ message }) {
 
-            const serverError = this.getServerError(message);
+            const serverError = this.getServerError(message)
             
-            throw new Error(serverError);
+            throw new Error(serverError)
         }
-    };
+    }
 
     getServerError = message => {
-        console.log(message);
+        console.log(message)
         return message === "Failed to fetch" || message === "NetworkError when attempting to fetch resource." ? "Servidor apagado" : message
-    };
+    }
 
     Signup = async (user) => {
         try {
             const res = await this.fetch(`${this.domain}/signup`, {
                 method: 'POST',
                 body: JSON.stringify(user)
-            });
-            this.setToken(res.token);
-            // return Promise.resolve(res);
+            })
+            this.setToken(res.token)
+            // return Promise.resolve(res)
         }
         catch (error) {
-            throw error;
+            throw error
         }
-    };
+    }
 
     loggedIn = () => {
-        const token = this.getToken();
+        const token = this.getToken()
         return !!token && !this.isTokenExpired(token)
-    };
+    }
 
     isTokenExpired = token => {
         try {
-            const decoded = decode(token);
+            const decoded = decode(token)
             if (decoded.exp < Date.now() / 1000) { // Checking if token is expired. N
-                return true;
+                return true
             }
             else
-                return false;
+                return false
         }
         catch (err) {
-            return false;
+            return false
         }
-    };
+    }
 
-    setToken = idToken => localStorage.setItem('id_token', idToken);
+    setToken = idToken => localStorage.setItem('id_token', idToken)
 
-    getToken = () => localStorage.getItem('id_token');
+    getToken = () => localStorage.getItem('id_token')
 
-    logout = () => localStorage.removeItem('id_token');
+    logout = () => localStorage.removeItem('id_token')
 
-    getProfile = () => decode(this.getToken());
+    getProfile = () => decode(this.getToken())
 
     getUserRoles = () => {
-        const { auth } = this.getProfile();
+        const { auth } = this.getProfile()
         return auth
-    };
+    }
 
     isAdmin = () => {
         if (this.loggedIn()) {
-            const auth = this.getUserRoles();
-            let authorities = [];
+            const auth = this.getUserRoles()
+            let authorities = []
             auth.forEach(({ authority }) => {
                 authorities = [ ...authorities, authority]
-            });
+            })
             for (const authority of authorities) {
                 if(authority === "ROLE_ADMIN"){
                     return true
                 }
             }
-            console.log(authorities);
+            console.log(authorities)
             return false
         }
-    };
+    }
 
 
     fetch = (url, options) => {
@@ -97,7 +97,7 @@ export default class AuthService {
             'Content-Type': 'application/json'
         }
         if (this.loggedIn()) {
-            let token = this.getToken();
+            let token = this.getToken()
             if (this.isTokenExpired(token)) {
                 token = this.refrech()
             }
@@ -110,7 +110,7 @@ export default class AuthService {
         })
             .then(this._checkStatus)
             .then(response => response.json())
-    };
+    }
 
     fetchImg = async imgName => {
         try {
@@ -119,9 +119,9 @@ export default class AuthService {
                 .then(response => response.blob())
                 return Promise.resolve(image)
         } catch ({message}) {
-            const serverError = this.getServerError(message);
+            const serverError = this.getServerError(message)
             
-            throw new Error(serverError);
+            throw new Error(serverError)
         }
     }
 
@@ -130,19 +130,19 @@ export default class AuthService {
             return response
         } else {
             return response.json().then((json) => {
-                var error = new Error(json.message || response.statusText);
-                error.response = response;
+                var error = new Error(json.message || response.statusText)
+                error.response = response
                 throw error
-            });
+            })
         }
-    };
+    }
 
     refrech = () => {
-        const profile = this.getProfile();
+        const profile = this.getProfile()
         this.fetch(`${this.domain}/user/refresh/${profile.sub}`)
             .then(({ tokenResponse }) => {
-                this.setToken(tokenResponse);
-                return Promise.resolve(tokenResponse);
+                this.setToken(tokenResponse)
+                return Promise.resolve(tokenResponse)
             }).catch(error => { throw error })
     }
 }

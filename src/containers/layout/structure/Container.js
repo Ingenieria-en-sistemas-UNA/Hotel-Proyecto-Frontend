@@ -4,9 +4,6 @@ import { Grid, withStyles } from '@material-ui/core'
 import classNames from 'classnames';
 import styles from './jss/Container'
 import { withContext } from '../../../store/Context'
-
-
-
 class Container extends Component {
 
     render() {
