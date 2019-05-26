@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import AppRoute from './route/routes'
 import AuthService from './auth/AuthService'
-import {Provider} from './store/Context'
+import { Provider } from './store/Context'
 
 class App extends Component {
 
@@ -11,13 +11,14 @@ class App extends Component {
         Auth: new AuthService(),
         history: this.props.history,
         drawerState: false,
+        room: {}
     };
 
     componentDidMount() {
-        const {Auth: {loggedIn, getProfile}} = this.state;
+        const { Auth: { loggedIn, getProfile } } = this.state;
         this.changeSessionState(loggedIn());
         if (loggedIn()) {
-            const {user_data} = getProfile();
+            const { user_data } = getProfile();
             this.setState(prevState => ({
                 ...prevState,
                 user_data: {
@@ -28,7 +29,7 @@ class App extends Component {
     }
 
     handleChangeHeaderOption = (event, value) => {
-        this.setState({headerOptionSelected: value});
+        this.setState({ headerOptionSelected: value });
     };
 
 
@@ -37,12 +38,21 @@ class App extends Component {
     };
 
     handleDrawerOpen = () => {
-        this.setState({drawerState: true})
+        this.setState({ drawerState: true })
     };
 
     handleDrawerClose = () => {
-        this.setState({drawerState: false})
+        this.setState({ drawerState: false })
     };
+
+    handlerChangeRoom = room => () => {
+        this.setState(prevState => ({ ...prevState, room }))
+        this.state.history.push('/checkout')
+    }
+
+    handlerDeleteRoom = () => {
+        this.setState({ room: {} })
+    }
 
     getContext = () => ({
         ...this.state,
@@ -50,13 +60,15 @@ class App extends Component {
         handleDrawerOpen: this.handleDrawerOpen,
         handleDrawerClose: this.handleDrawerClose,
         handleChangeSignup: this.handleChangeSignup,
-        handleChangeHeaderOption: this.handleChangeHeaderOption
+        handleChangeHeaderOption: this.handleChangeHeaderOption,
+        handlerReserveRoom: this.handlerChangeRoom
     });
 
     render() {
+        console.log(this.getContext())
         return (
             <Provider value={this.getContext()}>
-                <AppRoute/>
+                <AppRoute />
             </Provider>
         )
     }

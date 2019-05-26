@@ -85,7 +85,6 @@ export default class AuthService {
                     return true
                 }
             }
-            console.log(authorities)
             return false
         }
     }

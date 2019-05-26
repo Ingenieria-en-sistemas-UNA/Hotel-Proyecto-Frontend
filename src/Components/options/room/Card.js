@@ -16,7 +16,7 @@ import IconButton from '@material-ui/core/IconButton'
 import classnames from 'classnames'
 import Collapse from '@material-ui/core/Collapse'
 import Divider from '@material-ui/core/Divider'
-import styles from './jss/styles'    
+import styles from './jss/styles'
 
 class ImgMediaCard extends Component {
 
@@ -27,11 +27,8 @@ class ImgMediaCard extends Component {
         this.setState(state => ({ expanded: !state.expanded }))
     }
 
-    state = {}
-
-
     async componentDidMount() {
-        const { Auth: { fetchImg }, img: imageName } = this.props
+        const { Auth: { fetchImg }, room: { img: imageName } } = this.props
         try {
             const image = await fetchImg(imageName)
             this.setState({ image })
@@ -41,15 +38,14 @@ class ImgMediaCard extends Component {
         }
     }
 
-
-
     render() {
-        const { classes, type, state, price, guests, description, index } = this.props,
-            { image } = this.state
+        const { classes, room, index, handlerReserveRoom } = this.props
+        const { image } = this.state
+        const { type, state, price, guests, description } = room
         return (
             <Grow in style={{ transformOrigin: '0 0 0' }} {...(index ? { timeout: 1000 * index } : { timeout: 500 })}>
                 <Card className={classes.card}>
-                    <CardActionArea>
+                    <CardActionArea onClick={this.handleExpandClick} >
                         <CardMedia
                             component="img"
                             alt="Contemplative Reptile"
@@ -62,7 +58,7 @@ class ImgMediaCard extends Component {
                             <Typography gutterBottom variant="h5" component="h2">
                                 Habitación
 
-                                <Typography component='p'>
+                                    <Typography component='p'>
                                     Tipo: {type} <br />
                                     precio: ${price} <br />
                                 </Typography>
@@ -81,9 +77,9 @@ class ImgMediaCard extends Component {
                     <Divider variant="middle" />
                     <CardActions>
 
-                        <Button variant="outlined" size="small" color="primary">
+                        <Button variant="outlined" size="small" color="primary" onClick={handlerReserveRoom(room)} >
                             Reservar
-                        </Button>
+                            </Button>
 
                         <IconButton className={classnames(classes.expand, {
                             [classes.expandOpen]: this.state.expanded,

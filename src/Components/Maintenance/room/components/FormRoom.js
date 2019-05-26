@@ -8,7 +8,6 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import PhotoCamera from '@material-ui/icons/PhotoCamera'
-import NumberFormat from 'react-number-format'
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
 import { withContext } from '../../../../store/Context'
@@ -79,7 +78,6 @@ class FormRoom extends Component {
     handlerSubmitForm = e => {
         e.preventDefault()
         const { handlerSubmit } = this.props
-        console.log(this.state)
         handlerSubmit(this.state)
     }
 

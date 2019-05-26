@@ -3,6 +3,7 @@ export default theme => ({
     card: {
         maxWidth: '25%',
         margin: '10px',
+        marginTop: '50px'
     },
     media: {
         // ⚠️ object-fit is not supported by IE 11.
