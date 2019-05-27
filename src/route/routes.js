@@ -13,6 +13,7 @@ import Pdf from '../Components/PDF/pdf'
 
 import Client from '../Components/Maintenance/customers/Client'
 import Checkout from '../Components/checkout/Checkout'
+import SamplePdf from '../Components/PDF/Sample'
 class AppRoutes extends Component {
     
     render() {
@@ -25,6 +26,7 @@ class AppRoutes extends Component {
                     <Route exact path="/signup" component={Signup} />
                     <AdminRoute exact path="/rooms-maintenance" component={RoomMaintenance} />
                     <Route exact path="/ejemplo-pdf" component={Pdf}/>
+                    <Route exact path="/ejemplo-pdf-2" component={SamplePdf}/>
 
                     <Route exact path='/checkout' component={Checkout}/>
                     <Redirect to="/" />
