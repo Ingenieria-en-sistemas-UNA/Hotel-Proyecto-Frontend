@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flexGrow: 1
   }
+ 
 });
 
 // Create Document Component

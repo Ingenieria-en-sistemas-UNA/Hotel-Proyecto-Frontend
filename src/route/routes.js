@@ -25,7 +25,6 @@ class AppRoutes extends Component {
                     <Route exact path="/signup" component={Signup} />
                     <AdminRoute exact path="/rooms-maintenance" component={RoomMaintenance} />
                     <Route exact path="/ejemplo-pdf" component={Pdf}/>
-
                     <Route exact path='/checkout' component={Checkout}/>
                     <Redirect to="/" />
                 </Switch>
