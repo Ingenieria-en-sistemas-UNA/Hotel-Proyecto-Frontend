@@ -6,10 +6,6 @@
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "@react-pdf/renderer": "^1.6.0",
-<<<<<<< HEAD
-    "@react-pdf/styled-components": "^1.4.0",
-=======
->>>>>>> b6d241cc5be85797112d7ef39c8e45ce7cbd327f
     "history": "^4.9.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",
