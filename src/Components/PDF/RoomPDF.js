@@ -1,21 +1,8 @@
 import React from 'react';
-import { Page, View, Document, StyleSheet, PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import { PDFViewer } from '@react-pdf/renderer';
 import { withContext } from '../../store/Context'
 import config from '../../config/config'
-import { Table } from './Table'
-// Create styles
-
-const styles = StyleSheet.create({
-    page: {
-        flexDirection: 'column',
-        display: 'flex',
-        backgroundColor: '#E4E4E4'
-    },
-    container: {
-        width: '100%', 
-        alignItems: 'center'
-    }
-})
+import PDF from './components/RoomPDF'
 
 const configTable = {
     rows: [
@@ -33,12 +20,14 @@ const configTable = {
 }
 
 // Create Document Component
-class Sample extends React.Component {
+class RoomPDF extends React.Component {
 
     state = {
-        LOADING: true,
-        rooms: []
+        rooms: [],
+        LOADING: true
     }
+
+    changeLoading = () => this.setState(prevState => ({ ...prevState, LOADING: false }))
 
     async componentDidMount() {
         const { Auth: { fetch: fetchAPI } } = this.props
@@ -46,25 +35,20 @@ class Sample extends React.Component {
         this.setState(prevState => ({ ...prevState, rooms }))
     }
 
-    createDocument = () => {
-        const { rooms: data } = this.state
-        const config = { data, ...configTable}
-
-        return (
-            <Document onRender={() => { this.state.LOADING = false; }}>
-                <Page size="A4" style={styles.page}>
-                    <View style={styles.container}>
-                        <Table config={config} />
-                    </View>
-                </Page>
-            </Document>)
-    }
-
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         return !this.state.LOADING
     }
+
     render() {
-        return <PDFViewer width={'100%'} height={600}>{this.createDocument()}</PDFViewer>
+        const { rooms: data } = this.state
+        const config = { data, ...configTable }
+        return (
+            config && (
+                <PDFViewer width={'100%'} height={600}>
+                    <PDF config={config} changeLoading={this.changeLoading}/>
+                </PDFViewer>
+            )
+        )
     }
     // render() {
     //     return (
@@ -75,4 +59,4 @@ class Sample extends React.Component {
     // }
 }
 
-export default withContext(Sample)
+export default withContext(RoomPDF)
