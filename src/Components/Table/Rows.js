@@ -5,6 +5,7 @@ import { IconButton, Tooltip } from '@material-ui/core'
 import { Edit } from '@material-ui/icons';
 import Checkbox from '@material-ui/core/Checkbox'
 import keyGenerator from '../../utils/KeysGenerator'
+
 const getColumnText = (item, key, columsConfig) => {
     if (!columsConfig[key]) return item[key]
     if (!columsConfig[key].isBoolean) return columsConfig[key].customText

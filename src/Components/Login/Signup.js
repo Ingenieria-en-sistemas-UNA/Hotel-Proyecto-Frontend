@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Message from '../Message'
-import { Avatar, Button, FormControl } from '@material-ui/core';
-import { Paper, Typography, Link, Grid, TextField } from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { Avatar, Button, FormControl } from '@material-ui/core'
+import { Paper, Typography, Link, Grid, TextField } from '@material-ui/core'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import withStyles from '@material-ui/core/styles/withStyles'
 import { withContext } from '../../store/Context'
 import styles from './jss/signup'
 import validate from './validate/signup'
@@ -13,26 +13,26 @@ class Signup extends Component {
     state = {
         roles: ["ROLE_CLIENT"],
         errors: {}
-    };
+    }
 
     componentWillMount() {
-        const { Auth, history } = this.props;
+        const { Auth, history } = this.props
         if (Auth.loggedIn()) {
-            history.push('/');
+            history.push('/')
         }
     }
 
     handleFormSubmit = async (e) => {
-        e.preventDefault();
-        const { errors, ...sinErrors } = this.state;
-        const { changeSessionState, Auth, history } = this.props;
-        const result = validate(sinErrors);
+        e.preventDefault()
+        const { errors, ...sinErrors } = this.state
+        const { changeSessionState, Auth, history } = this.props
+        const result = validate(sinErrors)
         if (!Object.keys(result).length) {
             try {
-                const user = this.getUser(sinErrors);
-                await Auth.Signup(user);
-                changeSessionState(true);
-                history.push('/');
+                const user = this.getUser(sinErrors)
+                await Auth.Signup(user)
+                changeSessionState(true)
+                history.push('/')
             } catch ({ message }) {
                 this.setState({
                     errors: { general: message },
@@ -41,10 +41,10 @@ class Signup extends Component {
         } else {
             this.setState({ errors: result })
         }
-    };
+    }
 
     getUser = ({roles, username, password, ...client}) => {
-        const { address, cellphone, email, ...person } = client;
+        const { address, cellphone, email, ...person } = client
         return {
             roles,
             username,
@@ -56,25 +56,25 @@ class Signup extends Component {
                 person
             }
         }
-    };
+    }
 
     login = () => {
-        const { history } = this.props;
+        const { history } = this.props
         history.push('/login')
-    };
+    }
 
     handleChange = e => {
-        const { target: { name, value } } = e;
+        const { target: { name, value } } = e
         this.setState(prevState => ({
             ...prevState,
             [name]: value,
         }))
-    };
+    }
     render() {
-        const { classes } = this.props;
+        const { classes } = this.props
         const {
             errors, name = '', lastName = '', id = '',
-            cellphone = '', email = '', address = '', username = '', password= '' } = this.state;
+            cellphone = '', email = '', address = '', username = '', password= '' } = this.state
 
         return (
             <main className={classes.main}>
@@ -225,6 +225,6 @@ class Signup extends Component {
 }
 Signup.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
 
 export default withContext(withStyles(styles)(Signup))

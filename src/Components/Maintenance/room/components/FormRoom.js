@@ -8,68 +8,12 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import PhotoCamera from '@material-ui/icons/PhotoCamera'
-import NumberFormat from 'react-number-format'
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
 import { withContext } from '../../../../store/Context'
 import imageDefault from '../../../../assets/img/default.png'
-
-const styles = theme => ({
-    form: {
-        display: 'flex',
-        flexDirection: 'column',
-        margin: 'auto',
-        width: 'fit-content',
-    },
-    formControl: {
-        marginTop: theme.spacing.unit * 2,
-        minWidth: 120,
-    },
-    formControlLabel: {
-        marginTop: theme.spacing.unit,
-    },
-    fab: {
-        margin: '0 auto',
-    },
-    extendedIcon: {
-        marginRight: theme.spacing.unit,
-    },
-    input: {
-        display: 'none',
-    },
-    card: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        margin: '0 auto'
-    },
-    cardMedia: {
-        paddingTop: '56.25%', // 16:9
-        backgroundSize: 'contain',
-        width: '300px'
-    }
-})
-
-
-function NumberFormatCustom(props) {
-    const { inputRef, onChange, ...other } = props;
-
-    return (
-        <NumberFormat
-            {...other}
-            getInputRef={inputRef}
-            onValueChange={values => {
-                onChange({
-                    target: {
-                        value: values.value,
-                    },
-                })
-            }}
-            thousandSeparator
-            prefix="$"
-        />
-    );
-}
+import NumberFormatCustom from '../../../utils/NumberFormatCustom'
+import styles from './jss/styles'
 
 class FormRoom extends Component {
 
@@ -134,7 +78,6 @@ class FormRoom extends Component {
     handlerSubmitForm = e => {
         e.preventDefault()
         const { handlerSubmit } = this.props
-        console.log(this.state)
         handlerSubmit(this.state)
     }
 
@@ -154,7 +97,7 @@ class FormRoom extends Component {
                     <Grid item xs={12}>
                         <DialogTitle id="max-width-dialog-title" style={{ display: 'flex' }} disableTypography>
                             <Typography align='center' variant='h5' style={{ width: '100%' }}>
-                                Create Room
+                                {id ? 'Actualizar habitación' : 'Crear habitación'}
                             </Typography>
                         </DialogTitle>
                         <Divider component='hr' variant='middle' />
@@ -259,7 +202,7 @@ class FormRoom extends Component {
                                     Cancelar
                                 </Button>
                                 <Button type='submit' color="primary">
-                                    Guardar
+                                    { id ? 'Actualizar' : 'Añadir' }
                                 </Button>
                             </DialogActions>
                         </Grid>

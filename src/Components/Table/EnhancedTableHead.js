@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { TableHead, TableSortLabel, Checkbox, TableRow, TableCell, Tooltip } from '@material-ui/core';
 
-
-
 class EnhancedTableHead extends Component {
     createSortHandler = property => event => {
         if(property !== 'actions'){

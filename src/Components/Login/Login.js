@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Message from '../Message'
-import { Avatar, Button, FormControl } from '@material-ui/core';
-import { Input, InputLabel, Paper, Typography, Link, Grid } from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { Avatar, Button, FormControl } from '@material-ui/core'
+import { Input, InputLabel, Paper, Typography, Link, Grid } from '@material-ui/core'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import withStyles from '@material-ui/core/styles/withStyles'
 import { withContext } from '../../store/Context'
 import styles from './jss/login'
 
@@ -12,23 +12,23 @@ class Login extends Component {
 
     state = {
         errors: {}
-    };
+    }
 
     componentWillMount() {
-        const { Auth: { loggedIn }, history } = this.props;
+        const { Auth: { loggedIn }, history } = this.props
         if (loggedIn()) {
-            history.push('/');
+            history.push('/')
         }
     }
 
     handleFormSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         try {
 
-            const { changeSessionState, history, Auth: { login } } = this.props;
-            await login(this.state.username, this.state.password);
-            changeSessionState(true);
-            history.push('/');
+            const { changeSessionState, history, Auth: { login } } = this.props
+            await login(this.state.username, this.state.password)
+            changeSessionState(true)
+            history.push('/')
 
         } catch ({ message }) {
             this.setState({
@@ -36,7 +36,7 @@ class Login extends Component {
                     general: message,
                     credentials: true
                 }
-            });
+            })
 
             setTimeout(() => {
                 this.setState(({errors}) =>({ 
@@ -48,23 +48,23 @@ class Login extends Component {
             }, 3000)
 
         }
-    };
+    }
 
     signup = () => {
-        const { history } = this.props;
+        const { history } = this.props
         history.push('/signup')
-    };
+    }
 
     handleChange = e => {
-        const { target: { name, value } } = e;
+        const { target: { name, value } } = e
         this.setState({
             [name]: value,
             error: false
         })
-    };
+    }
     render() {
-        const { classes } = this.props;
-        const { errors } = this.state;
+        const { classes } = this.props
+        const { errors } = this.state
         return (
             <Grid item className={classes.main}>
                 <Paper className={classes.paper}>
@@ -124,6 +124,6 @@ class Login extends Component {
 }
 Login.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
 
 export default withContext(withStyles(styles)(Login))
