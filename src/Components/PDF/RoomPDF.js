@@ -51,8 +51,10 @@ class RoomPDF extends React.Component {
         )
     }
     // render() {
+    //     const { rooms: data } = this.state
+    //     const config = { data, ...configTable }
     //     return (
-    //         <PDFDownloadLink document={this.createDocument()} fileName="somename.pdf" >
+    //         <PDFDownloadLink document={<PDF config={config} changeLoading={this.changeLoading}/>} fileName="room.pdf" >
     //             {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
     //         </PDFDownloadLink>
     //     )
