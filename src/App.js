@@ -15,17 +15,9 @@ class App extends Component {
     };
 
     componentDidMount() {
-        const { Auth: { loggedIn, getProfile } } = this.state;
+        const { Auth: { loggedIn } } = this.state;
         this.changeSessionState(loggedIn());
-        if (loggedIn()) {
-            const { user_data } = getProfile();
-            this.setState(prevState => ({
-                ...prevState,
-                user_data: {
-                    ...user_data
-                }
-            }))
-        }
+        
     }
 
     handleChangeHeaderOption = (event, value) => {
@@ -34,7 +26,17 @@ class App extends Component {
 
 
     changeSessionState = sessionState => {
-        this.setState({ sessionState })
+        const { Auth: { loggedIn, getProfile } } = this.state;
+        if (loggedIn()) {
+            const { user_data } = getProfile();
+            return this.setState(prevState => ({
+                ...prevState,
+                user_data,
+                sessionState
+            }))
+        }
+
+        this.setState(prevState => ({ ...prevState, sessionState }))
     };
 
     handleDrawerOpen = () => {
@@ -65,7 +67,6 @@ class App extends Component {
     });
 
     render() {
-        console.log(this.getContext())
         return (
             <Provider value={this.getContext()}>
                 <AppRoute />

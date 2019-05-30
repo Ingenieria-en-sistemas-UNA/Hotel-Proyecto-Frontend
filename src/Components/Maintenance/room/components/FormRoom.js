@@ -114,7 +114,6 @@ class FormRoom extends Component {
                                             label="Tipo de habitación"
                                             fullWidth
                                             autoComplete="Tipo de habitación"
-                                            variant="filled"
                                             value={type}
                                             onChange={this.handleChange}
                                         />
@@ -127,7 +126,6 @@ class FormRoom extends Component {
                                             label="Descripción"
                                             fullWidth
                                             autoComplete="Descripción"
-                                            variant="filled"
                                             value={description}
                                             onChange={this.handleChange}
                                         />
@@ -143,7 +141,6 @@ class FormRoom extends Component {
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
-                                            variant="filled"
                                             autoComplete="Capacidad máxima"
                                             value={guests}
                                             onChange={this.handleChange}
@@ -155,7 +152,6 @@ class FormRoom extends Component {
                                             id="price"
                                             name="price"
                                             label="Precio"
-                                            variant="filled"
                                             InputProps={{
                                                 inputComponent: NumberFormatCustom,
                                             }}
