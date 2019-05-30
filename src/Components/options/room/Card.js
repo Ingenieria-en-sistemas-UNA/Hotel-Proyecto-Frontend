@@ -38,6 +38,10 @@ class ImgMediaCard extends Component {
         }
     }
 
+    getDefaultImage = async () => {
+        return await fetch(imageDefault).then(response => response.blob())
+    }
+
     render() {
         const { classes, room, index, handlerReserveRoom } = this.props
         const { image } = this.state
@@ -51,7 +55,7 @@ class ImgMediaCard extends Component {
                             alt="Contemplative Reptile"
                             className={classes.media}
                             height="140"
-                            image={image && URL.createObjectURL(image)}
+                            image={image ? URL.createObjectURL(image): require('../../../assets/img/default.png')}
                             title="Contemplative Reptile"
                         />
                         <CardContent>

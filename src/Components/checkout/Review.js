@@ -26,11 +26,11 @@ const Review = ({ classes, room, client, voucher }) => {
                 Resumen de orden
             </Typography>
             <List disablePadding>
-                <ListItem className={classes.listItem} key={room.id}>
+                <ListItem className={classes.listItem}>
                     <ListItemText primary='Habitación' secondary={`Tipo: ${room.type}, descripción: ${room.description}`} />
                     <Typography variant="body2">{room.price}</Typography>
                 </ListItem>
-                <ListItem className={classes.listItem} key={room.id}>
+                <ListItem className={classes.listItem}>
                     <ListItemText primary='Noches' secondary={`Cantidad de noches seleccionadas`} />
                     <Typography variant="body2">{voucher.numberNights}</Typography>
                 </ListItem>

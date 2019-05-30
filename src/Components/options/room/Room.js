@@ -25,7 +25,7 @@ class Room extends Component {
                     this.setState({
                         nothing: false
                     })
-                }, 3000)
+                }, 6000)
             }
         } catch ({ message }) {
             const serverError = getServerError(message);
@@ -41,7 +41,7 @@ class Room extends Component {
                         general: false
                     }
                 })
-            }, 3000)
+            }, 6000)
         }
     }
 

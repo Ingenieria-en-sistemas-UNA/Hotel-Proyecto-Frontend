@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import NumberFormatCustom from '../utils/NumberFormatCustom'
 
-export default ({ voucher: { price, numberNights, detail }, room: { description = '', guests = '', type = '' }, handlerChangeNight }) => {
+export default ({ voucher: { price, numberNight, detail }, room: { description = '', guests = '', type = '' }, handlerChangeNight }) => {
     return (
         <Fragment>
             <Typography variant="h6" gutterBottom>
@@ -47,14 +47,14 @@ export default ({ voucher: { price, numberNights, detail }, room: { description 
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
-                        id="numberNights"
-                        name="numberNights"
+                        id="numberNight"
+                        name="numberNight"
                         InputLabelProps={{
                             shrink: true,
                         }}
                         type="number"
                         onChange={handlerChangeNight}
-                        value={numberNights}
+                        value={numberNight}
                         label="Cantidad de noches a reservar"
                         fullWidth
                         autoComplete="billing address-level2"
