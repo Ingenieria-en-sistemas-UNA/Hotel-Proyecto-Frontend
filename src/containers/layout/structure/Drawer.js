@@ -29,7 +29,7 @@ class DrawerLayout extends Component {
                 </div>
                 <Divider />
                 <List>
-                    <ListItem button component={Link} to="">
+                    <ListItem button component={Link} to="/clients-maintenance">
                         Mantenimiento Usuarios
                     </ListItem>
                 </List>

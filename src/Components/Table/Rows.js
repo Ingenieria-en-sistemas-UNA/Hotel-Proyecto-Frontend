@@ -9,13 +9,13 @@ import keyGenerator from '../../utils/KeysGenerator'
 const getColumnText = (item, key, columsConfig) => {
     if (!columsConfig[key]) return item[key]
     if (!columsConfig[key].isBoolean) return columsConfig[key].customText
-    if(item[key]){
-        return columsConfig[key].ifTrue    
+    if (item[key]) {
+        return columsConfig[key].ifTrue
     }
     return columsConfig[key].ifFalse
 }
 
-export default ({ item, isSelected, columsConfig, handlerUpdateItem, handleClick }) => {
+export default ({ item, isSelected, columsConfig, handlerUpdateItem, handleClick, update = false }) => {
     const orderKey = columsConfig ? Object.keys(columsConfig) : []
     return (
         <TableRow
@@ -32,21 +32,25 @@ export default ({ item, isSelected, columsConfig, handlerUpdateItem, handleClick
             {
                 orderKey.map((key, i) => {
                     return (
-                        <TableCell key={keyGenerator('Table',i)} align={'center'}>
-                            {getColumnText(item,key, columsConfig)}
+                        <TableCell key={keyGenerator('Table', i)} align={'center'}>
+                            {getColumnText(item, key, columsConfig)}
                         </TableCell>
                     )
                 })
             }
-            <TableCell align={'center'}>
-                <Tooltip title="Edit">
-                    <IconButton aria-haspopup="true"
-                        onClick={handlerUpdateItem(item)}
-                        color="inherit">
-                        <Edit />
-                    </IconButton>
-                </Tooltip>
-            </TableCell>
+            {
+                update && (
+                    <TableCell align={'center'}>
+                        <Tooltip title="Edit">
+                            <IconButton aria-haspopup="true"
+                                onClick={handlerUpdateItem(item)}
+                                color="inherit">
+                                <Edit />
+                            </IconButton>
+                        </Tooltip>
+                    </TableCell>
+                )
+            }
         </TableRow>
     )
 }

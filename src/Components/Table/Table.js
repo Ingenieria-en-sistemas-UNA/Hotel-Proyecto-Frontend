@@ -92,7 +92,7 @@ class EnhancedTable extends Component {
     }
 
     render() {
-        const { classes, config: { rows, colum }, title, handlerChangeFilter, handleClickOpen, handlerUpdateItem } = this.props
+        const { classes, config: { rows, colum }, title, handlerChangeFilter, handleClickOpen, handlerUpdateItem, update } = this.props
         const { data, order, orderBy, selected, rowsPerPage, page } = this.state
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
         return (
@@ -122,6 +122,7 @@ class EnhancedTable extends Component {
                                         return <Row
                                             key={item.id}
                                             item={item}
+                                            update={update}
                                             isSelected={isSelected}
                                             handleClick={this.handleClick}
                                             columsConfig={colum}
@@ -163,7 +164,7 @@ EnhancedTable.propTypes = {
     title: PropTypes.string.isRequired,
     handlerChangeFilter: PropTypes.func.isRequired,
     handleClickOpen: PropTypes.func.isRequired,
-    handlerUpdateItem: PropTypes.func.isRequired,
+    handlerUpdateItem: PropTypes.func,
     handlerDeleteItems: PropTypes.func.isRequired,
 }
 

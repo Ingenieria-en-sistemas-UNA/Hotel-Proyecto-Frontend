@@ -8,7 +8,7 @@ import Room from '../Components/options/room/Room'
 import RoomMaintenance from '../Components/Maintenance/room/Room'
 import Home from '../Components/home/Home'
 import { withContext } from '../store/Context'
-import Client from '../Components/Maintenance/customers/Client'
+import ClientMaintenance from '../Components/Maintenance/customers/Client'
 import Checkout from '../Components/checkout/Checkout'
 class AppRoutes extends Component {
     
@@ -21,6 +21,7 @@ class AppRoutes extends Component {
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />
                     <AdminRoute exact path="/rooms-maintenance" component={RoomMaintenance} />
+                    <AdminRoute exact path="/clients-maintenance" component={ClientMaintenance} />
                     <Route exact path='/checkout' component={Checkout}/>
                     <Redirect to="/" />
                 </Switch>
