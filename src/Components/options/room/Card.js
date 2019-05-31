@@ -17,7 +17,6 @@ import classnames from 'classnames'
 import Collapse from '@material-ui/core/Collapse'
 import Divider from '@material-ui/core/Divider'
 import { FiberManualRecord } from '@material-ui/icons'
-import Icon from '@material-ui/core/Icon'
 import styles from './jss/styles'
 
 class ImgMediaCard extends Component {

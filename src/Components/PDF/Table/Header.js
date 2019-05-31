@@ -18,6 +18,7 @@ export default ({ rows }) =>
                             </Column>
                         )
                     }
+                    return null
                 })
             }
         </Row>
