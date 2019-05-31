@@ -9,13 +9,15 @@ export default ({ rows }) =>
         <Row>
             {
                 rows.map((row) => {
-                    return (
-                        <Column key={row.id} color={'#3f51b5'}>
-                            <Cell>
-                                {row.label}
-                            </Cell>
-                        </Column>
-                    )
+                    if(row.id !== 'actions'){
+                        return (
+                            <Column key={row.id} color={'#3f51b5'}>
+                                <Cell>
+                                    {row.label}
+                                </Cell>
+                            </Column>
+                        )
+                    }
                 })
             }
         </Row>

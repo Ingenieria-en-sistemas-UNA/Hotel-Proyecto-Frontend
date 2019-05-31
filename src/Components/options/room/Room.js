@@ -53,7 +53,7 @@ class Room extends Component {
         const { rooms, errors, nothing } = this.state;
         return (
             <Fragment>
-                <Grid container justify='space-around' direction='row' wrap='wrap' style={{ display: 'flex', alignItems: 'flex-start' }}>
+                <Grid container justify='space-between' direction='row' wrap='wrap' style={{ display: 'flex', alignItems: 'flex-start' }}>
                     {
                         rooms && rooms.map((room, index) => <Card key={room.id} room={room} index={index} />)
                     }

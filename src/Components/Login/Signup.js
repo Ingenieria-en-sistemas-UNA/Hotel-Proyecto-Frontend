@@ -12,6 +12,8 @@ class Signup extends Component {
 
     state = {
         roles: ["ROLE_CLIENT"],
+        maxReserve: 2,
+        submmited: false,
         errors: {}
     }
 
@@ -24,6 +26,7 @@ class Signup extends Component {
 
     handleFormSubmit = async (e) => {
         e.preventDefault()
+        this.setState({ submmited: true })
         const { errors, ...sinErrors } = this.state
         const { changeSessionState, Auth, history } = this.props
         const result = validate(sinErrors)
@@ -41,10 +44,11 @@ class Signup extends Component {
         } else {
             this.setState({ errors: result })
         }
+        this.setState({ submmited: false })
     }
 
-    getUser = ({roles, username, password, ...client}) => {
-        const { address, cellphone, email, ...person } = client
+    getUser = ({ roles, username, password, ...client }) => {
+        const { address, cellphone, email, maxReserve, submmited, ...person } = client
         return {
             roles,
             username,
@@ -53,6 +57,7 @@ class Signup extends Component {
                 address,
                 cellphone,
                 email,
+                maxReserve,
                 person
             }
         }
@@ -74,7 +79,7 @@ class Signup extends Component {
         const { classes } = this.props
         const {
             errors, name = '', lastName = '', id = '',
-            cellphone = '', email = '', address = '', username = '', password= '' } = this.state
+            cellphone = '', email = '', address = '', username = '', password = '', submmited } = this.state
 
         return (
             <main className={classes.main}>
@@ -199,6 +204,7 @@ class Signup extends Component {
                                     fullWidth
                                     variant="contained"
                                     color="primary"
+                                    disabled={submmited}
                                     className={classes.submit}
                                 >
                                     Sign up

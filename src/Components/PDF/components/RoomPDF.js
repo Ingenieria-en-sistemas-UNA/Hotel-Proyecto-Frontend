@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
 export default class extends Component {
     
     render() {
-        const { config, changeLoading } = this.props
+        const { config } = this.props
         return (
-            <Document onRender={() => { changeLoading() }}>
+            <Document >
                 <Page size="A4" style={styles.page}>
                     <View style={styles.container}>
                         <Table config={config} />
