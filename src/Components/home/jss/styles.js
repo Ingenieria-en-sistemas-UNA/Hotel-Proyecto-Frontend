@@ -37,5 +37,9 @@ export default theme => ({
     },
     cardMedia: {
         paddingTop: '56.25%', // 16:9
+    },
+    cardContainer: {
+        display: 'flex',
+        justifyContent: 'space-between'
     }
 })

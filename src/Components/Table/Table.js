@@ -86,13 +86,28 @@ class EnhancedTable extends Component {
         const { selected } = this.state
         const { handlerDeleteItems } = this.props
         handlerDeleteItems(selected)
+        this.cleanSelected()
+    }
+
+    cleanSelected = () => {
         this.setState({
             selected: []
         })
     }
 
+    handlerCreateReport = () => {
+        const { selected } = this.state
+        const { handlerCreateReport } = this.props
+        handlerCreateReport(selected)
+        this.cleanSelected()
+    }
+
     render() {
+<<<<<<< HEAD
         const { classes, config: { rows, colum }, title, handlerChangeFilter, handleClickOpen, handlerUpdateItem, update } = this.props
+=======
+        const { classes, config: { rows, column }, title, handlerChangeFilter, handleClickOpen, handlerUpdateItem } = this.props
+>>>>>>> cd99c394e4f4fd33e813bc212301b9ca53d458b9
         const { data, order, orderBy, selected, rowsPerPage, page } = this.state
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
         return (
@@ -102,6 +117,7 @@ class EnhancedTable extends Component {
                         handlerChangeFilter={handlerChangeFilter}
                         handleClickOpen={handleClickOpen}
                         handlerDeleteItems={this.handlerDeleteItems}
+                        handlerCreateReport={this.handlerCreateReport}
                     />
                     <div className={classes.tableWrapper}>
                         <Table className={classes.table} aria-labelledby="tableTitle">
@@ -125,7 +141,7 @@ class EnhancedTable extends Component {
                                             update={update}
                                             isSelected={isSelected}
                                             handleClick={this.handleClick}
-                                            columsConfig={colum}
+                                            columsConfig={column}
                                             handlerUpdateItem={handlerUpdateItem}
                                         />
                                     })}
@@ -163,9 +179,16 @@ EnhancedTable.propTypes = {
     classes: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
     handlerChangeFilter: PropTypes.func.isRequired,
+<<<<<<< HEAD
     handleClickOpen: PropTypes.func.isRequired,
     handlerUpdateItem: PropTypes.func,
     handlerDeleteItems: PropTypes.func.isRequired,
+=======
+    handleClickOpen: PropTypes.func,
+    handlerUpdateItem: PropTypes.func,
+    handlerDeleteItems: PropTypes.func,
+    handlerCreateReport: PropTypes.func
+>>>>>>> cd99c394e4f4fd33e813bc212301b9ca53d458b9
 }
 
 export default withStyles(styles)(EnhancedTable)

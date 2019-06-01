@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton'
 import classnames from 'classnames'
 import Collapse from '@material-ui/core/Collapse'
 import Divider from '@material-ui/core/Divider'
+import { FiberManualRecord } from '@material-ui/icons'
 import styles from './jss/styles'
 
 class ImgMediaCard extends Component {
@@ -59,13 +60,16 @@ class ImgMediaCard extends Component {
                             title="Contemplative Reptile"
                         />
                         <CardContent>
+                            <Typography align='right' >
+                                <FiberManualRecord style={state ? {color: '#f44336'} : {color: '#00c853'} }/>
+                            </Typography>
                             <Typography gutterBottom variant="h5" component="h2">
                                 Habitación
 
                                     <Typography component='p'>
                                     Tipo: {type} <br />
                                     precio: ${price} <br />
-                                </Typography>
+                                    </Typography>
                                 <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
 
                                     <Typography component="p">
@@ -83,7 +87,7 @@ class ImgMediaCard extends Component {
 
                         <Button variant="outlined" size="small" color="primary" onClick={handlerReserveRoom(room)} >
                             Reservar
-                            </Button>
+                        </Button>
 
                         <IconButton className={classnames(classes.expand, {
                             [classes.expandOpen]: this.state.expanded,

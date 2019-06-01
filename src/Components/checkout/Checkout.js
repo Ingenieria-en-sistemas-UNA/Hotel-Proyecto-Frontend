@@ -82,7 +82,7 @@ class Checkout extends Component {
 
 
     componentDidMount() {
-        const { user_data: client = { person: {} }, room, history } = this.props
+        const { user_data: client = { person: {} }, room = {} , history } = this.props
         if (room.id) {
             return this.setState(prevState => ({ ...prevState, client, room, voucher: { ...prevState.voucher, price: room.price, receiver: client.person.name, detail: `Reservación de una habitación de tipo: ${room.type}` } }))
         }
@@ -108,7 +108,7 @@ class Checkout extends Component {
                 method: 'POST',
                 body: JSON.stringify({ client, room, voucher })
             })
-            if (response.id) {
+            if (!response.id) {
                 throw new Error('Algo ha ocurrido, porfavor intente más tarde')
             }
             this.setState(state => ({
