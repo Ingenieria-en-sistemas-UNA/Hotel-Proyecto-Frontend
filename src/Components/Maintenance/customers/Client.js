@@ -159,7 +159,7 @@ class Client extends Component {
                 success && <Message message={success} type='success' />
             }
             {
-                nothing && <Message message="No hay habitaciones registradas" type="info" />
+                nothing && <Message message="No hay clientes registrados" type="info" />
             }
         </Fragment>
         )
