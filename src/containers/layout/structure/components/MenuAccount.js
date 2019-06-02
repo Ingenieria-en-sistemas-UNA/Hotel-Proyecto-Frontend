@@ -29,10 +29,10 @@ class MenuAccount extends Component {
         this.setState({ anchorEl: null });
     };
 
-    handleRouteClick = () => root => {
-        const { history } = this.props;
+    handleRouteClick = () => {
+        const { history } = this.props
         this.handleMenuClose();
-        history.push('/' + root)
+        history.push('/account')
     };
 
     onClickLogout = () => {
@@ -61,7 +61,7 @@ class MenuAccount extends Component {
                 open={isMenuOpen}
                 onClose={this.handleMenuClose}
             >
-                <MenuItem onClick={this.handleRouteClick('/profile')}>Profile</MenuItem>
+                <MenuItem onClick={this.handleRouteClick}>Account</MenuItem>
                 <MenuItem onClick={this.onClickLogout}>Logout</MenuItem>
             </Menu>
         );

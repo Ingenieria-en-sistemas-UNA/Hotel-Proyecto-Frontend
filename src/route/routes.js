@@ -10,6 +10,7 @@ import Home from '../Components/home/Home'
 import { withContext } from '../store/Context'
 import Client from '../Components/Maintenance/customers/Client'
 import Checkout from '../Components/checkout/Checkout'
+import Account from '../Components/Profile/Account'
 import RoomPDF from '../Components/PDF/RoomPDF'
 class AppRoutes extends Component {
     
@@ -19,6 +20,7 @@ class AppRoutes extends Component {
                 <Switch>
                     <Route exact path="/" component={Home}/>
                     <PrivateRoute path="/rooms" component={Room}/>
+                    <PrivateRoute exact path="/account" component={Account}/>
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />
                     <AdminRoute exact path="/rooms-maintenance" component={RoomMaintenance} />
