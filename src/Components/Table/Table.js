@@ -138,6 +138,7 @@ class EnhancedTable extends Component {
                                         return <Row
                                             key={item.id}
                                             item={item}
+                                            
                                             isSelected={isSelected}
                                             handleClick={this.handleClick}
                                             columsConfig={column}
