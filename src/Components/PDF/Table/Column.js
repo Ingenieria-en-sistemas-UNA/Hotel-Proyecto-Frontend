@@ -2,20 +2,19 @@ import React from 'react';
 import { View, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
-    col: color => ({
-        width: "25%",
-        borderStyle:
-            "solid",
+    col: (color, cant = 5 ) => ({
+        width: `${100/cant}%`,
+        borderStyle: 'solid',
         borderWidth: 1,
         borderLeftWidth: 0,
         borderTopWidth: 0,
-        padding: '10px 20px 10px 20px',
         backgroundColor: color,
-        margin: 0
+        margin: 0,
+        padding: '5px 0 5px 0'
     })
 });
 
-export default ({ children, color }) =>
-    <View style={styles.col(color)}>
+export default ({ children, color, cant }) =>
+    <View style={styles.col(color, cant)}>
         { children }
     </View>

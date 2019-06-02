@@ -6,8 +6,8 @@ import Body from './Body'
 const styles = StyleSheet.create({
     table: {
         display: 'table',
-        width: "70%",
-        borderStyle: "solid",
+        width: '85%',
+        borderStyle: 'solid',
         borderWidth: 1,
         borderRightWidth: 0,
         borderBottomWidth: 0
@@ -16,6 +16,6 @@ const styles = StyleSheet.create({
 
 export default ({ config: { data, column, rows } }) => 
     <View style={styles.table}>
-        <Header rows={rows} />
+        <Header rows={rows} column={column} />
         <Body column={column} data={data} />
     </View>

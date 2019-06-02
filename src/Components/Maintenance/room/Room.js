@@ -4,7 +4,6 @@ import { withContext } from '../../../store/Context'
 import Message from '../../Message'
 import config from '../../../config/config'
 import FormRoom from './components/FormRoom'
-import RoomPDF from '../../PDF/components/RoomPDF'
 import DownloadPDF from '../../PDF/components/DownloadPDF'
 
 const configTable = {
@@ -231,6 +230,7 @@ class Room extends Component {
                     config={config}
                     title='Gestion de habitaciones'
                     reset={this.reset}
+                    update
                     handlerChangeFilter={this.handlerChangeFilter}
                     handleClickOpen={this.handleClickOpen}
                     handlerUpdateItem={this.handlerUpdateItem}
@@ -261,6 +261,7 @@ class Room extends Component {
                     <DownloadPDF
                         config={this.getConfigReport()}
                         filename='Reporte-Atlantis-Habitaciones'
+                        title='Reporte Habitaciones'
                     />
                 )
             }

@@ -107,7 +107,15 @@ class EnhancedTable extends Component {
     }
 
     render() {
-        const { classes, config: { rows, column }, title, handlerChangeFilter, handleClickOpen, handlerUpdateItem } = this.props
+        const { 
+            classes, 
+            config: { rows, column }, 
+            title,
+            update, 
+            handlerChangeFilter, 
+            handleClickOpen, 
+            handlerUpdateItem 
+        } = this.props
         const { data, order, orderBy, selected, rowsPerPage, page } = this.state
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
         return (
@@ -118,6 +126,7 @@ class EnhancedTable extends Component {
                         handleClickOpen={handleClickOpen}
                         handlerDeleteItems={this.handlerDeleteItems}
                         handlerCreateReport={this.handlerCreateReport}
+                        update={update}
                     />
                     <div className={classes.tableWrapper}>
                         <Table className={classes.table} aria-labelledby="tableTitle">
@@ -138,7 +147,7 @@ class EnhancedTable extends Component {
                                         return <Row
                                             key={item.id}
                                             item={item}
-                                            
+                                            update={update}
                                             isSelected={isSelected}
                                             handleClick={this.handleClick}
                                             columsConfig={column}

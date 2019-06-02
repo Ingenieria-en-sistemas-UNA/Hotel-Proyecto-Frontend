@@ -2,7 +2,7 @@ import React from 'react';
 import { PDFViewer } from '@react-pdf/renderer';
 import { withContext } from '../../store/Context'
 import config from '../../config/config'
-import PDF from './components/RoomPDF'
+import PDF from './components/PDF'
 
 const configTable = {
     rows: [

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { BlobProvider } from '@react-pdf/renderer';
-import PDF from './RoomPDF'
+import PDF from './PDF'
 export default class extends Component {
     state = { is_Mounted: true }
     componentWillReceiveProps({ config: { data: dataNext = [] } }) {
@@ -27,11 +27,11 @@ export default class extends Component {
     }
 
     render() {
-        const { config, filename = 'Reporte-Atlantis' } = this.props
+        const { config, filename = 'Reporte-Atlantis', title } = this.props
         const { is_Mounted } = this.state
         return (
             is_Mounted ? (
-                <BlobProvider document={<PDF config={config} />} >
+                <BlobProvider document={<PDF config={config} title={title} />} >
                     {({ blob, url, loading, error }) => {
                         if (blob !== null) {
                             if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -46,7 +46,6 @@ export default class extends Component {
                             setTimeout(() => {
                                 window.URL.revokeObjectURL(data)
                             }, 100)
-                            console.log(blob, url, loading, error)
                         }
                         return ''
                     }}

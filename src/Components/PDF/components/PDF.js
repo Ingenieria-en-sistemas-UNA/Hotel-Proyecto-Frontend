@@ -42,16 +42,16 @@ export default class extends Component {
 
     render() {
         
-        const{ localDate = ""} = this.state
+        const{ localDate = '' } = this.state
 
-        const { config, changeLoading } = this.props
+        const { config, title = 'Reporte' } = this.props
         return (
             <Document >
                 <Page size="A4" style={styles.page}>
                     <View style={styles.container}>
 
                     <Text style={styles.logo}> ATLANTIS  </Text>
-                    <Text style={styles.hab}> Reporte de Habitaciones </Text>
+                    <Text style={styles.hab}>{title}</Text>
          
                         <Table config={config} />                                          
                     </View>    
