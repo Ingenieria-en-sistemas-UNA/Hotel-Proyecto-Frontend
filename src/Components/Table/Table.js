@@ -35,6 +35,8 @@ class EnhancedTable extends Component {
     }
 
     handleSelectAllClick = event => {
+        const { reset } = this.props
+        reset()
         if (event.target.checked) {
             this.setState(state => ({ selected: state.data.map(n => n.id) }))
             return
@@ -44,6 +46,8 @@ class EnhancedTable extends Component {
 
     handleClick = (event, id) => {
         const { selected } = this.state
+        const { reset } = this.props
+        reset()
         const selectedIndex = selected.indexOf(id)
         let newSelected = []
 
