@@ -46,7 +46,7 @@ export default class extends Component {
 
         const { config, changeLoading } = this.props
         return (
-            <Document onRender={() => { changeLoading() }}>
+            <Document >
                 <Page size="A4" style={styles.page}>
                     <View style={styles.container}>
 

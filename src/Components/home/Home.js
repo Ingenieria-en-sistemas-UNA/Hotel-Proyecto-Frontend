@@ -51,8 +51,7 @@ const Home = props => {
                 </div>
             </div>
             <div className={classNames(classes.layout, classes.cardGrid)}>
-                {/* End hero unit */}
-                <Grid container spacing={40}>
+                <Grid container spacing={24} className={classes.cardContainer}>
                     {cards.map(card => (
                         <Grid item key={card} sm={6} md={4} lg={3}>
                             <Card className={classes.card}>

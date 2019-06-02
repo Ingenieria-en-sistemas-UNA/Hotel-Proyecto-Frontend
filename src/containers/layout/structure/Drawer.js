@@ -29,7 +29,7 @@ class DrawerLayout extends Component {
                 </div>
                 <Divider />
                 <List>
-                    <ListItem button component={Link} to="">
+                    <ListItem button component={Link} to="/clients-maintenance">
                         Mantenimiento Usuarios
                     </ListItem>
                 </List>
@@ -39,6 +39,13 @@ class DrawerLayout extends Component {
                         Mantenimiento Habitaciones
                     </ListItem>
                 </List>
+                <Divider />
+                <List>
+                    <ListItem button component={Link} to="">
+                        Facturación
+                    </ListItem>
+                </List>
+                <Divider />
             </Drawer>
         )
     }

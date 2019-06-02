@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import { withStyles, Toolbar, Typography, IconButton, Tooltip } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
+import { CloudDownload } from '@material-ui/icons'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import AddIcon from '@material-ui/icons/Add'
 import InputSearch from './InputSearch'
@@ -36,7 +37,7 @@ class EnhancedTableToolbar extends Component {
     }
 
     render() {
-        const { numSelected, classes, title, handlerChangeFilter, handleClickOpen } = this.props,
+        const { numSelected, classes, title, handlerChangeFilter, handleClickOpen, handlerCreateReport } = this.props,
             { filter, open } = this.state
 
         return (
@@ -60,11 +61,18 @@ class EnhancedTableToolbar extends Component {
                     {filter && <InputSearch handlerChangeFilter={handlerChangeFilter} />}
                     <div className={classes.actions}>
                         {numSelected > 0 ? (
-                            <Tooltip title="Delete">
-                                <IconButton aria-label="Delete" onClick={this.handlerDeleteItems}>
-                                    <DeleteIcon />
-                                </IconButton>
-                            </Tooltip>
+                            <Fragment>
+                                <Tooltip title="Report">
+                                    <IconButton aria-label="Report" onClick={handlerCreateReport}>
+                                        <CloudDownload />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Delete">
+                                    <IconButton aria-label="Delete" onClick={this.handlerDeleteItems}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </Fragment>
                         ) : (
                                 <Fragment>
                                     <Tooltip title="Filter list">

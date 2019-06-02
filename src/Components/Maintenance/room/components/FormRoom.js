@@ -27,8 +27,8 @@ class FormRoom extends Component {
         this.changeState(object, itemUpdate)
     }
 
-    changeState = async (object, itemUpdate) => {
-        if (itemUpdate) {
+    changeState = async (object, itemUpdate = { id: false }) => {
+        if (itemUpdate.id) {
             const { Auth: { fetchImg } } = this.props
             const { img:imageName, ...rest } = itemUpdate
             try {
@@ -43,8 +43,9 @@ class FormRoom extends Component {
         }
         this.setState({ ...object })
     }
-    componentWillReceiveProps({ object, itemUpdate }) {
+    componentWillReceiveProps({ object, itemUpdate = {} }) {
         this.changeState(object, itemUpdate)
+        return itemUpdate.id ? true : false
     }
     handleChangeFile = e => {
         const { files } = e.target
@@ -82,8 +83,8 @@ class FormRoom extends Component {
     }
 
     render() {
-        const { classes, open } = this.props
-        const { type, description, guests, price, file, id = false } = this.state
+        const { classes, open, submmited } = this.props
+        const { type = '', description = '', guests = '', price = '', file = '', id = false } = this.state
         return (
             <Dialog
                 fullWidth
@@ -197,7 +198,7 @@ class FormRoom extends Component {
                                 <Button onClick={this.handleClosePop} color="primary">
                                     Cancelar
                                 </Button>
-                                <Button type='submit' color="primary">
+                                <Button type='submit' color="primary" disabled={submmited}>
                                     { id ? 'Actualizar' : 'Añadir' }
                                 </Button>
                             </DialogActions>

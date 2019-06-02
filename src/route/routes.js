@@ -8,9 +8,11 @@ import Room from '../Components/options/room/Room'
 import RoomMaintenance from '../Components/Maintenance/room/Room'
 import Home from '../Components/home/Home'
 import { withContext } from '../store/Context'
-import Client from '../Components/Maintenance/customers/Client'
+import ClientMaintenance from '../Components/Maintenance/customers/Client'
 import Checkout from '../Components/checkout/Checkout'
 import RoomPDF from '../Components/PDF/RoomPDF'
+
+
 class AppRoutes extends Component {
     
     render() {
@@ -22,8 +24,10 @@ class AppRoutes extends Component {
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />
                     <AdminRoute exact path="/rooms-maintenance" component={RoomMaintenance} />
+                    <AdminRoute exact path="/clients-maintenance" component={ClientMaintenance} />
                     <Route exact path="/room-pdf" component={RoomPDF}/>
                     <Route exact path='/checkout' component={Checkout}/>
+                  
                     <Redirect to="/" />
                 </Switch>
             </Layout>

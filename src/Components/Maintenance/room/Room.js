@@ -4,6 +4,8 @@ import { withContext } from '../../../store/Context'
 import Message from '../../Message'
 import config from '../../../config/config'
 import FormRoom from './components/FormRoom'
+import RoomPDF from '../../PDF/components/RoomPDF'
+import DownloadPDF from '../../PDF/components/DownloadPDF'
 
 const configTable = {
     rows: [
@@ -13,7 +15,7 @@ const configTable = {
         { id: 'guests', numeric: true, disablePadding: false, label: 'Capacidad' },
         { id: 'actions', numeric: false, disablePadding: false, label: 'Acciones' }
     ],
-    colum: {
+    column: {
         type: false,
         state: { isBoolean: true, ifTrue: 'Ocupado', ifFalse: 'Disponible', customText: '' },
         price: false,
@@ -24,6 +26,9 @@ class Room extends Component {
     state = {
         errors: {},
         openForm: false,
+        submmited: false,
+        rooms: [],
+        report: [],
         form: {
             type: '',
             description: '',
@@ -60,6 +65,7 @@ class Room extends Component {
     }
 
     handlerSubmit = async ({ file, id = false, img, ...rest }) => {
+        this.setState({ submmited: true })
         const { Auth: { getToken, _checkStatus } } = this.props, { rooms: roomsState } = this.state
         const formData = new FormData()
         let theFile = file
@@ -121,6 +127,7 @@ class Room extends Component {
                 })
             }, 6000)
         }
+        this.setState({ submmited: false })
     }
 
 
@@ -191,9 +198,28 @@ class Room extends Component {
             itemUpdate
         }))
     }
+
+    handlerCreateReport = selectedItems => {
+        const { rooms = [] } = this.state
+        let report = []
+        selectedItems.forEach(id => {
+            rooms.forEach(room => {
+                if (room.id === id) {
+                    report = [...report, room]
+                }
+            })
+        })
+        this.setState(prevState => ({ ...prevState, report }))
+    }
+
+    getConfigReport = () => {
+        const { report: data } = this.state
+        return { ...configTable, data }
+    }
+
     render() {
-        const { rooms, errors, openForm, form, itemUpdate, success, nothing } = this.state
-        const config = { ...configTable,  data: rooms }
+        const { rooms, report = [], errors, openForm, form, itemUpdate, success, nothing, submmited } = this.state
+        const config = { ...configTable, data: rooms }
         return (<Fragment>
             {
                 rooms && (<Table
@@ -203,6 +229,7 @@ class Room extends Component {
                     handleClickOpen={this.handleClickOpen}
                     handlerUpdateItem={this.handlerUpdateItem}
                     handlerDeleteItems={this.handlerDeleteItems}
+                    handlerCreateReport={this.handlerCreateReport}
                 />
                 )
             }
@@ -220,8 +247,17 @@ class Room extends Component {
                 handleClose={this.handleClose}
                 object={form}
                 itemUpdate={itemUpdate}
+                submmited={submmited}
                 handlerSubmit={this.handlerSubmit}
             />
+            {
+                report.length && (
+                    <DownloadPDF
+                        PDF={<RoomPDF config={this.getConfigReport()} />}
+                        filename='Reporte-Atlantis-Habitaciones' 
+                    />
+                )
+            }
         </Fragment>
         )
     }
