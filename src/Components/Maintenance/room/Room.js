@@ -4,7 +4,6 @@ import { withContext } from '../../../store/Context'
 import Message from '../../Message'
 import config from '../../../config/config'
 import FormRoom from './components/FormRoom'
-import RoomPDF from '../../PDF/components/RoomPDF'
 import DownloadPDF from '../../PDF/components/DownloadPDF'
 
 const configTable = {
@@ -29,6 +28,7 @@ class Room extends Component {
         submmited: false,
         rooms: [],
         report: [],
+        clickReport: false,
         form: {
             type: '',
             description: '',
@@ -209,7 +209,11 @@ class Room extends Component {
                 }
             })
         })
-        this.setState(prevState => ({ ...prevState, report }))
+        this.setState(prevState => ({ ...prevState, report, clickReport: true }))
+    }
+    
+    reset = () => {
+        this.setState(prevState => ({ ...prevState, clickReport: false }))
     }
 
     getConfigReport = () => {
@@ -218,13 +222,15 @@ class Room extends Component {
     }
 
     render() {
-        const { rooms, report = [], errors, openForm, form, itemUpdate, success, nothing, submmited } = this.state
+        const { rooms, clickReport = false, errors, openForm, form, itemUpdate, success, nothing, submmited } = this.state
         const config = { ...configTable, data: rooms }
         return (<Fragment>
             {
                 rooms && (<Table
                     config={config}
                     title='Gestion de habitaciones'
+                    reset={this.reset}
+                    update
                     handlerChangeFilter={this.handlerChangeFilter}
                     handleClickOpen={this.handleClickOpen}
                     handlerUpdateItem={this.handlerUpdateItem}
@@ -251,10 +257,11 @@ class Room extends Component {
                 handlerSubmit={this.handlerSubmit}
             />
             {
-                report.length && (
+                clickReport && (
                     <DownloadPDF
-                        PDF={<RoomPDF config={this.getConfigReport()} />}
-                        filename='Reporte-Atlantis-Habitaciones' 
+                        config={this.getConfigReport()}
+                        filename='Reporte-Atlantis-Habitaciones'
+                        title='Reporte Habitaciones'
                     />
                 )
             }

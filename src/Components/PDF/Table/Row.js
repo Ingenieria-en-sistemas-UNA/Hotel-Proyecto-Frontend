@@ -3,8 +3,9 @@ import { View, StyleSheet } from '@react-pdf/renderer'
 
 const styles = StyleSheet.create({
     row: {
-        margin: "auto",
-        flexDirection: "row"
+        margin: 'auto',
+        flexDirection: 'row',
+        width: '100%',
     }
 })
 

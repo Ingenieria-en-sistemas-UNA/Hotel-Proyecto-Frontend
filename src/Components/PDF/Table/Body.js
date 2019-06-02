@@ -17,7 +17,7 @@ const getColumnText = (item, key, columsConfig) => {
 export default ({ column, data }) => {
     const orderKey = column ? Object.keys(column) : []
     return (
-        <View>
+        <View style={{width: '100%'}}>
             {
                 data.map((item) => {
                     return (
@@ -25,7 +25,7 @@ export default ({ column, data }) => {
                             {
                                 orderKey.map((key, i) => {
                                     return (
-                                        <Column key={i} color={'#fff'}>
+                                        <Column key={i} color={'#fff'} cant={orderKey.length}>
                                             <Cell>
                                                 {getColumnText(item, key, column)}
                                             </Cell>

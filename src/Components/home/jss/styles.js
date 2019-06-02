@@ -1,6 +1,11 @@
+const imgUrl = 'https://images.unsplash.com/photo-1534854638093-bada1813ca19?auto=format&fit=crop&w=1400&q=80'
+
 export default theme => ({
     heroUnit: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundImage: `url(${imgUrl})`,
+        backgroundrepeat: 'no-repeat',
+        backgroundColor: '#7fc7d9', // Average color of the background image.
+        backgroundPosition: 'center',
     },
     heroContent: {
         maxWidth: 600,
