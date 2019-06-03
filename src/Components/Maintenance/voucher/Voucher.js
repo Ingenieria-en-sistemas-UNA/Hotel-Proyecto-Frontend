@@ -6,43 +6,46 @@ import { withContext } from '../../../store/Context'
 
 const configTable = {
     rows: [
-        { id: 'id', numeric: false, disablePadding: true, label: 'Cédula' },
-        { id: 'email', numeric: false, disablePadding: false, label: 'Correo Electronico' },
-        { id: 'address', numeric: true, disablePadding: false, label: 'Dirección' },
-        { id: 'name', numeric: true, disablePadding: false, label: 'Nombre' },
-        { id: 'lastName', numeric: true, disablePadding: false, label: 'Apellidos' },
-        { id: 'cellphone', numeric: false, disablePadding: false, label: 'Teléfono' }
+        { id: 'id', numeric: false, disablePadding: true, label: '# Factura' },
+        { id: 'emitter', numeric: false, disablePadding: false, label: 'Emisor' },
+        { id: 'receiver', numeric: true, disablePadding: false, label: 'Receptor' },
+        { id: 'detail', numeric: true, disablePadding: false, label: 'Detalle' },
+        { id: 'localDate', numeric: true, disablePadding: false, label: 'Fecha' },
+        { id: 'price', numeric: false, disablePadding: false, label: 'Precio' },
+        { id: 'numberNight', numeric: false, disablePadding: false, label: 'Noches' }
     ],
     column: {
         id: false,
-        email: false,
-        address: false,
-        name: false,
-        lastName: false,
-        cellphone: false,
+        emitter: false,
+        receiver: false,
+        detail: false,
+        localDate: false,
+        price: false,
+        numberNight: false,
     }
 }
 
-class Client extends Component {
+class Voucher extends Component {
     state = {
         errors: {},
         form: {
             id: '',
-            email: '',
-            address: '',
-            person: '',
-            cellphone: '',
+            emmiter: '',
+            reveicer: '',
+            detail: '',
+            LocalDate: '',
+            numberNight:'',
         }
     }
 
     handlerDeleteItems = async (ItemsSelected) => {
         const { Auth: { fetch: fetchAPI } } = this.props
         try {
-            await fetchAPI(`${config.URL}/client`, {
+            await fetchAPI(`${config.URL}/voucher`, {
                 method: 'DELETE',
                 body: JSON.stringify(ItemsSelected)
             })
-            this.filterClients()
+            this.filterVouchers()
         } catch ({ message }) {
             this.setState({
                 errors: {
@@ -67,22 +70,23 @@ class Client extends Component {
 
     handlerChangeFilter = ({ target: { value } }) => {
         if (value !== '') {
-            this.filterClients(value)
+            this.filterVouchers(value)
         } else {
-            this.filterClients()
+            this.filterVouchers()
         }
     }
 
 
-    filterClients = async (filter = 'all') => {
+    filterVouchers = async (filter = 'all') => {
         const { Auth: { fetch: fetchAPI, getServerError } } = this.props
         try {
-            const clients = await fetchAPI(`${config.URL}/client`, {
+            const vouchers = await fetchAPI(`${config.URL}/voucher?filter=all`, {
                 method: 'GET'
             })
-            let nothing = clients.length ? false : true
+            console.log(vouchers)
+            let nothing = vouchers.length ? false : true
             this.setState({
-                clients,
+                vouchers,
                 nothing
             })
             if (this.state.nothing) {
@@ -117,33 +121,22 @@ class Client extends Component {
     }
 
     componentDidMount() {
-        this.filterClients()
+        this.filterVouchers()
     }
 
     handlerUpdateItem = itemUpdate => () => {
 
     }
 
-    getClientFormatTable = (clients = []) => {
-        let array = []
-        clients.forEach(({person, id, ...rest}) => {
-            if(id !== 1){
-                array = [ ...array, { ...person, ...rest, id: person.id } ]
-            }
-        })
-        return array
-    }
-
     render() {
-        const { clients: jsonFormat, errors, success, nothing } = this.state
-        const clients = this.getClientFormatTable(jsonFormat)
-        console.log(clients, jsonFormat)
-        const config = { ...configTable,  data: clients }
+        const { vouchers, errors, success, nothing } = this.state
+        const config = { ...configTable,  data: vouchers }
+        console.log(vouchers)
         return (<Fragment>
             {
-                jsonFormat && (<Table
+            vouchers && (<Table
                     config={config}
-                    title='Gestion de clientes'
+                    title='Facturación'
                     update={false}
                     handlerChangeFilter={this.handlerChangeFilter}
                     handleClickOpen={this.handleClickOpen}
@@ -159,11 +152,11 @@ class Client extends Component {
                 success && <Message message={success} type='success' />
             }
             {
-                nothing && <Message message="No hay clientes registrados" type="info" />
+                nothing && <Message message="No hay Facturas" type="info" />
             }
         </Fragment>
         )
     }
 }
 
-export default withContext(Client)
+export default withContext(Voucher)
