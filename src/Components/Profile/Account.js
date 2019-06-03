@@ -13,7 +13,8 @@ class Signup extends Component {
         updated: true,
         submmited: false,
         errors: {},
-        client: {}
+        client: {},
+        defaultClient: {}
     }
 
 
@@ -25,34 +26,38 @@ class Signup extends Component {
         const { target: { name, value } } = e
         this.setState(prevState => ({
             ...prevState,
-            [name]: value,
+            client: {
+                [name]: value
+            }
         }))
     }
 
-    componentDidMount(){
+    componentDidMount() {
         const { Auth: { getProfile } } = this.props
-        const { user_data: { person = {}, ...rest} } = getProfile()
+        const { user_data: { person = {}, ...rest } } = getProfile()
         this.setState(prevState => ({ ...prevState, client: { ...person, ...rest, id: person.id } }))
     }
 
-    enableUpdated = () => {
-        this.setState(prevState => ({ ...prevState, updated: !prevState.updated }))
+    enableUpdated = type => () => {
+        const { client, defaultClient } = this.state
+        if(type === 'edit') return this.setState(prevState => ({ ...prevState, updated: false, defaultClient: client }))
+        this.setState(prevState => ({ ...prevState, updated: true, client: defaultClient }))
     }
     render() {
         const { classes } = this.props
-        const { 
-            updated, 
-            submmited, 
+        const {
+            updated,
+            submmited,
             errors,
             client: {
-                id = '', 
-                name = '', 
+                id = '',
+                name = '',
                 lastName = '',
                 cellphone = '',
                 address = '',
                 email = ''
-            } 
-        } = this.state 
+            }
+        } = this.state
         return (
             <Fragment>
                 <main className={classes.main}>
@@ -60,11 +65,11 @@ class Signup extends Component {
                         <Avatar className={classes.avatar}>
                             <AccountCircle style={{ fontSize: 40 }} />
                         </Avatar>
-                        <Typography component="h1" variant="h5">
+                        <Typography component='h1' variant='h5'>
                             Account
                         </Typography>
                         <form className={classes.form} onSubmit={this.handleFormSubmit}>
-                            <Grid spacing={24} container alignItems="center">
+                            <Grid spacing={24} container alignItems='center'>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         error={errors.name && true}
@@ -72,11 +77,11 @@ class Signup extends Component {
                                         onChange={this.handleChange}
                                         value={name}
                                         disabled={updated}
-                                        id="name"
-                                        name="name"
-                                        label="Nombre"
+                                        id='name'
+                                        name='name'
+                                        label='Nombre'
                                         fullWidth
-                                        autoComplete="Nombre"
+                                        autoComplete='Nombre'
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -86,11 +91,11 @@ class Signup extends Component {
                                         onChange={this.handleChange}
                                         value={lastName}
                                         disabled={updated}
-                                        id="lastName"
-                                        name="lastName"
-                                        label="Apellidos"
+                                        id='lastName'
+                                        name='lastName'
+                                        label='Apellidos'
                                         fullWidth
-                                        autoComplete="Apellidos"
+                                        autoComplete='Apellidos'
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -100,11 +105,11 @@ class Signup extends Component {
                                         onChange={this.handleChange}
                                         value={id}
                                         disabled
-                                        id="id"
-                                        name="id"
-                                        label="Cedula"
+                                        id='id'
+                                        name='id'
+                                        label='Cedula'
                                         fullWidth
-                                        autoComplete="Cedula"
+                                        autoComplete='Cedula'
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -114,11 +119,11 @@ class Signup extends Component {
                                         onChange={this.handleChange}
                                         value={cellphone}
                                         disabled={updated}
-                                        id="cellphone"
-                                        name="cellphone"
-                                        label="Telefono"
+                                        id='cellphone'
+                                        name='cellphone'
+                                        label='Telefono'
                                         fullWidth
-                                        autoComplete="Telefono"
+                                        autoComplete='Telefono'
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -128,12 +133,12 @@ class Signup extends Component {
                                         onChange={this.handleChange}
                                         value={email}
                                         disabled={updated}
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        label="Correo"
+                                        type='email'
+                                        id='email'
+                                        name='email'
+                                        label='Correo'
                                         fullWidth
-                                        autoComplete="Correo"
+                                        autoComplete='Correo'
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -143,30 +148,50 @@ class Signup extends Component {
                                         onChange={this.handleChange}
                                         value={address}
                                         disabled={updated}
-                                        id="address"
-                                        name="address"
-                                        label="Dirección"
+                                        id='address'
+                                        name='address'
+                                        label='Dirección'
                                         fullWidth
-                                        autoComplete="Dirección"
+                                        autoComplete='Dirección'
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6} className={classes.gridButtomSubmit}>
-                                    <Button
-                                        onClick={this.enableUpdated}
-                                        fullWidth
-                                        variant="contained"
-                                        color="primary"
-                                        disabled={submmited}
-                                        className={classes.submit}
-                                    >
-                                        Actualizar
-                                    </Button>
+                                    {
+                                        updated ? (
+                                            <Button
+                                                onClick={this.enableUpdated('edit')}
+                                                variant='contained'
+                                                color='secondary'
+                                                className={classes.submit}
+                                            >
+                                                Editar
+                                            </Button>
+                                        ) : (
+                                                <Fragment>
+                                                    <Button
+                                                        variant='contained'
+                                                        color='primary'
+                                                        className={classes.submit}
+                                                    >
+                                                        Actualizar
+                                                    </Button>
+                                                    <Button
+                                                        onClick={this.enableUpdated('update')}
+                                                        variant='contained'
+                                                        color='secondary'
+                                                        className={classes.submit}
+                                                    >
+                                                        Cancelar
+                                                </Button>
+                                                </Fragment>
+                                            )
+                                    }
                                 </Grid>
                             </Grid>
-                            <FormControl margin="normal" fullWidth>
+                            <FormControl margin='normal' fullWidth>
                             </FormControl>
                             {
-                                errors.general && <Message message={errors.general} type={"error"} />
+                                errors.general && <Message message={errors.general} type={'error'} />
                             }
                         </form>
                     </Paper>
@@ -176,10 +201,10 @@ class Signup extends Component {
                         <Avatar className={classes.avatar}>
                             <HistoryOutlined style={{ fontSize: 40 }} />
                         </Avatar>
-                        <Typography component="h1" variant="h5">
+                        <Typography component='h1' variant='h5'>
                             Historial
                         </Typography>
-                        
+
                     </Paper>
                 </main>
                 <main className={classes.main}>
@@ -187,10 +212,10 @@ class Signup extends Component {
                         <Avatar className={classes.avatar}>
                             <Room style={{ fontSize: 40 }} />
                         </Avatar>
-                        <Typography component="h1" variant="h5">
+                        <Typography component='h1' variant='h5'>
                             Habitaciones
                         </Typography>
-                        
+
                     </Paper>
                 </main>
             </Fragment>
