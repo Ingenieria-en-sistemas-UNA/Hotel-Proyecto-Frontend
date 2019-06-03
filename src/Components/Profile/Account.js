@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Message from '../Message'
 import { Avatar, Button, FormControl } from '@material-ui/core'
-import { Paper, Typography, Link, Grid, TextField } from '@material-ui/core'
+import { Paper, Typography, Grid, TextField } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { withContext } from '../../store/Context'
@@ -32,7 +32,7 @@ class Signup extends Component {
     componentDidMount(){
         const { Auth: { getProfile } } = this.props
         const { user_data: { person = {}, ...rest} } = getProfile()
-        this.setState(prevState => ({ ...prevState, client: { ...person, rest, id: person.id } }))
+        this.setState(prevState => ({ ...prevState, client: { ...person, ...rest, id: person.id } }))
     }
 
     enableUpdated = () => {
@@ -98,7 +98,7 @@ class Signup extends Component {
                                     helperText={errors.id && errors.id}
                                     onChange={this.handleChange}
                                     value={id}
-                                    disabled={updated}
+                                    disabled
                                     id="id"
                                     name="id"
                                     label="Cedula"
