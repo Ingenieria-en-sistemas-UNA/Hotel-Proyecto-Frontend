@@ -10,8 +10,10 @@ import Home from '../Components/home/Home'
 import { withContext } from '../store/Context'
 import ClientMaintenance from '../Components/Maintenance/customers/Client'
 import Checkout from '../Components/checkout/Checkout'
+import Account from '../Components/Profile/Account'
 import RoomPDF from '../Components/PDF/RoomPDF'
-import Voucher from '../Components/Maintenance/voucher/Voucher'
+import Voucher from '../Components/Maintenance/voucher/Voucher';
+
 
 class AppRoutes extends Component {
     
@@ -21,13 +23,14 @@ class AppRoutes extends Component {
                 <Switch>
                     <Route exact path="/" component={Home}/>
                     <PrivateRoute path="/rooms" component={Room}/>
+                    <PrivateRoute exact path="/account" component={Account}/>
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />
                     <AdminRoute exact path="/rooms-maintenance" component={RoomMaintenance} />
                     <AdminRoute exact path="/clients-maintenance" component={ClientMaintenance} />
                     <Route exact path="/room-pdf" component={RoomPDF}/>
                     <Route exact path='/checkout' component={Checkout}/>
-                    <Route exact path="/voucher" component={Voucher}/>
+                    <AdminRoute exact path="/voucher" component={Voucher} />
                     <Redirect to="/" />
                 </Switch>
             </Layout>

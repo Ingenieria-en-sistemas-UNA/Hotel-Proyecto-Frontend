@@ -37,7 +37,7 @@ class EnhancedTableToolbar extends Component {
     }
 
     render() {
-        const { numSelected, classes, title, handlerChangeFilter, handleClickOpen, handlerCreateReport } = this.props,
+        const { numSelected, classes, title, handlerChangeFilter, handleClickOpen, handlerCreateReport, update } = this.props,
             { filter, open } = this.state
 
         return (
@@ -80,11 +80,15 @@ class EnhancedTableToolbar extends Component {
                                             <FilterListIcon />
                                         </IconButton>
                                     </Tooltip>
-                                    <Tooltip title="Add">
-                                        <IconButton aria-label="Add" onClick={handleClickOpen}>
-                                            <AddIcon />
-                                        </IconButton>
-                                    </Tooltip>
+                                    {
+                                        update && (
+                                            <Tooltip title="Add">
+                                                <IconButton aria-label="Add" onClick={handleClickOpen}>
+                                                    <AddIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                        )
+                                    }
                                 </Fragment>
                             )}
                     </div>

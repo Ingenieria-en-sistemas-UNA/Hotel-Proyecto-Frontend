@@ -35,6 +35,8 @@ class EnhancedTable extends Component {
     }
 
     handleSelectAllClick = event => {
+        const { reset } = this.props
+        reset()
         if (event.target.checked) {
             this.setState(state => ({ selected: state.data.map(n => n.id) }))
             return
@@ -44,6 +46,8 @@ class EnhancedTable extends Component {
 
     handleClick = (event, id) => {
         const { selected } = this.state
+        const { reset } = this.props
+        reset()
         const selectedIndex = selected.indexOf(id)
         let newSelected = []
 
@@ -103,7 +107,15 @@ class EnhancedTable extends Component {
     }
 
     render() {
-        const { classes, config: { rows, column }, title, handlerChangeFilter, handleClickOpen, handlerUpdateItem, update} = this.props
+        const { 
+            classes, 
+            config: { rows, column }, 
+            title,
+            update, 
+            handlerChangeFilter, 
+            handleClickOpen, 
+            handlerUpdateItem 
+        } = this.props
         const { data, order, orderBy, selected, rowsPerPage, page } = this.state
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
         return (

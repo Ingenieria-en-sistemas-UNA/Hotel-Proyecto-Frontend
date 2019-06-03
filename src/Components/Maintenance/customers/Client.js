@@ -3,15 +3,16 @@ import Table from '../../Table/Table'
 import config from '../../../config/config'
 import Message from '../../Message'
 import { withContext } from '../../../store/Context'
+import DownloadPDF from '../../PDF/components/DownloadPDF'
 
 const configTable = {
     rows: [
         { id: 'id', numeric: false, disablePadding: true, label: 'Cédula' },
         { id: 'email', numeric: false, disablePadding: false, label: 'Correo Electronico' },
-        { id: 'address', numeric: true, disablePadding: false, label: 'Dirección' },
-        { id: 'name', numeric: true, disablePadding: false, label: 'Nombre' },
-        { id: 'lastName', numeric: true, disablePadding: false, label: 'Apellidos' },
-        { id: 'cellphone', numeric: false, disablePadding: false, label: 'Teléfono' }
+        { id: 'address', numeric: false, disablePadding: false, label: 'Dirección' },
+        { id: 'name', numeric: false, disablePadding: false, label: 'Nombre' },
+        { id: 'lastName', numeric: false, disablePadding: false, label: 'Apellidos' },
+        { id: 'cellphone', numeric: true, disablePadding: false, label: 'Teléfono' }
     ],
     column: {
         id: false,
@@ -26,6 +27,8 @@ const configTable = {
 class Client extends Component {
     state = {
         errors: {},
+        report: [],
+        clickReport: false,
         form: {
             id: '',
             email: '',
@@ -134,21 +137,45 @@ class Client extends Component {
         return array
     }
 
+    handlerCreateReport = selectedItems => {
+        const { clients = [] } = this.state
+        let report = []
+        const clientsFormatTable = this.getClientFormatTable(clients)
+        selectedItems.forEach(id => {
+            clientsFormatTable.forEach(client => {
+                if (client.id === id) {
+                    report = [...report, client]
+                }
+            })
+        })
+        this.setState(prevState => ({ ...prevState, report, clickReport: true }))
+    }
+    
+    reset = () => {
+        this.setState(prevState => ({ ...prevState, clickReport: false }))
+    }
+
+    getConfigReport = () => {
+        const { report: data } = this.state
+        return { ...configTable, data }
+    }
+
     render() {
-        const { clients: jsonFormat, errors, success, nothing } = this.state
+        const { clients: jsonFormat, clickReport = false, errors, success, nothing } = this.state
         const clients = this.getClientFormatTable(jsonFormat)
-        console.log(clients, jsonFormat)
         const config = { ...configTable,  data: clients }
         return (<Fragment>
             {
                 jsonFormat && (<Table
                     config={config}
                     title='Gestion de clientes'
+                    reset={this.reset}
                     update={false}
                     handlerChangeFilter={this.handlerChangeFilter}
                     handleClickOpen={this.handleClickOpen}
                     handlerUpdateItem={this.handlerUpdateItem}
                     handlerDeleteItems={this.handlerDeleteItems}
+                    handlerCreateReport={this.handlerCreateReport}
                 />
                 )
             }
@@ -160,6 +187,15 @@ class Client extends Component {
             }
             {
                 nothing && <Message message="No hay clientes registrados" type="info" />
+            }
+            {
+                clickReport && (
+                    <DownloadPDF
+                        config={this.getConfigReport()}
+                        filename='Reporte-Atlantis-Clientes'
+                        title='Reporte Clientes'
+                    />
+                )
             }
         </Fragment>
         )

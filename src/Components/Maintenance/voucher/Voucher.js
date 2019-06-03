@@ -3,6 +3,7 @@ import Table from '../../Table/Table'
 import config from '../../../config/config'
 import Message from '../../Message'
 import { withContext } from '../../../store/Context'
+import DownloadPDF from '../../PDF/components/DownloadPDF'
 
 const configTable = {
     rows: [
@@ -28,14 +29,9 @@ const configTable = {
 class Voucher extends Component {
     state = {
         errors: {},
-        form: {
-            id: '',
-            emmiter: '',
-            reveicer: '',
-            detail: '',
-            LocalDate: '',
-            numberNight:'',
-        }
+        vouchers: [],
+        report: [],
+        clickReport: false,
     }
 
     handlerDeleteItems = async (ItemsSelected) => {
@@ -83,7 +79,6 @@ class Voucher extends Component {
             const vouchers = await fetchAPI(`${config.URL}/voucher?filter=all`, {
                 method: 'GET'
             })
-            console.log(vouchers)
             let nothing = vouchers.length ? false : true
             this.setState({
                 vouchers,
@@ -115,9 +110,14 @@ class Voucher extends Component {
     }
 
     handleClickOpen = () => {
+        this.setState({ openForm: true })
     }
 
     handleClose = () => {
+        this.setState({
+            openForm: false,
+            itemUpdate: false
+        })
     }
 
     componentDidMount() {
@@ -128,20 +128,43 @@ class Voucher extends Component {
 
     }
 
+    handlerCreateReport = selectedItems => {
+        const { vouchers = [] } = this.state
+        let report = []
+        selectedItems.forEach(id => {
+            vouchers.forEach(voucher => {
+                if (voucher.id === id) {
+                    report = [...report, voucher]
+                }
+            })
+        })
+        this.setState(prevState => ({ ...prevState, report, clickReport: true }))
+    }
+    
+    reset = () => {
+        this.setState(prevState => ({ ...prevState, clickReport: false }))
+    }
+
+    getConfigReport = () => {
+        const { report: data } = this.state
+        return { ...configTable, data }
+    }
+
     render() {
-        const { vouchers, errors, success, nothing } = this.state
+        const { vouchers,clickReport = false , errors, success, nothing } = this.state
         const config = { ...configTable,  data: vouchers }
-        console.log(vouchers)
         return (<Fragment>
             {
             vouchers && (<Table
                     config={config}
                     title='Facturación'
+                    reset={this.reset}
                     update={false}
                     handlerChangeFilter={this.handlerChangeFilter}
                     handleClickOpen={this.handleClickOpen}
                     handlerUpdateItem={this.handlerUpdateItem}
                     handlerDeleteItems={this.handlerDeleteItems}
+                    handlerCreateReport={this.handlerCreateReport}
                 />
                 )
             }
@@ -153,6 +176,16 @@ class Voucher extends Component {
             }
             {
                 nothing && <Message message="No hay Facturas" type="info" />
+            }
+
+            {
+                clickReport && (
+                    <DownloadPDF
+                        config={this.getConfigReport()}
+                        filename='Reporte-Atlantis-Facturas'
+                        title='Reporte Factura'
+                    />
+                )
             }
         </Fragment>
         )
