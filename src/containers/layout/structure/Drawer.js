@@ -41,7 +41,7 @@ class DrawerLayout extends Component {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button component={Link} to="">
+                    <ListItem button component={Link} to="/voucher">
                         Facturación
                     </ListItem>
                 </List>

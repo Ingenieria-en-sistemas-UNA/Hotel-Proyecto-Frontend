@@ -12,6 +12,7 @@ import ClientMaintenance from '../Components/Maintenance/customers/Client'
 import Checkout from '../Components/checkout/Checkout'
 import Account from '../Components/Profile/Account'
 import RoomPDF from '../Components/PDF/RoomPDF'
+import Voucher from '../Components/Maintenance/voucher/Voucher';
 
 
 class AppRoutes extends Component {
@@ -29,7 +30,7 @@ class AppRoutes extends Component {
                     <AdminRoute exact path="/clients-maintenance" component={ClientMaintenance} />
                     <Route exact path="/room-pdf" component={RoomPDF}/>
                     <Route exact path='/checkout' component={Checkout}/>
-                  
+                    <AdminRoute exact path="/voucher" component={Voucher} />
                     <Redirect to="/" />
                 </Switch>
             </Layout>
