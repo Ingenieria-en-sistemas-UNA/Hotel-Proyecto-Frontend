@@ -3,7 +3,7 @@ const imgUrl = 'https://images.unsplash.com/photo-1534854638093-bada1813ca19?aut
 export default theme => ({
     heroUnit: {
         backgroundImage: `url(${imgUrl})`,
-        backgroundrepeat: 'no-repeat',
+        backgroundRepeat: 'no-repeat',
         backgroundColor: '#7fc7d9', // Average color of the background image.
         backgroundPosition: 'center',
     },
