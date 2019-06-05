@@ -108,7 +108,9 @@ export default class AuthService {
             ...options
         })
             .then(this._checkStatus)
-            .then(response => response.json())
+            .then(response => {
+                return response.json()
+            })
     }
 
     fetchImg = async imgName => {
@@ -136,12 +138,14 @@ export default class AuthService {
         }
     }
 
-    refrech = () => {
+    refrech = async () => {
         const profile = this.getProfile()
-        this.fetch(`${this.domain}/user/refresh/${profile.sub}`)
-            .then(({ tokenResponse }) => {
-                this.setToken(tokenResponse)
-                return Promise.resolve(tokenResponse)
-            }).catch(error => { throw error })
+        try {
+            const client = await this.fetch(`${this.domain}/refresh/${profile.sub}`)
+            console.log(client)
+            this.setToken(client.token)    
+        } catch (error) {
+            console.log(error)
+        }
     }
 }

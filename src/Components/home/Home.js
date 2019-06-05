@@ -12,12 +12,14 @@ import { Link } from 'react-router-dom'
 import styles from './jss/styles'
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8]
+const backgroundImage = 'https://images.unsplash.com/photo-1534854638093-bada1813ca19?auto=format&fit=crop&w=1400&q=80'
 
 const Home = props => {
     const { classes, Auth: { loggedIn } } = props
     return (
         <Fragment>
             <div className={classes.heroUnit}>
+                <img style={{ display: 'none' }} src={backgroundImage} alt="" />
                 <div className={classes.heroContent}>
                     <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                         ATLANTIS

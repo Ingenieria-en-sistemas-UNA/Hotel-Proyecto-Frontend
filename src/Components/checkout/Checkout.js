@@ -208,11 +208,20 @@ class Checkout extends Component {
                                     <Button
                                         className={classes.button}
                                         component={Link}
-                                        color="secondary"
+                                        color="primary"
                                         variant="outlined"
                                         to='/'
                                     >
                                         Inicio
+                                    </Button>
+                                    <Button
+                                        className={classes.button}
+                                        component={Link}
+                                        color="secondary"
+                                        variant="outlined"
+                                        to='/account'
+                                    >
+                                        Perfil
                                     </Button>
                                 </Fragment>
                             ) : (

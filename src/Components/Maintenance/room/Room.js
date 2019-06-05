@@ -5,6 +5,7 @@ import Message from '../../Message'
 import config from '../../../config/config'
 import FormRoom from './components/FormRoom'
 import DownloadPDF from '../../PDF/components/DownloadPDF'
+import moment from 'moment'
 
 const configTable = {
     rows: [
@@ -34,6 +35,7 @@ class Room extends Component {
             description: '',
             guests: '',
             price: '',
+            localDate: moment(new Date()).format('DD/MM/YYYY'),
             state: false,
             file: false
         }
@@ -145,11 +147,12 @@ class Room extends Component {
     }
 
 
-    filterRooms = async (filter = 'all') => {
+    filterRooms = async (filter = 'all', initialDate = '04/06/2019', finishDate = '05/06/2019') => {
         const { Auth: { fetch: fetchAPI, getServerError } } = this.props
         try {
-            const rooms = await fetchAPI(`${config.URL}/room?filter=${filter}`, {
-                method: 'GET'
+            const rooms = await fetchAPI(`${config.URL}/room/list?filter=${filter}`, {
+                method: 'POST',
+                body: JSON.stringify({initialDate, finishDate})
             })
             let nothing = rooms.length ? false : true
             this.setState({

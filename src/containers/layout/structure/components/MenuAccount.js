@@ -61,8 +61,8 @@ class MenuAccount extends Component {
                 open={isMenuOpen}
                 onClose={this.handleMenuClose}
             >
-                <MenuItem onClick={this.handleRouteClick}>Account</MenuItem>
-                <MenuItem onClick={this.onClickLogout}>Logout</MenuItem>
+                <MenuItem onClick={this.handleRouteClick}>Perfil</MenuItem>
+                <MenuItem onClick={this.onClickLogout}>Cerrar sesión</MenuItem>
             </Menu>
         );
 

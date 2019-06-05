@@ -10,7 +10,8 @@ class Room extends Component {
     };
 
     filterRooms = async (filter = 'all') => {
-        const { Auth: { fetch: fetchAPI, getServerError } } = this.props;
+        const { Auth: { fetch: fetchAPI, getServerError, refrech } } = this.props;
+        refrech()
         try {
             const rooms = await fetchAPI(`${config.URL}/room?filter=${filter}`, {
                 method: 'GET'
@@ -49,13 +50,41 @@ class Room extends Component {
         this.filterRooms()
     }
 
+    handlerReserveRoomValidate = room => () => {
+        const { Auth: { getProfile }, handlerReserveRoom } = this.props
+        const { user_data } = getProfile()
+        if(user_data.maxReserve > 0){
+            handlerReserveRoom(room)
+        }
+        this.setState({
+            errors: {
+                general: 'Cantidad maxima de reservaciones cubierta',
+            }
+        })
+
+        setTimeout(() => {
+            this.setState({
+                errors: {
+                    general: false
+                }
+            })
+        }, 3000)
+    }
+
     render() {
         const { rooms, errors, nothing } = this.state;
         return (
             <Fragment>
                 <Grid container justify='space-around' direction='row' wrap='wrap' style={{ display: 'flex', alignItems: 'flex-start' }}>
                     {
-                        rooms && rooms.map((room, index) => <Card key={room.id} room={room} index={index} />)
+                        rooms && rooms.map((room, index) => (
+                            <Card
+                                key={room.id}
+                                room={room}
+                                index={index}
+                                handlerReserveRoomValidate={this.handlerReserveRoomValidate} 
+                            />
+                        ))
                     }
                 </Grid>
                 {

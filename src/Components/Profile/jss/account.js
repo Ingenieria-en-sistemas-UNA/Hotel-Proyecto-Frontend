@@ -29,6 +29,8 @@ export default theme => ({
         marginTop: theme.spacing.unit * 3,
     },
     gridButtomSubmit: {
-        margin: '0 auto'
+        margin: '0 auto',
+        display: 'flex',
+        justifyContent: 'space-around'
     }
 })

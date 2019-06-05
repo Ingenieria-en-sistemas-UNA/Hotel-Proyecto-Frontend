@@ -44,7 +44,7 @@ class ImgMediaCard extends Component {
     }
 
     render() {
-        const { classes, room, index, handlerReserveRoom = () => { }, account = false, handlerAsistRoom } = this.props
+        const { classes, room, index, handlerReserveRoomValidate, account = false, handlerAsistRoom } = this.props
         const { image } = this.state
         const { type, state, price, guests, description } = room
         return (
@@ -94,9 +94,9 @@ class ImgMediaCard extends Component {
                                     Asistir
                                 </Button>
                             ) : (
-                                    <Button variant='outlined' size='small' color='primary' onClick={handlerReserveRoom(room)} >
+                                    <Button disabled={state} variant='outlined' size='small' color='primary' onClick={handlerReserveRoomValidate(room)} >
                                         Reservar
-                                </Button>
+                                    </Button>
                                 )
                         }
 

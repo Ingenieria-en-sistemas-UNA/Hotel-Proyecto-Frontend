@@ -47,7 +47,7 @@ class App extends Component {
         this.setState({ drawerState: false })
     };
 
-    handlerChangeRoom = room => () => {
+    handlerChangeRoom = room => {
         this.setState(prevState => ({ ...prevState, room }))
         this.state.history.push('/checkout')
     }
