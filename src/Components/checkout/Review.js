@@ -32,7 +32,7 @@ const Review = ({ classes, room, client, voucher }) => {
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <ListItemText primary='Noches' secondary={`Cantidad de noches seleccionadas`} />
-                    <Typography variant="body2">{voucher.numberNights}</Typography>
+                    <Typography variant="body2">{voucher.numberNight}</Typography>
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <ListItemText primary="Total" />

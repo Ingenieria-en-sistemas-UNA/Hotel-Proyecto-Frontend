@@ -2,6 +2,7 @@ import red from '@material-ui/core/colors/red'
 export default theme => ({
     card: {
         maxWidth: '20%',
+        minWidth: '260px',
         margin: '10px',
         marginTop: '25px'
     },

@@ -1,19 +1,24 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import Message from '../Message'
 import { Avatar, Button, FormControl } from '@material-ui/core'
 import { Paper, Typography, Grid, TextField } from '@material-ui/core'
 import { AccountCircle, HistoryOutlined, Room } from '@material-ui/icons'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { withContext } from '../../store/Context'
+import Card from '../card/Card'
 import styles from './jss/account'
+import config from '../../config/config'
 class Signup extends Component {
 
     state = {
         updated: true,
         submmited: false,
         errors: {},
-        client: {}
+        client: {},
+        history: [],
+        reserves: []
     }
 
 
@@ -29,30 +34,97 @@ class Signup extends Component {
         }))
     }
 
-    componentDidMount(){
+    componentDidMount() {
         const { Auth: { getProfile } } = this.props
-        const { user_data: { person = {}, ...rest} } = getProfile()
-        this.setState(prevState => ({ ...prevState, client: { ...person, ...rest, id: person.id } }))
+        const { user_data: { person = {}, ...rest } } = getProfile()
+        this.setState(prevState => ({
+            ...prevState,
+            client: { ...person, ...rest, id: person.id },
+        }))
+        this.refreshReserveAccount()
+    }
+
+    refreshReserveAccount = async (id) => {
+        const { Auth: { getProfile, fetch: fetchAPI } } = this.props
+        const { user_data } = getProfile()
+        const reserves = await fetchAPI(`${config.URL}/reserve/client/${user_data.id}`)
+        this.setState(prevState => ({
+            ...prevState,
+            history: this.getHistory(reserves, id),
+            reserves: this.getCurrentReserves(reserves, id)
+        }))
+    }
+
+    getHistory = (reserves, id = '') => {
+        let array = []
+        reserves.forEach((reserve = { room: { client: {} } }) => {
+            if (!reserve.alive) {
+                array = this.addToArray(array, reserve)
+            }
+        })
+        return array
+    }
+
+    addToArray = (array, value) => {
+        return [...array, value]
+    }
+
+    getCurrentReserves = (reserves, id) => {
+        let array = []
+        reserves.forEach(reserve => {
+            if (reserve.alive) {
+                array = this.addToArray(array, reserve)
+            }
+        })
+        return array
     }
 
     enableUpdated = () => {
         this.setState(prevState => ({ ...prevState, updated: !prevState.updated }))
     }
+
+    handlerAsistRoom = ({ idReserve }) => async () => {
+        const { Auth: { fetch: fetchAPI } } = this.props
+        try {
+            const reserve = this.getReserve(idReserve)
+            const response = await fetchAPI(`${config.URL}/reserve/unreserve`, {
+                method: 'PUT',
+                body: JSON.stringify(reserve)
+            })
+            console.log(response)
+            this.refreshReserveAccount()
+        } catch ({ message }) {
+            console.log(message)
+        }
+    }
+
+    getReserve = id => {
+        const { reserves = [] } = this.state
+        let object = {}
+        reserves.forEach(reserve => {
+            if (reserve.id === id) {
+                object = reserve
+            }
+        })
+        return object
+    }
+
     render() {
         const { classes } = this.props
-        const { 
-            updated, 
-            submmited, 
+        const {
+            updated,
+            submmited,
             errors,
             client: {
-                id = '', 
-                name = '', 
+                id = '',
+                name = '',
                 lastName = '',
                 cellphone = '',
                 address = '',
                 email = ''
-            } 
-        } = this.state 
+            },
+            reserves
+        } = this.state
         return (
             <Fragment>
                 <main className={classes.main}>
@@ -170,8 +242,6 @@ class Signup extends Component {
                             }
                         </form>
                     </Paper>
-                </main>
-                <main className={classes.main}>
                     <Paper className={classes.paper}>
                         <Avatar className={classes.avatar}>
                             <HistoryOutlined style={{ fontSize: 40 }} />
@@ -179,18 +249,42 @@ class Signup extends Component {
                         <Typography component="h1" variant="h5">
                             Historial
                         </Typography>
-                        
+
                     </Paper>
-                </main>
-                <main className={classes.main}>
                     <Paper className={classes.paper}>
                         <Avatar className={classes.avatar}>
                             <Room style={{ fontSize: 40 }} />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Habitaciones
+                            Reservaciones Actuales
                         </Typography>
-                        
+                        <Grid container justify='space-around' direction='row' wrap='wrap' style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            {
+                                reserves.length ? (reserves.map(({ room, id }, index) =>
+                                    <Card
+                                        key={room.id}
+                                        room={{ ...room, idReserve: id }}
+                                        index={index}
+                                        account
+                                        handlerAsistRoom={this.handlerAsistRoom}
+                                    />
+                                )
+                                ) : ''
+                            }
+                            {
+                                !reserves.length && (
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        className={classes.submit}
+                                        component={Link}
+                                        to='/rooms'
+                                    >
+                                        Ir a reservar
+                                    </Button>
+                                )
+                            }
+                        </Grid>
                     </Paper>
                 </main>
             </Fragment>

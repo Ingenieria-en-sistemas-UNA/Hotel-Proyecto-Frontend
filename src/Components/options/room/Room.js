@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import Card from './Card'
+import Card from '../../card/Card'
 import { withContext } from '../../../store/Context'
 import Message from '../../Message'
 import { Grid } from '@material-ui/core'
@@ -25,7 +25,7 @@ class Room extends Component {
                     this.setState({
                         nothing: false
                     })
-                }, 6000)
+                }, 3000)
             }
         } catch ({ message }) {
             const serverError = getServerError(message);
@@ -41,7 +41,7 @@ class Room extends Component {
                         general: false
                     }
                 })
-            }, 6000)
+            }, 3000)
         }
     }
 
@@ -53,7 +53,7 @@ class Room extends Component {
         const { rooms, errors, nothing } = this.state;
         return (
             <Fragment>
-                <Grid container justify='space-between' direction='row' wrap='wrap' style={{ display: 'flex', alignItems: 'flex-start' }}>
+                <Grid container justify='space-around' direction='row' wrap='wrap' style={{ display: 'flex', alignItems: 'flex-start' }}>
                     {
                         rooms && rooms.map((room, index) => <Card key={room.id} room={room} index={index} />)
                     }

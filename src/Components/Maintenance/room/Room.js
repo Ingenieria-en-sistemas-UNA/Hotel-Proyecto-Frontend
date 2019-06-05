@@ -48,19 +48,21 @@ class Room extends Component {
             })
             this.filterRooms()
         } catch ({ message }) {
-            this.setState({
+            this.setState(prevState => ({
+                ...prevState,
                 errors: {
-                    general: message,
+                    general: message
                 }
-            })
+            }))
 
             setTimeout(() => {
-                this.setState({
+                this.setState(prevState => ({
+                    ...prevState,
                     errors: {
                         general: false
                     }
-                })
-            }, 6000)
+                }))
+            }, 3000)
         }
     }
 
@@ -107,25 +109,28 @@ class Room extends Component {
             }))
             this.handleClose()
             setTimeout(() => {
-                this.setState({
+                this.setState(prevState => ({
+                    ...prevState,
                     success: false
-                })
-            }, 6000)
+                }))
+            }, 3000)
 
         } catch ({ message }) {
-            this.setState({
+            this.setState(prevState => ({
+                ...prevState,
                 errors: {
-                    general: message,
+                    general: message
                 }
-            })
+            }))
 
             setTimeout(() => {
-                this.setState({
+                this.setState(prevState => ({
+                    ...prevState,
                     errors: {
                         general: false
                     }
-                })
-            }, 6000)
+                }))
+            }, 3000)
         }
         this.setState({ submmited: false })
     }
@@ -156,23 +161,25 @@ class Room extends Component {
                     this.setState({
                         nothing: false
                     })
-                }, 6000)
+                }, 3000)
             }
         } catch ({ message }) {
             const serverError = getServerError(message)
-            this.setState({
+            this.setState(prevState => ({
+                ...prevState,
                 errors: {
-                    general: serverError,
+                    general: serverError
                 }
-            })
+            }))
 
             setTimeout(() => {
-                this.setState({
+                this.setState(prevState => ({
+                    ...prevState,
                     errors: {
                         general: false
                     }
-                })
-            }, 6000)
+                }))
+            }, 3000)
         }
     }
 
@@ -211,7 +218,7 @@ class Room extends Component {
         })
         this.setState(prevState => ({ ...prevState, report, clickReport: true }))
     }
-    
+
     reset = () => {
         this.setState(prevState => ({ ...prevState, clickReport: false }))
     }

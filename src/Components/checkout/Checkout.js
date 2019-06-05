@@ -106,7 +106,7 @@ class Checkout extends Component {
         try {
             const response = await fetchAPI(`${config.URL}/reserve`, {
                 method: 'POST',
-                body: JSON.stringify({ client, room, voucher })
+                body: JSON.stringify({ client, room, voucher, alive: true })
             })
             if (!response.id) {
                 throw new Error('Algo ha ocurrido, porfavor intente más tarde')
