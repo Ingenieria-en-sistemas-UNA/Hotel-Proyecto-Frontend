@@ -43,11 +43,6 @@ const Home = props => {
                                         )
                                 }
                             </Grid>
-                            <Grid item>
-                                <Button variant="outlined" color="secondary" component={Link} to="/contact">
-                                    Contactenos
-                                </Button>
-                            </Grid>
                         </Grid>
                     </div>
                 </div>
@@ -55,7 +50,7 @@ const Home = props => {
             <div className={classNames(classes.layout, classes.cardGrid)}>
                 <Grid container spacing={24} className={classes.cardContainer}>
                     {cards.map(card => (
-                        <Grid item key={card} sm={6} md={4} lg={3}>
+                        <Grid item key={card} sm={6} md={4} lg={3} style={{ minWidth: '155px'}}>
                             <Card className={classes.card}>
                                 <CardMedia
                                     className={classes.cardMedia}

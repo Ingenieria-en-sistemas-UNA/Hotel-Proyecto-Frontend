@@ -15,7 +15,15 @@ export default theme => ({
     },
     menuButton: {
         marginLeft: 12,
-        marginRight: 20
+        marginRight: 20,
+        display: 'none',
+        [theme.breakpoints.down('xs')]: {
+            display: 'block'
+        }
+    },
+    menuButtonAdmin: {
+        marginLeft: 12,
+        marginRight: 20,
     },
     toolbar: {
         paddingRight: 0
@@ -27,7 +35,8 @@ export default theme => ({
         paddingRight: '20px'
     },
     title: {
-        flex: 1
+        flex: 1,
+        justifyContent: 'space-around'
     },
     links: {
         textDecoration: 'none',
@@ -43,5 +52,12 @@ export default theme => ({
     },
     fab: {
         margin: theme.spacing.unit
+    },
+    headerButton: {
+        display: 'inline-block',
+        paddingLeft: '20px',
+        [theme.breakpoints.down('xs')]:{
+            display: 'none'
+        }
     }
 })

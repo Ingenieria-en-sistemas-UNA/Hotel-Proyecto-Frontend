@@ -100,7 +100,7 @@ const rawTheme = createMuiTheme({
         fontSize: 14,
       },
     },
-    drawerWidth: 300
+    drawerWidth: 260
   }
 
 export default ({ children }) => {

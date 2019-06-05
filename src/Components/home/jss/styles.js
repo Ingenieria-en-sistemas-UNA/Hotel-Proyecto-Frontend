@@ -41,5 +41,8 @@ export default theme => ({
     cardContainer: {
         display: 'flex',
         justifyContent: 'space-between'
+    },
+    gridCard: {
+        minWidth: '174px'
     }
 })

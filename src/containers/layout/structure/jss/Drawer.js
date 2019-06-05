@@ -13,4 +13,10 @@ export default theme => ({
         ...theme.mixins.toolbar,
         justifyContent: 'flex-end',
     },
+    drawerButton: {
+        display: 'none',
+        [theme.breakpoints.down('xs')]:{
+            display: 'block'
+        }
+    }
 })

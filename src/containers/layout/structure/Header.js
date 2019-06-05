@@ -21,7 +21,6 @@ class Header extends Component {
         const { history, changeSessionState, handleDrawerClose, Auth } = this.props
         handleDrawerClose()
         changeSessionState(false)
-        console.log(Auth)
         Auth.logout()
         history.push('/')
     }
@@ -41,6 +40,17 @@ class Header extends Component {
                                 color="inherit"
                                 aria-label="Open drawer"
                                 onClick={handleDrawerOpen}
+                                className={classNames(classes.menuButtonAdmin, drawerState && classes.hide)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                        )
+                        }
+                        {sessionState && !isAdmin() && (
+                            <IconButton
+                                color="inherit"
+                                aria-label="Open drawer"
+                                onClick={handleDrawerOpen}
                                 className={classNames(classes.menuButton, drawerState && classes.hide)}
                             >
                                 <MenuIcon />
@@ -54,7 +64,7 @@ class Header extends Component {
                                 </Link>
                             </Typography>
                             {sessionState && (
-                                <Typography variant="h6" color="inherit" noWrap className={classes.options}>
+                                <Typography variant="h6" color="inherit" noWrap className={classes.headerButton}>
                                     <Link to="/rooms" className={classes.links}>
                                         Habitaciones
                                     </Link>

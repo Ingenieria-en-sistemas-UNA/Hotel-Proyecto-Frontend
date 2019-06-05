@@ -13,6 +13,7 @@ const configTable = {
         { id: 'state', numeric: false, disablePadding: false, label: 'Estado de habitación' },
         { id: 'price', numeric: true, disablePadding: false, label: 'Precio' },
         { id: 'guests', numeric: true, disablePadding: false, label: 'Capacidad' },
+        { id: 'localDate', numeric: false, disablePadding: false, label: 'Fecha de creación' },
         { id: 'actions', numeric: false, disablePadding: false, label: 'Acciones' }
     ],
     column: {
@@ -20,6 +21,7 @@ const configTable = {
         state: { isBoolean: true, ifTrue: 'Ocupado', ifFalse: 'Disponible', customText: '' },
         price: false,
         guests: false,
+        localDate: false
     }
 }
 class Room extends Component {
@@ -147,7 +149,7 @@ class Room extends Component {
     }
 
 
-    filterRooms = async (filter = 'all', initialDate = '04/06/2019', finishDate = '05/06/2019') => {
+    filterRooms = async (filter = 'all', initialDate = null, finishDate = null) => {
         const { Auth: { fetch: fetchAPI, getServerError } } = this.props
         try {
             const rooms = await fetchAPI(`${config.URL}/room/list?filter=${filter}`, {

@@ -1,11 +1,11 @@
 export default theme => ({
     main: {
-        width: 'auto',
+        width: '70%',
         display: 'block', // Fix IE 11 issue.
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(800 + theme.spacing.unit * 3 * 2)]: {
-            width: 800,
+        [theme.breakpoints.down(800 + theme.spacing.unit * 3 * 2)]: {
+            width: 300,
             marginLeft: 'auto',
             marginRight: 'auto',
         },
@@ -29,8 +29,6 @@ export default theme => ({
         marginTop: theme.spacing.unit * 3,
     },
     gridButtomSubmit: {
-        margin: '0 auto',
-        display: 'flex',
-        justifyContent: 'space-around'
+        margin: '0 auto'
     }
 })

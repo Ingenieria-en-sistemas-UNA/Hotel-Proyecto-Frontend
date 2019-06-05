@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {
     withStyles, Drawer, Divider,
     List, ListItem, IconButton,
@@ -11,7 +11,7 @@ import { withContext } from '../../../store/Context'
 
 class DrawerLayout extends Component {
     render() {
-        const { drawerState, classes, theme, handleDrawerClose } = this.props;
+        const { drawerState, classes, theme, handleDrawerClose, Auth: { isAdmin } } = this.props;
         return (
             <Drawer
                 className={classes.drawer}
@@ -28,21 +28,33 @@ class DrawerLayout extends Component {
                     </IconButton>
                 </div>
                 <Divider />
-                <List>
-                    <ListItem button component={Link} to="/clients-maintenance">
-                        Mantenimiento Usuarios
-                    </ListItem>
-                </List>
+                {
+                    isAdmin() && (
+                        <Fragment>
+                            <List>
+                                <ListItem button component={Link} to="/clients-maintenance" onClick={handleDrawerClose}>
+                                    Mantenimiento Usuarios
+                                </ListItem>
+                            </List>
+                            <Divider />
+                            <List>
+                                <ListItem button component={Link} to="/rooms-maintenance" onClick={handleDrawerClose}>
+                                    Mantenimiento Habitaciones
+                                </ListItem>
+                            </List>
+                            <Divider />
+                            <List>
+                                <ListItem button component={Link} to="/voucher" onClick={handleDrawerClose}>
+                                    Facturación
+                                </ListItem>
+                            </List>
+                        </Fragment>
+                    )
+                }
                 <Divider />
-                <List>
-                    <ListItem button component={Link} to="/rooms-maintenance">
-                        Mantenimiento Habitaciones
-                    </ListItem>
-                </List>
-                <Divider />
-                <List>
-                    <ListItem button component={Link} to="/voucher">
-                        Facturación
+                <List className={classes.drawerButton}>
+                    <ListItem button component={Link} to="/rooms" onClick={handleDrawerClose}>
+                        Habitaciones
                     </ListItem>
                 </List>
                 <Divider />

@@ -8,6 +8,7 @@ import { AccountCircle, HistoryOutlined, Room } from '@material-ui/icons'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { withContext } from '../../store/Context'
 import Card from '../card/Card'
+import Table from './history/Table'
 import styles from './jss/account'
 import config from '../../config/config'
 class Signup extends Component {
@@ -84,7 +85,7 @@ class Signup extends Component {
 
     enableUpdated = type => () => {
         const { client, defaultClient } = this.state
-        if(type === 'edit') return this.setState(prevState => ({ ...prevState, updated: false, defaultClient: client }))
+        if (type === 'edit') return this.setState(prevState => ({ ...prevState, updated: false, defaultClient: client }))
         this.setState(prevState => ({ ...prevState, updated: true, client: defaultClient }))
     }
 
@@ -128,192 +129,194 @@ class Signup extends Component {
                 address = '',
                 email = ''
             },
-            reserves
-            } = this.state
+            reserves,
+            history
+        } = this.state
         return (
-            <Fragment>
-                <main className={classes.main}>
-                    <Paper className={classes.paper}>
-                        <Avatar className={classes.avatar}>
-                            <AccountCircle style={{ fontSize: 40 }} />
-                        </Avatar>
-                        <Typography component='h1' variant='h5'>
-                            Perfil
+            <main className={classes.main} style={{margin: '0 auto'}}>
+                <Paper className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <AccountCircle style={{ fontSize: 40 }} />
+                    </Avatar>
+                    <Typography component='h1' variant='h5'>
+                        Perfil
                         </Typography>
-                        <form className={classes.form} onSubmit={this.handleFormSubmit}>
-                            <Grid spacing={24} container alignItems='center'>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        error={errors.name && true}
-                                        helperText={errors.name && errors.name}
-                                        onChange={this.handleChange}
-                                        value={name}
-                                        disabled={updated}
-                                        id='name'
-                                        name='name'
-                                        label='Nombre'
-                                        fullWidth
-                                        autoComplete='Nombre'
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        error={errors.lastName && true}
-                                        helperText={errors.lastName && errors.lastName}
-                                        onChange={this.handleChange}
-                                        value={lastName}
-                                        disabled={updated}
-                                        id='lastName'
-                                        name='lastName'
-                                        label='Apellidos'
-                                        fullWidth
-                                        autoComplete='Apellidos'
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        error={errors.id && true}
-                                        helperText={errors.id && errors.id}
-                                        onChange={this.handleChange}
-                                        value={id}
-                                        disabled
-                                        id='id'
-                                        name='id'
-                                        label='Cedula'
-                                        fullWidth
-                                        autoComplete='Cedula'
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        error={errors.cellphone && true}
-                                        helperText={errors.cellphone && errors.cellphone}
-                                        onChange={this.handleChange}
-                                        value={cellphone}
-                                        disabled={updated}
-                                        id='cellphone'
-                                        name='cellphone'
-                                        label='Telefono'
-                                        fullWidth
-                                        autoComplete='Telefono'
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        error={errors.email && true}
-                                        helperText={errors.email && errors.email}
-                                        onChange={this.handleChange}
-                                        value={email}
-                                        disabled={updated}
-                                        type='email'
-                                        id='email'
-                                        name='email'
-                                        label='Correo'
-                                        fullWidth
-                                        autoComplete='Correo'
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        error={errors.address && true}
-                                        helperText={errors.address && errors.address}
-                                        onChange={this.handleChange}
-                                        value={address}
-                                        disabled={updated}
-                                        id='address'
-                                        name='address'
-                                        label='Dirección'
-                                        fullWidth
-                                        autoComplete='Dirección'
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6} className={classes.gridButtomSubmit}>
-                                    {
-                                        updated ? (
-                                            <Button
-                                                onClick={this.enableUpdated('edit')}
-                                                variant='contained'
-                                                color='secondary'
-                                                className={classes.submit}
-                                            >
-                                                Editar
-                                            </Button>
-                                        ) : (
-                                                <Fragment>
-                                                    <Button
-                                                        variant='contained'
-                                                        color='primary'
-                                                        disabled={submmited}
-                                                        className={classes.submit}
-                                                    >
-                                                        Actualizar
-                                                    </Button>
-                                                    <Button
-                                                        onClick={this.enableUpdated('update')}
-                                                        variant='contained'
-                                                        color='secondary'
-                                                        className={classes.submit}
-                                                    >
-                                                        Cancelar
-                                                </Button>
-                                                </Fragment>
-                                            )
-                                    }
-                                </Grid>
+                    <form className={classes.form} onSubmit={this.handleFormSubmit}>
+                        <Grid spacing={24} container alignItems='center'>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.name && true}
+                                    helperText={errors.name && errors.name}
+                                    onChange={this.handleChange}
+                                    value={name}
+                                    disabled={updated}
+                                    id='name'
+                                    name='name'
+                                    label='Nombre'
+                                    fullWidth
+                                    autoComplete='Nombre'
+                                />
                             </Grid>
-                            <FormControl margin='normal' fullWidth>
-                            </FormControl>
-                            {
-                                errors.general && <Message message={errors.general} type={'error'} />
-                            }
-                        </form>
-                    </Paper>
-                    <Paper className={classes.paper}>
-                        <Avatar className={classes.avatar}>
-                            <HistoryOutlined style={{ fontSize: 40 }} />
-                        </Avatar>
-                        <Typography component='h1' variant='h5'>
-                            Historial
-                        </Typography>
-
-                    </Paper>
-                    <Paper className={classes.paper}>
-                        <Avatar className={classes.avatar}>
-                            <Room style={{ fontSize: 40 }} />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Reservaciones Actuales
-                        </Typography>
-                        <Grid container justify='space-around' direction='row' wrap='wrap' style={{ display: 'flex', alignItems: 'flex-start' }}>
-                            {
-                                reserves.length ? (reserves.map(({ room, id }, index) =>
-                                    <Card
-                                        key={room.id}
-                                        room={{ ...room, idReserve: id }}
-                                        index={index}
-                                        account
-                                        handlerAsistRoom={this.handlerAsistRoom}
-                                    />
-                                )
-                                ) : ''
-                            }
-                            {
-                                !reserves.length && (
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        className={classes.submit}
-                                        component={Link}
-                                        to='/rooms'
-                                    >
-                                        Ir a reservar
-                                    </Button>
-                                )
-                            }
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.lastName && true}
+                                    helperText={errors.lastName && errors.lastName}
+                                    onChange={this.handleChange}
+                                    value={lastName}
+                                    disabled={updated}
+                                    id='lastName'
+                                    name='lastName'
+                                    label='Apellidos'
+                                    fullWidth
+                                    autoComplete='Apellidos'
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.id && true}
+                                    helperText={errors.id && errors.id}
+                                    onChange={this.handleChange}
+                                    value={id}
+                                    disabled
+                                    id='id'
+                                    name='id'
+                                    label='Cedula'
+                                    fullWidth
+                                    autoComplete='Cedula'
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.cellphone && true}
+                                    helperText={errors.cellphone && errors.cellphone}
+                                    onChange={this.handleChange}
+                                    value={cellphone}
+                                    disabled={updated}
+                                    id='cellphone'
+                                    name='cellphone'
+                                    label='Telefono'
+                                    fullWidth
+                                    autoComplete='Telefono'
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.email && true}
+                                    helperText={errors.email && errors.email}
+                                    onChange={this.handleChange}
+                                    value={email}
+                                    disabled={updated}
+                                    type='email'
+                                    id='email'
+                                    name='email'
+                                    label='Correo'
+                                    fullWidth
+                                    autoComplete='Correo'
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={errors.address && true}
+                                    helperText={errors.address && errors.address}
+                                    onChange={this.handleChange}
+                                    value={address}
+                                    disabled={updated}
+                                    id='address'
+                                    name='address'
+                                    label='Dirección'
+                                    fullWidth
+                                    autoComplete='Dirección'
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6} className={classes.gridButtomSubmit}>
+                                {
+                                    updated ? (
+                                        <Button
+                                            onClick={this.enableUpdated('edit')}
+                                            variant='contained'
+                                            color='secondary'
+                                            className={classes.submit}
+                                        >
+                                            Editar
+                                            </Button>
+                                    ) : (
+                                            <Fragment>
+                                                <Button
+                                                    variant='contained'
+                                                    color='primary'
+                                                    disabled={submmited}
+                                                    className={classes.submit}
+                                                    style={{marginRight: '10px'}}
+                                                >
+                                                    Actualizar
+                                                    </Button>
+                                                <Button
+                                                    onClick={this.enableUpdated('update')}
+                                                    variant='contained'
+                                                    color='secondary'
+                                                    className={classes.submit}
+                                                >
+                                                    Cancelar
+                                                </Button>
+                                            </Fragment>
+                                        )
+                                }
+                            </Grid>
                         </Grid>
-                    </Paper>
-                </main>
-            </Fragment>
+                        <FormControl margin='normal' fullWidth>
+                        </FormControl>
+                        {
+                            errors.general && <Message message={errors.general} type={'error'} />
+                        }
+                    </form>
+                </Paper>
+                <Paper className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <HistoryOutlined style={{ fontSize: 40 }} />
+                    </Avatar>
+                    <Typography component='h1' variant='h5'>
+                        Historial
+                        </Typography>
+                    {
+                        history.length ? <Table ReserveHistory={history} /> : ''
+                    }
+                </Paper>
+                <Paper className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <Room style={{ fontSize: 40 }} />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Reservaciones Actuales
+                        </Typography>
+                    <Grid container justify='space-around' direction='row' wrap='wrap' style={{ display: 'flex', alignItems: 'flex-start' }}>
+                        {
+                            reserves.length ? (reserves.map(({ room, id }, index) =>
+                                <Card
+                                    key={room.id}
+                                    room={{ ...room, idReserve: id }}
+                                    index={index}
+                                    account
+                                    handlerAsistRoom={this.handlerAsistRoom}
+                                />
+                            )
+                            ) : ''
+                        }
+                        {
+                            !reserves.length && (
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    className={classes.submit}
+                                    component={Link}
+                                    to='/rooms'
+                                >
+                                    Ir a reservar
+                                    </Button>
+                            )
+                        }
+                    </Grid>
+                </Paper>
+            </main>
         )
     }
 }

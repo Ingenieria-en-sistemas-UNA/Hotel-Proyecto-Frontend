@@ -8,6 +8,7 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import { withContext } from '../../store/Context'
 import styles from './jss/signup'
 import validate from './validate/signup'
+import moment  from 'moment'
 class Signup extends Component {
 
     state = {
@@ -54,6 +55,7 @@ class Signup extends Component {
             username,
             password,
             client: {
+                localDate: moment(new Date()).format('DD/MM/YYYY'),
                 address,
                 cellphone,
                 email,
@@ -82,7 +84,7 @@ class Signup extends Component {
             cellphone = '', email = '', address = '', username = '', password = '', submmited } = this.state
 
         return (
-            <main className={classes.main}>
+            <main className={classes.main} style={{margin: '0 auto'}}>
                 <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />

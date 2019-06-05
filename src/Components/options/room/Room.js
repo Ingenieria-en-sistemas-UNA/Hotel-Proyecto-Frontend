@@ -9,13 +9,14 @@ class Room extends Component {
         errors: {}
     };
 
-    filterRooms = async (filter = 'all') => {
+    filterRooms = async (filter = 'all', initialDate = null, finishDate = null) => {
         const { Auth: { fetch: fetchAPI, getServerError, refrech } } = this.props;
         refrech()
         try {
-            const rooms = await fetchAPI(`${config.URL}/room?filter=${filter}`, {
-                method: 'GET'
-            });
+            const rooms = await fetchAPI(`${config.URL}/room/list?filter=${filter}`, {
+                method: 'POST',
+                body: JSON.stringify({initialDate, finishDate})
+            })
             let nothing = rooms.length ? false : true
             this.setState({
                 rooms,

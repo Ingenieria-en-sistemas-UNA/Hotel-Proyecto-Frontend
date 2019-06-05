@@ -65,6 +65,7 @@ const getStepContent = ({ activeStep, ...rest }) => {
 }
 
 class Checkout extends Component {
+
     state = {
         activeStep: 0,
         errors: {},
@@ -76,13 +77,12 @@ class Checkout extends Component {
             detail: '',
             emitter: 'ATLANTIS',
             receiver: '',
-            localDate: moment(new Date()).format('DD/MM/YYYY')
         }
     }
 
 
     componentDidMount() {
-        const { user_data: client = { person: {} }, room = {} , history } = this.props
+        const { user_data: client = { person: {} }, room = {}, history } = this.props
         if (room.id) {
             return this.setState(prevState => ({ ...prevState, client, room, voucher: { ...prevState.voucher, price: room.price, receiver: client.person.name, detail: `Reservación de una habitación de tipo: ${room.type}` } }))
         }
@@ -102,11 +102,21 @@ class Checkout extends Component {
     reserveRoom = async () => {
         const { voucher, client, room } = this.state
         const { Auth: { fetch: fetchAPI } } = this.props
-
+        const localDate = moment(new Date()).format('DD/MM/YYYY')
+        const reserve = {
+            localDate,
+            client: {
+                ...client,
+                localDate
+            },
+            room,
+            voucher,
+            alive: true
+        }
         try {
             const response = await fetchAPI(`${config.URL}/reserve`, {
                 method: 'POST',
-                body: JSON.stringify({ client, room, voucher, alive: true })
+                body: JSON.stringify(reserve)
             })
             if (!response.id) {
                 throw new Error('Algo ha ocurrido, porfavor intente más tarde')
