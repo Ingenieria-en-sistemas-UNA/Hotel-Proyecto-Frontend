@@ -12,7 +12,7 @@ const CustomizedInputBase = props => {
 
     return (
         <Paper className={classes.root} elevation={1}>
-            <InputBase name="search" className={classes.input} placeholder="Search" onChange={handlerChangeFilter}/>
+            <InputBase name="search" className={classes.input} placeholder="Search" onChange={({ target: { name, value } }) => handlerChangeFilter(name, value)}/>
             <IconButton  className={classes.iconButton} disabled>
                 <SearchIcon />
             </IconButton>

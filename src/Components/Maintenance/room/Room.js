@@ -140,11 +140,17 @@ class Room extends Component {
     }
 
 
-    handlerChangeFilter = ({ target: { value } }) => {
-        if (value !== '') {
-            this.filterRooms(value)
-        } else {
+    handlerChangeFilter = ({search = null, initialDate = null, finishDate = null}) => {
+
+
+        if (!search && (!initialDate && !finishDate)) {
             this.filterRooms()
+        } else if (search && (!initialDate && !finishDate)){
+            this.filterRooms(search)
+        } else if (!search && (initialDate && finishDate)){
+            this.filterRooms('all', initialDate, finishDate)
+        }else if(search && (initialDate && finishDate)){
+            this.filterRooms(search, initialDate, finishDate)
         }
     }
 
@@ -152,9 +158,17 @@ class Room extends Component {
     filterRooms = async (filter = 'all', initialDate = null, finishDate = null) => {
         const { Auth: { fetch: fetchAPI, getServerError } } = this.props
         try {
+            if(initialDate && finishDate){
+                if (initialDate > finishDate) {
+                    throw new Error('La fecha inicial no puede ser menor que la final')
+                 }
+            }
             const rooms = await fetchAPI(`${config.URL}/room/list?filter=${filter}`, {
                 method: 'POST',
-                body: JSON.stringify({initialDate, finishDate})
+                body: JSON.stringify({
+                    initialDate: initialDate ? moment(initialDate).format('DD/MM/YYYY') : initialDate, 
+                    finishDate: finishDate ? moment(finishDate).format('DD/MM/YYYY') : finishDate
+                })
             })
             let nothing = rooms.length ? false : true
             this.setState({

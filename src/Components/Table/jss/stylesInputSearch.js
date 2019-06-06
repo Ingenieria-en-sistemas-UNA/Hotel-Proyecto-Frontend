@@ -3,7 +3,7 @@ export default {
         padding: '2px 4px',
         display: 'flex',
         alignItems: 'center',
-        width: '40%',
+        width: '20%',
     },
     input: {
         marginLeft: 8,

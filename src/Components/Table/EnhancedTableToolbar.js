@@ -9,19 +9,21 @@ import AddIcon from '@material-ui/icons/Add'
 import InputSearch from './InputSearch'
 import DeleteDialog from '../dialogs/DeleteDialog'
 import toolbarStyles from './jss/stylesToolbar'
-
+import DateSelect from '../pickers/Date'
 class EnhancedTableToolbar extends Component {
     state = {
         filter: false,
-        open: false
+        open: false,
+        filterParams: {}
     }
 
     toggleFilter = () => {
         this.setState(({ filter }) => ({
-            filter: !filter
+            filter: !filter,
+            filterParams: {}
         }))
         const { handlerChangeFilter } = this.props
-        handlerChangeFilter({ target: { value: '' } })
+        handlerChangeFilter({})
     }
     handlerDeleteItems = () => {
         this.setState({ open: true })
@@ -36,9 +38,21 @@ class EnhancedTableToolbar extends Component {
         this.handleClose()
     }
 
+    handlerChangeFilter = (name, value) => {
+        const  { handlerChangeFilter } = this.props
+        this.setState(prevState => ({
+            ...prevState,
+            filterParams: {
+                ...prevState.filterParams,
+                [name]: value
+            }
+        }), () => handlerChangeFilter(this.state.filterParams))
+        
+    }
+
     render() {
-        const { numSelected, classes, title, handlerChangeFilter, handleClickOpen, handlerCreateReport, update } = this.props,
-            { filter, open } = this.state
+        const { numSelected, classes, title, handleClickOpen, handlerCreateReport, update } = this.props,
+            { filter, open, filterParams: { initialDate, finishDate } } = this.state
 
         return (
             <Fragment>
@@ -58,7 +72,12 @@ class EnhancedTableToolbar extends Component {
                                 </Typography>
                             )}
                     </div>
-                    {filter && <InputSearch handlerChangeFilter={handlerChangeFilter} />}
+                    {filter && (
+                            <Fragment>
+                                <InputSearch handlerChangeFilter={this.handlerChangeFilter} />
+                                <DateSelect handlerChangeFilter={this.handlerChangeFilter} initialDate={initialDate} finishDate={finishDate}/>
+                            </Fragment>
+                        )}
                     <div className={classes.actions}>
                         {numSelected > 0 ? (
                             <Fragment>
