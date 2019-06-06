@@ -110,7 +110,10 @@ class Checkout extends Component {
                 localDate
             },
             room,
-            voucher,
+            voucher: {
+                ...voucher,
+                localDate
+            },
             alive: true
         }
         try {

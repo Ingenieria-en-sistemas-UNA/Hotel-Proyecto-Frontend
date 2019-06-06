@@ -4,25 +4,25 @@ import config from '../../../config/config'
 import Message from '../../Message'
 import { withContext } from '../../../store/Context'
 import DownloadPDF from '../../PDF/components/DownloadPDF'
-
+import moment from 'moment'
 const configTable = {
     rows: [
         { id: 'id', numeric: false, disablePadding: true, label: '# Factura' },
         { id: 'emitter', numeric: false, disablePadding: false, label: 'Emisor' },
         { id: 'receiver', numeric: true, disablePadding: false, label: 'Receptor' },
         { id: 'detail', numeric: true, disablePadding: false, label: 'Detalle' },
-        { id: 'localDate', numeric: true, disablePadding: false, label: 'Fecha' },
         { id: 'price', numeric: false, disablePadding: false, label: 'Precio' },
-        { id: 'numberNight', numeric: false, disablePadding: false, label: 'Noches' }
+        { id: 'numberNight', numeric: false, disablePadding: false, label: 'Noches' },
+        { id: 'localDate', numeric: true, disablePadding: false, label: 'Fecha' }
     ],
     column: {
         id: false,
         emitter: false,
         receiver: false,
         detail: false,
-        localDate: false,
         price: false,
         numberNight: false,
+        localDate: false,
     }
 }
 
@@ -64,20 +64,33 @@ class Voucher extends Component {
     }
 
 
-    handlerChangeFilter = ({ target: { value } }) => {
-        if (value !== '') {
-            this.filterVouchers(value)
-        } else {
+    handlerChangeFilter = ({search = null, initialDate = null, finishDate = null}) => {
+        if (!search && (!initialDate && !finishDate)) {
             this.filterVouchers()
+        } else if (search && (!initialDate && !finishDate)){
+            this.filterVouchers(search)
+        } else if (!search && (initialDate && finishDate)){
+            this.filterVouchers('all', initialDate, finishDate)
+        }else if(search && (initialDate && finishDate)){
+            this.filterVouchers(search, initialDate, finishDate)
         }
     }
 
 
-    filterVouchers = async (filter = 'all') => {
+    filterVouchers = async (filter = 'all', initialDate = null, finishDate = null) => {
         const { Auth: { fetch: fetchAPI, getServerError } } = this.props
         try {
-            const vouchers = await fetchAPI(`${config.URL}/voucher?filter=all`, {
-                method: 'GET'
+            if(initialDate && finishDate){
+                if (initialDate > finishDate) {
+                    throw new Error('La fecha inicial no puede ser menor que la final')
+                 }
+            }
+            const vouchers = await fetchAPI(`${config.URL}/voucher/list?filter=${filter}`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    initialDate: initialDate ? moment(initialDate).format('DD/MM/YYYY') : initialDate, 
+                    finishDate: finishDate ? moment(finishDate).format('DD/MM/YYYY') : finishDate
+                })
             })
             let nothing = vouchers.length ? false : true
             this.setState({

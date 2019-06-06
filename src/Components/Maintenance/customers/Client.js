@@ -4,6 +4,7 @@ import config from '../../../config/config'
 import Message from '../../Message'
 import { withContext } from '../../../store/Context'
 import DownloadPDF from '../../PDF/components/DownloadPDF'
+import moment from 'moment'
 
 const configTable = {
     rows: [
@@ -12,7 +13,8 @@ const configTable = {
         { id: 'address', numeric: false, disablePadding: false, label: 'Dirección' },
         { id: 'name', numeric: false, disablePadding: false, label: 'Nombre' },
         { id: 'lastName', numeric: false, disablePadding: false, label: 'Apellidos' },
-        { id: 'cellphone', numeric: true, disablePadding: false, label: 'Teléfono' }
+        { id: 'cellphone', numeric: true, disablePadding: false, label: 'Teléfono' },
+        { id: 'localDate', numeric: true, disablePadding: false, label: 'Fecha de creación' }
     ],
     column: {
         id: false,
@@ -21,6 +23,7 @@ const configTable = {
         name: false,
         lastName: false,
         cellphone: false,
+        localDate: false
     }
 }
 
@@ -29,13 +32,6 @@ class Client extends Component {
         errors: {},
         report: [],
         clickReport: false,
-        form: {
-            id: '',
-            email: '',
-            address: '',
-            person: '',
-            cellphone: '',
-        }
     }
 
     handlerDeleteItems = async (ItemsSelected) => {
@@ -64,24 +60,37 @@ class Client extends Component {
     }
 
     handlerSubmit = () => {
-        
+
     }
 
 
-    handlerChangeFilter = ({ target: { value } }) => {
-        if (value !== '') {
-            this.filterClients(value)
-        } else {
+    handlerChangeFilter = ({search = null, initialDate = null, finishDate = null}) => {
+        if (!search && (!initialDate && !finishDate)) {
             this.filterClients()
+        } else if (search && (!initialDate && !finishDate)){
+            this.filterClients(search)
+        } else if (!search && (initialDate && finishDate)){
+            this.filterClients('all', initialDate, finishDate)
+        }else if(search && (initialDate && finishDate)){
+            this.filterClients(search, initialDate, finishDate)
         }
     }
 
 
-    filterClients = async (filter = 'all') => {
+    filterClients = async (filter = 'all', initialDate = null, finishDate = null) => {
         const { Auth: { fetch: fetchAPI, getServerError } } = this.props
         try {
-            const clients = await fetchAPI(`${config.URL}/client`, {
-                method: 'GET'
+            if(initialDate && finishDate){
+                if (initialDate > finishDate) {
+                    throw new Error('La fecha inicial no puede ser menor que la final')
+                 }
+            }
+            const clients = await fetchAPI(`${config.URL}/client/list?filter=${filter}`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    initialDate: initialDate ? moment(initialDate).format('DD/MM/YYYY') : initialDate, 
+                    finishDate: finishDate ? moment(finishDate).format('DD/MM/YYYY') : finishDate
+                })
             })
             let nothing = clients.length ? false : true
             this.setState({
@@ -129,9 +138,9 @@ class Client extends Component {
 
     getClientFormatTable = (clients = []) => {
         let array = []
-        clients.forEach(({person, id, ...rest}) => {
-            if(id !== 1){
-                array = [ ...array, { ...person, ...rest, id: person.id } ]
+        clients.forEach(({ person, id, ...rest }) => {
+            if (id !== 1) {
+                array = [...array, { ...person, ...rest, id: person.id }]
             }
         })
         return array
@@ -150,7 +159,7 @@ class Client extends Component {
         })
         this.setState(prevState => ({ ...prevState, report, clickReport: true }))
     }
-    
+
     reset = () => {
         this.setState(prevState => ({ ...prevState, clickReport: false }))
     }
@@ -163,7 +172,7 @@ class Client extends Component {
     render() {
         const { clients: jsonFormat, clickReport = false, errors, success, nothing } = this.state
         const clients = this.getClientFormatTable(jsonFormat)
-        const config = { ...configTable,  data: clients }
+        const config = { ...configTable, data: clients }
         return (<Fragment>
             {
                 jsonFormat && (<Table

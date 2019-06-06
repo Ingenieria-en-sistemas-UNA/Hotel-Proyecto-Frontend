@@ -141,8 +141,6 @@ class Room extends Component {
 
 
     handlerChangeFilter = ({search = null, initialDate = null, finishDate = null}) => {
-
-
         if (!search && (!initialDate && !finishDate)) {
             this.filterRooms()
         } else if (search && (!initialDate && !finishDate)){
