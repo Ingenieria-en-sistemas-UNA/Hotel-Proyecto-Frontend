@@ -5,6 +5,7 @@ import Message from '../../Message'
 import { withContext } from '../../../store/Context'
 import DownloadPDF from '../../PDF/components/DownloadPDF'
 import moment from 'moment'
+import PDF from '../../PDF/components/PDF'
 
 const configTable = {
     rows: [
@@ -200,9 +201,8 @@ class Client extends Component {
             {
                 clickReport && (
                     <DownloadPDF
-                        config={this.getConfigReport()}
+                        PDF={<PDF config={this.getConfigReport()} title='Reporte Clientes' />}
                         filename='Reporte-Atlantis-Clientes'
-                        title='Reporte Clientes'
                     />
                 )
             }

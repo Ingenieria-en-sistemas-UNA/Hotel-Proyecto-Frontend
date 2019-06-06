@@ -5,6 +5,7 @@ import Message from '../../Message'
 import config from '../../../config/config'
 import FormRoom from './components/FormRoom'
 import DownloadPDF from '../../PDF/components/DownloadPDF'
+import PDF from '../../PDF/components/PDF'
 import moment from 'moment'
 
 const configTable = {
@@ -283,9 +284,9 @@ class Room extends Component {
             {
                 clickReport && (
                     <DownloadPDF
-                        config={this.getConfigReport()}
+                        PDF={<PDF config={this.getConfigReport()} title='Reporte Habitaciones' />}
                         filename='Reporte-Atlantis-Habitaciones'
-                        title='Reporte Habitaciones'
+                        config={this.getConfigReport()}
                     />
                 )
             }

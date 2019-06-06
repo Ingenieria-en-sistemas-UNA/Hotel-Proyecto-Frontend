@@ -11,6 +11,7 @@ import Card from '../card/Card'
 import Table from './history/Table'
 import styles from './jss/account'
 import config from '../../config/config'
+
 class Signup extends Component {
 
     state = {
@@ -25,7 +26,44 @@ class Signup extends Component {
 
 
     handleFormSubmit = async (e) => {
-
+        e.preventDefault()
+        const { client, defaultClient } = this.state
+        const { Auth: { fetch: fetchAPI, getProfile } } = this.props
+        const { user_data } = getProfile()
+        let isTheSame = true
+        for (const key in client) {
+            if (client.hasOwnProperty(key)) {
+                if(defaultClient[key] !== client[key]){
+                    isTheSame = false 
+                }
+            }
+        }
+        if(!isTheSame){
+            try {
+                const { email, address, cellphone, maxReserve, localDate, id, ...person } = client
+                console.log(typeof localDate)
+                const clientRequest = {
+                    id: user_data.id,
+                    email: client.email,
+                    address: client.address,
+                    cellphone: client.cellphone,
+                    maxReserve,
+                    person: {
+                        id,
+                        ...person
+                    }
+                }
+                const { person: personResponse = {}, ...rest } = await fetchAPI(`${config.URL}/client/${user_data.id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(clientRequest)
+                })
+                return this.setState(prevState => ({ ...prevState, client: { ...personResponse, ...rest, id: personResponse.id }, updated: true }))    
+            } catch (error) {
+                console.log(error)
+                return this.setState(prevState => ({ ...prevState, client: defaultClient, updated: true }))
+            }
+        }
+        this.setState(prevState => ({ ...prevState, client: defaultClient, updated: true }))
     }
 
     handleChange = e => {
@@ -33,6 +71,7 @@ class Signup extends Component {
         this.setState(prevState => ({
             ...prevState,
             client: {
+                ...prevState.client,
                 [name]: value
             }
         }))
@@ -141,7 +180,7 @@ class Signup extends Component {
                     <Typography component='h1' variant='h5'>
                         Perfil
                         </Typography>
-                    <form className={classes.form} onSubmit={this.handleFormSubmit}>
+                    <form className={classes.form}>
                         <Grid spacing={24} container alignItems='center'>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -244,6 +283,7 @@ class Signup extends Component {
                                                 <Button
                                                     variant='contained'
                                                     color='primary'
+                                                    onClick={this.handleFormSubmit}
                                                     disabled={submmited}
                                                     className={classes.submit}
                                                     style={{marginRight: '10px'}}
@@ -290,10 +330,10 @@ class Signup extends Component {
                         </Typography>
                     <Grid container justify='space-around' direction='row' wrap='wrap' style={{ display: 'flex', alignItems: 'flex-start' }}>
                         {
-                            reserves.length ? (reserves.map(({ room, id }, index) =>
+                            reserves.length ? (reserves.map((reserve, index) =>
                                 <Card
-                                    key={room.id}
-                                    room={{ ...room, idReserve: id }}
+                                    key={reserve.room.id}
+                                    room={{ ...reserve.room, idReserve: reserve.id, reserve  }}
                                     index={index}
                                     account
                                     handlerAsistRoom={this.handlerAsistRoom}

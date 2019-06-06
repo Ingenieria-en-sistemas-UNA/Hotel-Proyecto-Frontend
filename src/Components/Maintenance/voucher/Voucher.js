@@ -5,6 +5,8 @@ import Message from '../../Message'
 import { withContext } from '../../../store/Context'
 import DownloadPDF from '../../PDF/components/DownloadPDF'
 import moment from 'moment'
+import PDF from '../../PDF/components/PDF'
+
 const configTable = {
     rows: [
         { id: 'id', numeric: false, disablePadding: true, label: '# Factura' },
@@ -194,9 +196,8 @@ class Voucher extends Component {
             {
                 clickReport && (
                     <DownloadPDF
-                        config={this.getConfigReport()}
+                        PDF={<PDF config={this.getConfigReport()} title='Reporte Factura' />}
                         filename='Reporte-Atlantis-Facturas'
-                        title='Reporte Factura'
                     />
                 )
             }
