@@ -203,6 +203,7 @@ class Client extends Component {
                     <DownloadPDF
                         PDF={<PDF config={this.getConfigReport()} title='Reporte Clientes' />}
                         filename='Reporte-Atlantis-Clientes'
+                        config={this.getConfigReport()}
                     />
                 )
             }

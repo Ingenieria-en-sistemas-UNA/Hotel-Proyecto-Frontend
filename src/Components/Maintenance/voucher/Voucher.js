@@ -94,10 +94,16 @@ class Voucher extends Component {
                     finishDate: finishDate ? moment(finishDate).format('DD/MM/YYYY') : finishDate
                 })
             })
+            let gain = 0
+            vouchers.forEach(element => {
+                gain += element.price
+            })
+
             let nothing = vouchers.length ? false : true
             this.setState({
                 vouchers,
-                nothing
+                nothing,
+                gain
             })
             if (this.state.nothing) {
                 setTimeout(() => {
@@ -166,7 +172,7 @@ class Voucher extends Component {
     }
 
     render() {
-        const { vouchers,clickReport = false , errors, success, nothing } = this.state
+        const { vouchers,clickReport = false , errors, success, nothing, gain = false } = this.state
         const config = { ...configTable,  data: vouchers }
         return (<Fragment>
             {
@@ -196,8 +202,9 @@ class Voucher extends Component {
             {
                 clickReport && (
                     <DownloadPDF
-                        PDF={<PDF config={this.getConfigReport()} title='Reporte Factura' />}
+                        PDF={<PDF config={this.getConfigReport()} title='Reporte Factura' gain={gain} />}
                         filename='Reporte-Atlantis-Facturas'
+                        config={this.getConfigReport()}
                     />
                 )
             }

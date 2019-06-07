@@ -17,7 +17,13 @@ const styles = StyleSheet.create({
     date: {
         fontSize: 12,
         textAlign: 'right',
-        padding: '30',
+        padding: '20',
+    },
+    gain: {
+        fontSize: 18,
+        textAlign: 'right',
+        marginRight: 40,
+        marginTop: 10
     },
     logo: {
         width: '100%',
@@ -44,7 +50,7 @@ export default class extends Component {
 
         const { localDate = '' } = this.state
 
-        const { config, title = 'Reporte' } = this.props
+        const { config, title = 'Reporte', gain = false } = this.props
         return (
             <Document >
                 <Page size="A4" style={styles.page}>
@@ -55,7 +61,13 @@ export default class extends Component {
 
                         <Table config={config} />
                     </View>
-
+                    {
+                        gain && (
+                            <View style={styles.gain}>
+                                <Text>Ganancia: ${gain}</Text>
+                            </View>
+                        )
+                    }
                     <View style={styles.date}>
                         <Text>{localDate}</Text>
                     </View>
