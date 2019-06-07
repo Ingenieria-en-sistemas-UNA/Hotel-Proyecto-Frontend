@@ -49,7 +49,7 @@ const styles = theme => ({
     },
 })
 
-const steps = ['Confirmación de datos', 'Datos de habitación', 'Resumen de orden']
+const steps = ['Datos', 'Habitación', 'Orden']
 
 const getStepContent = ({ activeStep, ...rest }) => {
     switch (activeStep) {

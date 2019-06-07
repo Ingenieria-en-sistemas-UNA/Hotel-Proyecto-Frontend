@@ -10,13 +10,10 @@ class Room extends Component {
     };
 
     filterRooms = async (filter = 'all', initialDate = null, finishDate = null) => {
-        const { Auth: { fetch: fetchAPI, getServerError, refrech } } = this.props;
+        const { Auth: { getServerError, refrech } } = this.props
         refrech()
         try {
-            const rooms = await fetchAPI(`${config.URL}/room/list?filter=${filter}`, {
-                method: 'POST',
-                body: JSON.stringify({initialDate, finishDate})
-            })
+            const rooms = await this.getRooms(filter, initialDate, finishDate)
             let nothing = rooms.length ? false : true
             this.setState({
                 rooms,
@@ -51,10 +48,78 @@ class Room extends Component {
         this.filterRooms()
     }
 
+    componentWillMount() {
+        setTimeout(() => {
+            this.recursionRooms()
+        }, 1000)
+    }
+
+    isTheSame = roomsRecursive => {
+        const { rooms } = this.state
+        let isTheSame = true
+        roomsRecursive.forEach(recursionRoom => {
+            rooms.forEach(room => {
+                if (recursionRoom.id === room.id) {
+                    if (recursionRoom.state !== room.state) {
+                        isTheSame = false
+                    }
+                }
+            })
+        })
+        return isTheSame
+    }
+    recursionRooms = async () => {
+        const { Auth: { getServerError } } = this.props
+        try {
+            const rooms = await this.getRooms()
+            if (!this.isTheSame(rooms)) {
+                let nothing = rooms.length ? false : true
+                this.setState({
+                    rooms,
+                    nothing
+                })
+                if (this.state.nothing) {
+                    setTimeout(() => {
+                        this.setState({
+                            nothing: false
+                        })
+                    }, 3000)
+                }
+            }
+        } catch ({ message }) {
+            const serverError = getServerError(message);
+            this.setState({
+                errors: {
+                    general: serverError,
+                }
+            })
+
+            setTimeout(() => {
+                this.setState({
+                    errors: {
+                        general: false
+                    }
+                })
+            }, 3000)
+        }
+        setTimeout(() => {
+            this.recursionRooms()
+        }, 1000)    
+    }
+
+    getRooms = async (filter = 'all', initialDate = null, finishDate = null) => {
+        const { Auth: { fetch: fetchAPI } } = this.props
+        const rooms = await fetchAPI(`${config.URL}/room/list?filter=${filter}`, {
+            method: 'POST',
+            body: JSON.stringify({ initialDate, finishDate })
+        })
+        return rooms
+    }
+
     handlerReserveRoomValidate = room => () => {
         const { Auth: { getProfile }, handlerReserveRoom } = this.props
         const { user_data } = getProfile()
-        if(user_data.maxReserve > 0){
+        if (user_data.maxReserve > 0) {
             handlerReserveRoom(room)
         }
         this.setState({
@@ -83,7 +148,7 @@ class Room extends Component {
                                 key={room.id}
                                 room={room}
                                 index={index}
-                                handlerReserveRoomValidate={this.handlerReserveRoomValidate} 
+                                handlerReserveRoomValidate={this.handlerReserveRoomValidate}
                             />
                         ))
                     }
