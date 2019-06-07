@@ -28,7 +28,7 @@ const Review = ({ classes, room, client, voucher }) => {
             <List disablePadding>
                 <ListItem className={classes.listItem}>
                     <ListItemText primary='Habitación' secondary={`Tipo: ${room.type}, descripción: ${room.description}`} />
-                    <Typography variant="body2">{room.price}</Typography>
+                    <Typography variant="body2">${room.price}</Typography>
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <ListItemText primary='Noches' secondary={`Cantidad de noches seleccionadas`} />
@@ -37,7 +37,7 @@ const Review = ({ classes, room, client, voucher }) => {
                 <ListItem className={classes.listItem}>
                     <ListItemText primary="Total" />
                     <Typography variant="subtitle1" className={classes.total}>
-                        {voucher.price}
+                        ${voucher.price}
                     </Typography>
                 </ListItem>
             </List>

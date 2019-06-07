@@ -87,7 +87,7 @@ class ImgMediaCard extends Component {
 
                                         <Typography component='p'>
                                             Cantidad Maxima: {guests} personas <br />
-                                            Descripción: {description}
+                                            Descripción: {description} <br />
                                             {!account && (`Ocupada: ${state ? 'SI' : 'NO'}`)}<br />
                                         </Typography>
 

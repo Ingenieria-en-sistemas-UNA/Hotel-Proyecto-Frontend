@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Menu, MenuItem, withStyles, IconButton  } from '@material-ui/core'
-import { AccountCircle } from '@material-ui/icons';
+import { AccountCircle } from '@material-ui/icons'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import { withContext } from '../../../../store/Context'
 
@@ -17,41 +17,41 @@ const styles = theme => ({
             display: 'none',
         },
     },
-});
+})
 
 
 class MenuAccount extends Component {
     state = {
         anchorEl: null
-    };
+    }
 
     handleMenuClose = () => {
-        this.setState({ anchorEl: null });
-    };
+        this.setState({ anchorEl: null })
+    }
 
     handleRouteClick = () => {
         const { history } = this.props
-        this.handleMenuClose();
+        this.handleMenuClose()
         history.push('/account')
-    };
+    }
 
     onClickLogout = () => {
-        const { history, changeSessionState, handleDrawerClose, Auth } = this.props;
-        handleDrawerClose();
-        changeSessionState(false);
-        console.log(Auth);
-        Auth.logout();
+        const { history, changeSessionState, handleDrawerClose, Auth } = this.props
+        handleDrawerClose()
+        changeSessionState(false)
+        console.log(Auth)
+        Auth.logout()
         history.push('/login')
-    };
+    }
 
     handleProfileMenuOpen = event => {
         this.setState({ anchorEl: event.currentTarget })
-    };
+    }
 
     render() {
-        const { anchorEl } = this.state;
-        const { classes } = this.props;
-        const isMenuOpen = Boolean(anchorEl);
+        const { anchorEl } = this.state
+        const { classes, user_data: { person: { name = '' } } } = this.props
+        const isMenuOpen = Boolean(anchorEl)
 
         const popMenu = (
             <Menu
@@ -64,7 +64,7 @@ class MenuAccount extends Component {
                 <MenuItem onClick={this.handleRouteClick}>Perfil</MenuItem>
                 <MenuItem onClick={this.onClickLogout}>Cerrar sesión</MenuItem>
             </Menu>
-        );
+        )
 
         return (
             <Fragment>
@@ -74,8 +74,10 @@ class MenuAccount extends Component {
                         aria-haspopup="true"
                         onClick={this.handleProfileMenuOpen}
                         color="inherit"
+                        style={{ fontSize: 12}}
                     >
-                        <AccountCircle />
+                        { `${name}`.toUpperCase() }
+                        <AccountCircle style={{ marginLeft: 5 }} />
                     </IconButton>
                 </div>
                 <div className={classes.sectionMobile}>
