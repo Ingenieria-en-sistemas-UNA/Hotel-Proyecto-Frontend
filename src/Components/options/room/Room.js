@@ -69,42 +69,44 @@ class Room extends Component {
         return isTheSame
     }
     recursionRooms = async () => {
-        const { Auth: { getServerError } } = this.props
-        try {
-            const rooms = await this.getRooms()
-            if (!this.isTheSame(rooms)) {
-                let nothing = rooms.length ? false : true
-                this.setState({
-                    rooms,
-                    nothing
-                })
-                if (this.state.nothing) {
-                    setTimeout(() => {
-                        this.setState({
-                            nothing: false
-                        })
-                    }, 3000)
+        const { Auth: { getServerError }, history: { location: { pathname } } } = this.props
+        if (pathname === '/rooms') {
+            try {
+                const rooms = await this.getRooms()
+                if (!this.isTheSame(rooms)) {
+                    let nothing = rooms.length ? false : true
+                    this.setState({
+                        rooms,
+                        nothing
+                    })
+                    if (this.state.nothing) {
+                        setTimeout(() => {
+                            this.setState({
+                                nothing: false
+                            })
+                        }, 3000)
+                    }
                 }
-            }
-        } catch ({ message }) {
-            const serverError = getServerError(message);
-            this.setState({
-                errors: {
-                    general: serverError,
-                }
-            })
-
-            setTimeout(() => {
+            } catch ({ message }) {
+                const serverError = getServerError(message);
                 this.setState({
                     errors: {
-                        general: false
+                        general: serverError,
                     }
                 })
-            }, 3000)
+
+                setTimeout(() => {
+                    this.setState({
+                        errors: {
+                            general: false
+                        }
+                    })
+                }, 3000)
+            }
+            setTimeout(() => {
+                this.recursionRooms()
+            }, 1000)
         }
-        setTimeout(() => {
-            this.recursionRooms()
-        }, 1000)    
     }
 
     getRooms = async (filter = 'all', initialDate = null, finishDate = null) => {

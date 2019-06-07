@@ -78,8 +78,9 @@ class Signup extends Component {
     }
 
     componentDidMount() {
-        const { Auth: { getProfile } } = this.props
+        const { Auth: { getProfile }, history } = this.props
         const { user_data: { person = {}, ...rest } } = getProfile()
+        console.log(history)
         this.setState(prevState => ({
             ...prevState,
             client: { ...person, ...rest, id: person.id },
